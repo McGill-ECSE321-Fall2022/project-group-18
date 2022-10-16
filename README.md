@@ -10,7 +10,7 @@ DESCRIPTION OF THE PROJECT TODO
 |  Feihong Chu | 8d5b9b |  Engineering |U|
 | Matthew Litwiller | mattlitwiller  | Software Engineering  |U3|
 | Shaheer Bilal |  |  Engineering | U|
-| Zachary Godden | Zach Godden | Engineering  |U|
+| Zachary Godden | Zach Godden | Computer Engineering  |U|
 
 
 Deliverable 1: 
