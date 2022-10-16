@@ -17,10 +17,10 @@ Deliverable 1:
 
 | Names | Team Roles | Individual Efforts |
 | ------------- | ------------- | -------------|
-| Andrei Sandor  |   TODO  | Software Engineering |
-| Aymen Ouali   |   TODO   |  Engineering  |
-|  Feihong Chu | TODO |  Engineering |
-| Matthew Litwiller | TODO  | Engineering  |
-| Shaheer Bilal |  |  TODO | 
-| Zachary Godden | TODO | Engineering |
+| Andrei Sandor  |   TODO  | TODO |
+| Aymen Ouali   |   TODO   |  TODO  |
+|  Feihong Chu | TODO |  TODO |
+| Matthew Litwiller | TODO  | TODO  |
+| Shaheer Bilal |  TODO | TODO |
+| Zachary Godden | TODO | TODO |
 
