@@ -9,7 +9,7 @@ DESCRIPTION OF THE PROJECT TODO
 | Aymen Ouali   |   amnbot   |  Engineering  | U|
 |  Feihong Chu | 8d5b9b |  Engineering |U|
 | Matthew Litwiller | mattlitwiller  | Software Engineering  |U3|
-| Shaheer Bilal |  |  Engineering | U|
+| Shaheer Bilal | mohammadShaheerb  | Computer Engineering |U|
 | Zachary Godden | Zach Godden | Computer Engineering  |U|
 
 
