@@ -22,17 +22,10 @@ public class Owner extends Person
   public Owner(String aUsername, String aPassword, Business aBusiness)
   {
     super(aUsername, aPassword);
-    if (aBusiness == null || aBusiness.getOwner() != null)
+    if (!setBusiness(aBusiness))
     {
       throw new RuntimeException("Unable to create Owner due to aBusiness. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    business = aBusiness;
-  }
-
-  public Owner(String aUsername, String aPassword, int aTicketFeeForBusiness)
-  {
-    super(aUsername, aPassword);
-    business = new Business(aTicketFeeForBusiness, this);
   }
 
   //------------------------
@@ -43,15 +36,21 @@ public class Owner extends Person
   {
     return business;
   }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setBusiness(Business aNewBusiness)
+  {
+    boolean wasSet = false;
+    if (aNewBusiness != null)
+    {
+      business = aNewBusiness;
+      wasSet = true;
+    }
+    return wasSet;
+  }
 
   public void delete()
   {
-    Business existingBusiness = business;
     business = null;
-    if (existingBusiness != null)
-    {
-      existingBusiness.delete();
-    }
     super.delete();
   }
 

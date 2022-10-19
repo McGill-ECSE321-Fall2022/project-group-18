@@ -19,28 +19,15 @@ public class Business
   private int ticketFee;
 
   //Business Associations
-  private Owner owner;
   private List<BusinessHour> businessHours;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Business(int aTicketFee, Owner aOwner)
+  public Business(int aTicketFee)
   {
     ticketFee = aTicketFee;
-    if (aOwner == null || aOwner.getBusiness() != null)
-    {
-      throw new RuntimeException("Unable to create Business due to aOwner. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
-    owner = aOwner;
-    businessHours = new ArrayList<BusinessHour>();
-  }
-
-  public Business(int aTicketFee, String aUsernameForOwner, String aPasswordForOwner)
-  {
-    ticketFee = aTicketFee;
-    owner = new Owner(aUsernameForOwner, aPasswordForOwner, this);
     businessHours = new ArrayList<BusinessHour>();
   }
 
@@ -59,11 +46,6 @@ public class Business
   public int getTicketFee()
   {
     return ticketFee;
-  }
-  /* Code from template association_GetOne */
-  public Owner getOwner()
-  {
-    return owner;
   }
   /* Code from template association_GetMany */
   public BusinessHour getBusinessHour(int index)
@@ -100,26 +82,12 @@ public class Business
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public BusinessHour addBusinessHour(Date aDay, Time aOpenTime, Time aCloseTime)
-  {
-    return new BusinessHour(aDay, aOpenTime, aCloseTime, this);
-  }
-
+  /* Code from template association_AddUnidirectionalMany */
   public boolean addBusinessHour(BusinessHour aBusinessHour)
   {
     boolean wasAdded = false;
     if (businessHours.contains(aBusinessHour)) { return false; }
-    Business existingBusiness = aBusinessHour.getBusiness();
-    boolean isNewBusiness = existingBusiness != null && !this.equals(existingBusiness);
-    if (isNewBusiness)
-    {
-      aBusinessHour.setBusiness(this);
-    }
-    else
-    {
-      businessHours.add(aBusinessHour);
-    }
+    businessHours.add(aBusinessHour);
     wasAdded = true;
     return wasAdded;
   }
@@ -127,8 +95,7 @@ public class Business
   public boolean removeBusinessHour(BusinessHour aBusinessHour)
   {
     boolean wasRemoved = false;
-    //Unable to remove aBusinessHour, as it must always have a business
-    if (!this.equals(aBusinessHour.getBusiness()))
+    if (businessHours.contains(aBusinessHour))
     {
       businessHours.remove(aBusinessHour);
       wasRemoved = true;
@@ -170,24 +137,13 @@ public class Business
 
   public void delete()
   {
-    Owner existingOwner = owner;
-    owner = null;
-    if (existingOwner != null)
-    {
-      existingOwner.delete();
-    }
-    for(int i=businessHours.size(); i > 0; i--)
-    {
-      BusinessHour aBusinessHour = businessHours.get(i - 1);
-      aBusinessHour.delete();
-    }
+    businessHours.clear();
   }
 
 
   public String toString()
   {
     return super.toString() + "["+
-            "ticketFee" + ":" + getTicketFee()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "owner = "+(getOwner()!=null?Integer.toHexString(System.identityHashCode(getOwner())):"null");
+            "ticketFee" + ":" + getTicketFee()+ "]";
   }
 }
