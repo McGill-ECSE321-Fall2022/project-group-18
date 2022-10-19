@@ -6,7 +6,7 @@ DESCRIPTION OF THE PROJECT TODO
 |      Name     | Github username | Major | Year |
 | ------------- |   ------------- | ------------- |  ------------- |
 | Andrei Sandor  |   andrei-sandor  | Software Engineering | U2 |
-| Aymen Ouali   |   amnbot   |  Engineering  | U|
+| Aymen Ouali   |   amnbot   |  Engineering  | U2|
 |  Feihong Chu | 8d5b9b |  Engineering |U|
 | Matthew Litwiller | mattlitwiller  | Software Engineering  |U3|
 | Shaheer Bilal | mohammadShaheerb  | Computer Engineering |U|
