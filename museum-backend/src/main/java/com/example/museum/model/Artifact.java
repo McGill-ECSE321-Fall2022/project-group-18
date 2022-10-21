@@ -1,8 +1,6 @@
-package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-
+package com.example.museum.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +11,7 @@ import javax.persistence.Id;
  * namespace [folder for generated code]
  */
 // line 4 "model.ump"
-// line 96 "model.ump"
-@Entity
+// line 98 "model.ump"
 public class Artifact
 {
 
@@ -23,21 +20,16 @@ public class Artifact
   //------------------------
 
   //Artifact Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private int artID;
+  private int artifactID;
   private boolean loanable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-
-  public Artifact() {}
-
-  public Artifact(int aArtID, boolean aLoanable)
+  public Artifact(int aArtifactID, boolean aLoanable)
   {
-    artID = aArtID;
+    artifactID = aArtifactID;
     loanable = aLoanable;
   }
 
@@ -45,10 +37,10 @@ public class Artifact
   // INTERFACE
   //------------------------
 
-  public boolean setArtID(int aArtID)
+  public boolean setArtifactID(int aArtifactID)
   {
     boolean wasSet = false;
-    artID = aArtID;
+    artifactID = aArtifactID;
     wasSet = true;
     return wasSet;
   }
@@ -61,9 +53,9 @@ public class Artifact
     return wasSet;
   }
 
-  public int getArtID()
+  public int getArtifactID()
   {
-    return artID;
+    return artifactID;
   }
 
   /**
@@ -81,8 +73,7 @@ public class Artifact
   public String toString()
   {
     return super.toString() + "["+
-            "artID" + ":" + getArtID()+ "," +
+            "artifactID" + ":" + getArtifactID()+ "," +
             "loanable" + ":" + getLoanable()+ "]";
   }
 }
-

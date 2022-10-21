@@ -1,5 +1,4 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
@@ -7,7 +6,7 @@ package com.example.museum.model;
 import java.sql.Date;
 
 // line 60 "model.ump"
-// line 141 "model.ump"
+// line 144 "model.ump"
 public class Ticket
 {
 
@@ -17,14 +16,18 @@ public class Ticket
 
   //Ticket Attributes
   private Date day;
+  private int ticketID;
+  private int price;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Ticket(Date aDay)
+  public Ticket(Date aDay, int aTicketID, int aPrice)
   {
     day = aDay;
+    ticketID = aTicketID;
+    price = aPrice;
   }
 
   //------------------------
@@ -39,9 +42,35 @@ public class Ticket
     return wasSet;
   }
 
+  public boolean setTicketID(int aTicketID)
+  {
+    boolean wasSet = false;
+    ticketID = aTicketID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setPrice(int aPrice)
+  {
+    boolean wasSet = false;
+    price = aPrice;
+    wasSet = true;
+    return wasSet;
+  }
+
   public Date getDay()
   {
     return day;
+  }
+
+  public int getTicketID()
+  {
+    return ticketID;
+  }
+
+  public int getPrice()
+  {
+    return price;
   }
 
   public void delete()
@@ -50,7 +79,9 @@ public class Ticket
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+
+            "ticketID" + ":" + getTicketID()+ "," +
+            "price" + ":" + getPrice()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "day" + "=" + (getDay() != null ? !getDay().equals(this)  ? getDay().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }

@@ -1,19 +1,21 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 import java.util.*;
 
-// line 19 "model.ump"
-// line 108 "model.ump"
+// line 17 "model.ump"
+// line 110 "model.ump"
 public class Donation
 {
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
+
+  //Donation Attributes
+  private int donationID;
 
   //Donation Associations
   private List<Artifact> artifacts;
@@ -22,14 +24,28 @@ public class Donation
   // CONSTRUCTOR
   //------------------------
 
-  public Donation()
+  public Donation(int aDonationID)
   {
+    donationID = aDonationID;
     artifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setDonationID(int aDonationID)
+  {
+    boolean wasSet = false;
+    donationID = aDonationID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public int getDonationID()
+  {
+    return donationID;
+  }
   /* Code from template association_GetMany */
   public Artifact getArtifact(int index)
   {
@@ -123,4 +139,10 @@ public class Donation
     artifacts.clear();
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "donationID" + ":" + getDonationID()+ "]";
+  }
 }

@@ -1,14 +1,13 @@
-package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+package com.example.museum.model;
 
 
 import java.sql.Date;
 import java.sql.Time;
 
-// line 71 "model.ump"
-// line 152 "model.ump"
+// line 73 "model.ump"
+// line 155 "model.ump"
 public class BusinessHour
 {
 
@@ -87,5 +86,3 @@ public class BusinessHour
             "  " + "closeTime" + "=" + (getCloseTime() != null ? !getCloseTime().equals(this)  ? getCloseTime().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
-
-

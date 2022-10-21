@@ -1,5 +1,4 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
@@ -7,8 +6,8 @@ package com.example.museum.model;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 77 "model.ump"
-// line 157 "model.ump"
+// line 79 "model.ump"
+// line 160 "model.ump"
 public class EmployeeHour
 {
 
@@ -103,4 +102,3 @@ public class EmployeeHour
             "  " + "worker" + "=" + (getWorker() != null ? !getWorker().equals(this)  ? getWorker().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
-

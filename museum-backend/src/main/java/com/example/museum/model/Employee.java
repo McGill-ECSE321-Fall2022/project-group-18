@@ -1,5 +1,4 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
@@ -8,8 +7,8 @@ import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 44 "model.ump"
-// line 124 "model.ump"
+// line 43 "model.ump"
+// line 127 "model.ump"
 public class Employee extends Person
 {
 

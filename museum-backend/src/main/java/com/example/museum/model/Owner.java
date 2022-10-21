@@ -1,12 +1,11 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
-// line 37 "model.ump"
-// line 119 "model.ump"
+// line 36 "model.ump"
+// line 122 "model.ump"
 public class Owner extends Person
 {
 

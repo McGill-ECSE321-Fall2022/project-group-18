@@ -1,15 +1,15 @@
-package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+
+package com.example.museum.model;
 
 
 import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 65 "model.ump"
-// line 146 "model.ump"
+// line 67 "model.ump"
+// line 149 "model.ump"
 public class Business
 {
 

@@ -1,12 +1,11 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
 // line 11 "model.ump"
-// line 102 "model.ump"
+// line 104 "model.ump"
 public class LoanedArtifact extends Artifact
 {
 
@@ -21,9 +20,9 @@ public class LoanedArtifact extends Artifact
   // CONSTRUCTOR
   //------------------------
 
-  public LoanedArtifact(int aArtID, boolean aLoanable, int aLoanFee)
+  public LoanedArtifact(int aArtifactID, boolean aLoanable, int aLoanFee)
   {
-    super(aArtID, aLoanable);
+    super(aArtifactID, aLoanable);
     loanFee = aLoanFee;
   }
 

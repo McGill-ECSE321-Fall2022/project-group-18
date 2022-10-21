@@ -1,14 +1,13 @@
-package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
+package com.example.museum.model;
 
 
 import java.util.*;
 import java.sql.Date;
 
 // line 55 "model.ump"
-// line 136 "model.ump"
+// line 139 "model.ump"
 public class Customer extends Person
 {
 

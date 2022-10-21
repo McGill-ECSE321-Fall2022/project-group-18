@@ -1,5 +1,4 @@
 package com.example.museum.model;
-
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
@@ -11,8 +10,8 @@ package com.example.museum.model;
  * 1 -- 1 Artifact;
  * }
  */
-// line 31 "model.ump"
-// line 114 "model.ump"
+// line 30 "model.ump"
+// line 117 "model.ump"
 public abstract class Person
 {
 
