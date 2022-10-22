@@ -4,5 +4,5 @@ import com.example.museum.model.BusinessHour;
 import org.springframework.data.repository.CrudRepository;
 
 public interface BusinessHourRepository extends CrudRepository<BusinessHour, Integer> {
-    public BusinessHour findArtifactByBusinessHourID(int id);
+    public BusinessHour findBusinessHourByBusinessHourID(int id);
 }
