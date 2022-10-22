@@ -1,10 +1,17 @@
-package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
 // line 93 "model.ump"
 // line 173 "model.ump"
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Room
 {
 
@@ -13,6 +20,8 @@ public class Room
   //------------------------
 
   //Room Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int roomID;
   private String name;
   private int capacity;

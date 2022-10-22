@@ -1,11 +1,16 @@
-package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.*;
 
 // line 55 "model.ump"
 // line 141 "model.ump"
+@Entity
 public class LoanRequest
 {
 
@@ -20,6 +25,8 @@ public class LoanRequest
   //------------------------
 
   //LoanRequest Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int requestID;
 
   //LoanRequest Associations

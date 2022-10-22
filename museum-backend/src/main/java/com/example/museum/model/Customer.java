@@ -1,12 +1,14 @@
-package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
 import java.util.*;
 import java.sql.Date;
 
 // line 61 "model.ump"
 // line 147 "model.ump"
+@Entity
 public class Customer extends Person
 {
 

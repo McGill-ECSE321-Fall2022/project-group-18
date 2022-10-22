@@ -1,4 +1,4 @@
-package test.java.com.example.museum.repository;
+package com.example.museum.repository;
 
 import com.example.museum.model.Artifact;
 import org.junit.jupiter.api.AfterEach;
@@ -24,8 +24,14 @@ public class ArtifactRepositoryTests {
     @Test
     public void testPersistAndLoadArtifact() {
         boolean loanable = true;
+        String name = "Mona Lisa";
+        Artifact.ArtType type = Artifact.ArtType.Painting;
+
         Artifact artifact = new Artifact();
         artifact.setLoanable(loanable);
+        artifact.setName(name);
+        artifact.setType(type);
+
 
         artifact = artifactRepository.save(artifact);
         int id = artifact.getArtID();
@@ -37,6 +43,8 @@ public class ArtifactRepositoryTests {
         assertNotNull(artifact);
         assertEquals(id, artifact.getArtID());
         assertEquals(loanable, artifact.getLoanable());
+        assertEquals(name, artifact.getName());
+        assertEquals(type, artifact.getType());
 
     }
 }

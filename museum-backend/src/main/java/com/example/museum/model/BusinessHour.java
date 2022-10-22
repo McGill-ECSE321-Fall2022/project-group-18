@@ -1,12 +1,17 @@
-package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Date;
 import java.sql.Time;
 
 // line 79 "model.ump"
 // line 163 "model.ump"
+@Entity
 public class BusinessHour
 {
 
@@ -15,6 +20,8 @@ public class BusinessHour
   //------------------------
 
   //BusinessHour Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private Date day;
   private Time openTime;
   private Time closeTime;

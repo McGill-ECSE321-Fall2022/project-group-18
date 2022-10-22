@@ -1,7 +1,11 @@
-package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * class DonatedArtifact{
@@ -11,6 +15,7 @@ package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
  */
 // line 35 "model.ump"
 // line 125 "model.ump"
+@Entity
 public abstract class Person
 {
 
@@ -19,6 +24,9 @@ public abstract class Person
   //------------------------
 
   //Person Attributes
+
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private String personID;
   private String username;
   private String password;
