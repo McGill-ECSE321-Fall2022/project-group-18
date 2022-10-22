@@ -1,14 +1,19 @@
-package com.example.museum.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 import java.util.*;
 
-// line 49 "model.ump"
-// line 133 "model.ump"
+// line 55 "model.ump"
+// line 141 "model.ump"
 public class LoanRequest
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum ArtType { Painting, Sculpture }
 
   //------------------------
   // MEMBER VARIABLES
@@ -135,7 +140,7 @@ public class LoanRequest
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addArtifactAt(Artifact aArtifact, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addArtifact(aArtifact))
     {
@@ -158,8 +163,8 @@ public class LoanRequest
       artifacts.remove(aArtifact);
       artifacts.add(index, aArtifact);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addArtifactAt(aArtifact, index);
     }

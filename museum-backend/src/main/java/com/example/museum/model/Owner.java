@@ -1,11 +1,10 @@
-package com.example.museum.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
-// line 36 "model.ump"
-// line 122 "model.ump"
+// line 42 "model.ump"
+// line 130 "model.ump"
 public class Owner extends Person
 {
 
@@ -20,9 +19,9 @@ public class Owner extends Person
   // CONSTRUCTOR
   //------------------------
 
-  public Owner(String aUsername, String aPassword, Business aBusiness)
+  public Owner(String aPersonID, String aUsername, String aPassword, Business aBusiness)
   {
-    super(aUsername, aPassword);
+    super(aPersonID, aUsername, aPassword);
     if (!setBusiness(aBusiness))
     {
       throw new RuntimeException("Unable to create Owner due to aBusiness. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");

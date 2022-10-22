@@ -1,13 +1,12 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-package com.example.museum.model;
 
 
 import java.util.*;
 import java.sql.Date;
 
-// line 55 "model.ump"
-// line 139 "model.ump"
+// line 61 "model.ump"
+// line 147 "model.ump"
 public class Customer extends Person
 {
 
@@ -25,9 +24,9 @@ public class Customer extends Person
   // CONSTRUCTOR
   //------------------------
 
-  public Customer(String aUsername, String aPassword, LoanRequest aLoanRequest)
+  public Customer(String aPersonID, String aUsername, String aPassword, LoanRequest aLoanRequest)
   {
-    super(aUsername, aPassword);
+    super(aPersonID, aUsername, aPassword);
     loanedArtifacts = new ArrayList<LoanedArtifact>();
     donations = new ArrayList<Donation>();
     if (!setLoanRequest(aLoanRequest))
@@ -194,7 +193,7 @@ public class Customer extends Person
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addLoanedArtifactAt(LoanedArtifact aLoanedArtifact, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addLoanedArtifact(aLoanedArtifact))
     {
@@ -217,8 +216,8 @@ public class Customer extends Person
       loanedArtifacts.remove(aLoanedArtifact);
       loanedArtifacts.add(index, aLoanedArtifact);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addLoanedArtifactAt(aLoanedArtifact, index);
     }
@@ -251,7 +250,7 @@ public class Customer extends Person
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addDonationAt(Donation aDonation, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addDonation(aDonation))
     {
@@ -274,8 +273,8 @@ public class Customer extends Person
       donations.remove(aDonation);
       donations.add(index, aDonation);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addDonationAt(aDonation, index);
     }
@@ -319,7 +318,7 @@ public class Customer extends Person
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addTicketAt(Ticket aTicket, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addTicket(aTicket))
     {
@@ -342,8 +341,8 @@ public class Customer extends Person
       tickets.remove(aTicket);
       tickets.add(index, aTicket);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addTicketAt(aTicket, index);
     }

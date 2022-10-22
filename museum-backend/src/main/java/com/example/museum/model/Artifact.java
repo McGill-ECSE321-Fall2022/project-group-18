@@ -1,43 +1,45 @@
-package com.example.museum.model;
-
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * namespace [folder for generated code]
- */
-// line 4 "model.ump"
-// line 96 "model.ump"
+// line 6 "model.ump"
+// line 106 "model.ump"
 @Entity
 public class Artifact
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum ArtType { Painting, Sculpture }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Artifact Attributes
+  private String name;
+  private ArtType type;
+
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  private int artID;
+  private int artifactID;
   private boolean loanable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-
-  public Artifact() {}
-
-  public Artifact(int aArtID, boolean aLoanable)
+  public Artifact(String aName, ArtType aType, int aArtifactID, boolean aLoanable)
   {
-    artID = aArtID;
+    name = aName;
+    type = aType;
+    artifactID = aArtifactID;
     loanable = aLoanable;
   }
 
@@ -45,10 +47,26 @@ public class Artifact
   // INTERFACE
   //------------------------
 
-  public boolean setArtID(int aArtID)
+  public boolean setName(String aName)
   {
     boolean wasSet = false;
-    artID = aArtID;
+    name = aName;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setType(ArtType aType)
+  {
+    boolean wasSet = false;
+    type = aType;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setArtifactID(int aArtifactID)
+  {
+    boolean wasSet = false;
+    artifactID = aArtifactID;
     wasSet = true;
     return wasSet;
   }
@@ -61,9 +79,19 @@ public class Artifact
     return wasSet;
   }
 
-  public int getArtID()
+  public String getName()
   {
-    return artID;
+    return name;
+  }
+
+  public ArtType getType()
+  {
+    return type;
+  }
+
+  public int getArtifactID()
+  {
+    return artifactID;
   }
 
   /**
@@ -81,8 +109,9 @@ public class Artifact
   public String toString()
   {
     return super.toString() + "["+
-            "artID" + ":" + getArtID()+ "," +
-            "loanable" + ":" + getLoanable()+ "]";
+            "name" + ":" + getName()+ "," +
+            "artifactID" + ":" + getArtifactID()+ "," +
+            "loanable" + ":" + getLoanable()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "type" + "=" + (getType() != null ? !getType().equals(this)  ? getType().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
-

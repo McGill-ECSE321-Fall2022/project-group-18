@@ -1,4 +1,4 @@
-package com.example.museum.repository;
+package test.java.com.example.museum.repository;
 
 import com.example.museum.model.Artifact;
 import org.junit.jupiter.api.AfterEach;

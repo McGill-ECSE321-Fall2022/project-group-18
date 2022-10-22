@@ -1,14 +1,12 @@
-package com.example.museum.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 import java.util.*;
-import java.sql.Date;
 import java.sql.Time;
 
-// line 43 "model.ump"
-// line 127 "model.ump"
+// line 49 "model.ump"
+// line 135 "model.ump"
 public class Employee extends Person
 {
 
@@ -23,9 +21,9 @@ public class Employee extends Person
   // CONSTRUCTOR
   //------------------------
 
-  public Employee(String aUsername, String aPassword)
+  public Employee(String aPersonID, String aUsername, String aPassword)
   {
-    super(aUsername, aPassword);
+    super(aPersonID, aUsername, aPassword);
     employeeHours = new ArrayList<EmployeeHour>();
   }
 
@@ -92,7 +90,7 @@ public class Employee extends Person
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addEmployeeHourAt(EmployeeHour aEmployeeHour, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addEmployeeHour(aEmployeeHour))
     {
@@ -115,8 +113,8 @@ public class Employee extends Person
       employeeHours.remove(aEmployeeHour);
       employeeHours.add(index, aEmployeeHour);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addEmployeeHourAt(aEmployeeHour, index);
     }

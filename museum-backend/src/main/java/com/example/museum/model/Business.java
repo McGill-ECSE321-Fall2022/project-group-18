@@ -1,15 +1,13 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-
-package com.example.museum.model;
 
 
 import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 67 "model.ump"
-// line 149 "model.ump"
+// line 73 "model.ump"
+// line 157 "model.ump"
 public class Business
 {
 
@@ -106,7 +104,7 @@ public class Business
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addBusinessHourAt(BusinessHour aBusinessHour, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addBusinessHour(aBusinessHour))
     {
@@ -129,8 +127,8 @@ public class Business
       businessHours.remove(aBusinessHour);
       businessHours.add(index, aBusinessHour);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addBusinessHourAt(aBusinessHour, index);
     }

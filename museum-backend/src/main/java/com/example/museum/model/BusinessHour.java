@@ -1,13 +1,12 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
-package com.example.museum.model;
 
 
 import java.sql.Date;
 import java.sql.Time;
 
-// line 73 "model.ump"
-// line 155 "model.ump"
+// line 79 "model.ump"
+// line 163 "model.ump"
 public class BusinessHour
 {
 

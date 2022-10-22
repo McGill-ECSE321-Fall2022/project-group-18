@@ -1,11 +1,10 @@
-package com.example.museum.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
-// line 86 "model.ump"
-// line 165 "model.ump"
+// line 93 "model.ump"
+// line 173 "model.ump"
 public class Room
 {
 
@@ -14,6 +13,7 @@ public class Room
   //------------------------
 
   //Room Attributes
+  private int roomID;
   private String name;
   private int capacity;
   private Artifact artifacts;
@@ -25,8 +25,9 @@ public class Room
   // CONSTRUCTOR
   //------------------------
 
-  public Room(String aName, int aCapacity, Artifact aArtifacts)
+  public Room(int aRoomID, String aName, int aCapacity, Artifact aArtifacts)
   {
+    roomID = aRoomID;
     name = aName;
     capacity = aCapacity;
     artifacts = aArtifacts;
@@ -35,6 +36,14 @@ public class Room
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setRoomID(int aRoomID)
+  {
+    boolean wasSet = false;
+    roomID = aRoomID;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setName(String aName)
   {
@@ -58,6 +67,11 @@ public class Room
     artifacts = aArtifacts;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getRoomID()
+  {
+    return roomID;
   }
 
   public String getName()
@@ -103,6 +117,7 @@ public class Room
   public String toString()
   {
     return super.toString() + "["+
+            "roomID" + ":" + getRoomID()+ "," +
             "name" + ":" + getName()+ "," +
             "capacity" + ":" + getCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "artifacts" + "=" + (getArtifacts() != null ? !getArtifacts().equals(this)  ? getArtifacts().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +

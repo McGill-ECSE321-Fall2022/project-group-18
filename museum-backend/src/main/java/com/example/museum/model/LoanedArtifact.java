@@ -1,11 +1,10 @@
-package com.example.museum.model;
-/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
 
-// line 11 "model.ump"
-// line 104 "model.ump"
+// line 15 "model.ump"
+// line 112 "model.ump"
 public class LoanedArtifact extends Artifact
 {
 
@@ -14,15 +13,17 @@ public class LoanedArtifact extends Artifact
   //------------------------
 
   //LoanedArtifact Attributes
+  private int loanID;
   private int loanFee;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public LoanedArtifact(int aArtifactID, boolean aLoanable, int aLoanFee)
+  public LoanedArtifact(String aName, ArtType aType, int aArtifactID, boolean aLoanable, int aLoanID, int aLoanFee)
   {
-    super(aArtifactID, aLoanable);
+    super(aName, aType, aArtifactID, aLoanable);
+    loanID = aLoanID;
     loanFee = aLoanFee;
   }
 
@@ -30,12 +31,25 @@ public class LoanedArtifact extends Artifact
   // INTERFACE
   //------------------------
 
+  public boolean setLoanID(int aLoanID)
+  {
+    boolean wasSet = false;
+    loanID = aLoanID;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setLoanFee(int aLoanFee)
   {
     boolean wasSet = false;
     loanFee = aLoanFee;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getLoanID()
+  {
+    return loanID;
   }
 
   public int getLoanFee()
@@ -52,6 +66,7 @@ public class LoanedArtifact extends Artifact
   public String toString()
   {
     return super.toString() + "["+
+            "loanID" + ":" + getLoanID()+ "," +
             "loanFee" + ":" + getLoanFee()+ "]";
   }
 }
