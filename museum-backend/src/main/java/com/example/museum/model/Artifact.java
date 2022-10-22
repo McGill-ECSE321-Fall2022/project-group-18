@@ -8,7 +8,6 @@ import javax.persistence.Id;
 
 // line 6 "model.ump"
 // line 106 "model.ump"
-@Entity
 public class Artifact
 {
 
@@ -23,23 +22,22 @@ public class Artifact
   //------------------------
 
   //Artifact Attributes
-  private String name;
-  private ArtType type;
-
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  private int artifactID;
+  private int artID;
+  private String name;
+  private ArtType type;
   private boolean loanable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Artifact(String aName, ArtType aType, int aArtifactID, boolean aLoanable)
+  public Artifact(String aName, ArtType aType, int aArtID, boolean aLoanable)
   {
     name = aName;
     type = aType;
-    artifactID = aArtifactID;
+    artID = aArtID;
     loanable = aLoanable;
   }
 
@@ -63,10 +61,10 @@ public class Artifact
     return wasSet;
   }
 
-  public boolean setArtifactID(int aArtifactID)
+  public boolean setArtID(int aArtID)
   {
     boolean wasSet = false;
-    artifactID = aArtifactID;
+    artID = aArtID;
     wasSet = true;
     return wasSet;
   }
@@ -89,9 +87,9 @@ public class Artifact
     return type;
   }
 
-  public int getArtifactID()
+  public int getArtID()
   {
-    return artifactID;
+    return artID;
   }
 
   /**
@@ -110,7 +108,7 @@ public class Artifact
   {
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
-            "artifactID" + ":" + getArtifactID()+ "," +
+            "artID" + ":" + getArtID()+ "," +
             "loanable" + ":" + getLoanable()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "type" + "=" + (getType() != null ? !getType().equals(this)  ? getType().toString().replaceAll("  ","    ") : "this" : "null");
   }

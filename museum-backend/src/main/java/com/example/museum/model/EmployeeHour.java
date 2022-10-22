@@ -15,6 +15,8 @@ public class EmployeeHour
   //------------------------
 
   //EmployeeHour Attributes
+  private int employeeHourID;
+  private Date day;
   private Time startTime;
   private Time endTime;
   private Employee worker;
@@ -23,8 +25,10 @@ public class EmployeeHour
   // CONSTRUCTOR
   //------------------------
 
-  public EmployeeHour(Time aStartTime, Time aEndTime, Employee aWorker)
+  public EmployeeHour(int aEmployeeHourID, Date aDay, Time aStartTime, Time aEndTime, Employee aWorker)
   {
+    employeeHourID = aEmployeeHourID;
+    day = aDay;
     startTime = aStartTime;
     endTime = aEndTime;
     worker = aWorker;
@@ -33,6 +37,22 @@ public class EmployeeHour
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setEmployeeHourID(int aEmployeeHourID)
+  {
+    boolean wasSet = false;
+    employeeHourID = aEmployeeHourID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setDay(Date aDay)
+  {
+    boolean wasSet = false;
+    day = aDay;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setStartTime(Time aStartTime)
   {
@@ -58,6 +78,16 @@ public class EmployeeHour
     return wasSet;
   }
 
+  public int getEmployeeHourID()
+  {
+    return employeeHourID;
+  }
+
+  public Date getDay()
+  {
+    return day;
+  }
+
   public Time getStartTime()
   {
     return startTime;
@@ -79,18 +109,11 @@ public class EmployeeHour
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+
+            "employeeHourID" + ":" + getEmployeeHourID()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "day" + "=" + (getDay() != null ? !getDay().equals(this)  ? getDay().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "worker" + "=" + (getWorker() != null ? !getWorker().equals(this)  ? getWorker().toString().replaceAll("  ","    ") : "this" : "null");
   }
-  //------------------------
-  // DEVELOPER CODE - PROVIDED AS-IS
-  //------------------------
-
-  // line 86 "model.ump"
-  int employeeHourID;
-  Date day ;
-
-
 }
