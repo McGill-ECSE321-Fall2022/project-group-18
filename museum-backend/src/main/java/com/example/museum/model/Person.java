@@ -1,21 +1,10 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-/**
- * class DonatedArtifact{
- * -- 1 Customer;
- * 1 -- 1 Artifact;
- * }
- */
-// line 35 "model.ump"
-// line 125 "model.ump"
-
+// line 27 "model.ump"
+// line 121 "model.ump"
 public abstract class Person
 {
 
@@ -24,8 +13,7 @@ public abstract class Person
   //------------------------
 
   //Person Attributes
-
-  private String personID;
+  private int accountID;
   private String username;
   private String password;
 
@@ -33,9 +21,9 @@ public abstract class Person
   // CONSTRUCTOR
   //------------------------
 
-  public Person(String aPersonID, String aUsername, String aPassword)
+  public Person(int aAccountID, String aUsername, String aPassword)
   {
-    personID = aPersonID;
+    accountID = aAccountID;
     username = aUsername;
     password = aPassword;
   }
@@ -44,10 +32,10 @@ public abstract class Person
   // INTERFACE
   //------------------------
 
-  public boolean setPersonID(String aPersonID)
+  public boolean setAccountID(int aAccountID)
   {
     boolean wasSet = false;
-    personID = aPersonID;
+    accountID = aAccountID;
     wasSet = true;
     return wasSet;
   }
@@ -68,9 +56,9 @@ public abstract class Person
     return wasSet;
   }
 
-  public String getPersonID()
+  public int getAccountID()
   {
-    return personID;
+    return accountID;
   }
 
   public String getUsername()
@@ -90,7 +78,7 @@ public abstract class Person
   public String toString()
   {
     return super.toString() + "["+
-            "personID" + ":" + getPersonID()+ "," +
+            "accountID" + ":" + getAccountID()+ "," +
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "]";
   }

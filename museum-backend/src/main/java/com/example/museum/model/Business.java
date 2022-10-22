@@ -1,4 +1,4 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
@@ -6,8 +6,8 @@ import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
-// line 73 "model.ump"
-// line 157 "model.ump"
+// line 60 "model.ump"
+// line 162 "model.ump"
 public class Business
 {
 
@@ -16,6 +16,7 @@ public class Business
   //------------------------
 
   //Business Attributes
+  private int businessID;
   private int ticketFee;
 
   //Business Associations
@@ -25,8 +26,9 @@ public class Business
   // CONSTRUCTOR
   //------------------------
 
-  public Business(int aTicketFee)
+  public Business(int aBusinessID, int aTicketFee)
   {
+    businessID = aBusinessID;
     ticketFee = aTicketFee;
     businessHours = new ArrayList<BusinessHour>();
   }
@@ -35,12 +37,25 @@ public class Business
   // INTERFACE
   //------------------------
 
+  public boolean setBusinessID(int aBusinessID)
+  {
+    boolean wasSet = false;
+    businessID = aBusinessID;
+    wasSet = true;
+    return wasSet;
+  }
+
   public boolean setTicketFee(int aTicketFee)
   {
     boolean wasSet = false;
     ticketFee = aTicketFee;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getBusinessID()
+  {
+    return businessID;
   }
 
   public int getTicketFee()
@@ -104,7 +119,7 @@ public class Business
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addBusinessHourAt(BusinessHour aBusinessHour, int index)
-  {
+  {  
     boolean wasAdded = false;
     if(addBusinessHour(aBusinessHour))
     {
@@ -127,8 +142,8 @@ public class Business
       businessHours.remove(aBusinessHour);
       businessHours.add(index, aBusinessHour);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
       wasAdded = addBusinessHourAt(aBusinessHour, index);
     }
@@ -144,6 +159,7 @@ public class Business
   public String toString()
   {
     return super.toString() + "["+
+            "businessID" + ":" + getBusinessID()+ "," +
             "ticketFee" + ":" + getTicketFee()+ "]";
   }
 }

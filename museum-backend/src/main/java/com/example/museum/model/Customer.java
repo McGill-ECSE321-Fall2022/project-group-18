@@ -1,14 +1,12 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
 import java.util.*;
 import java.sql.Date;
 
-// line 61 "model.ump"
-// line 147 "model.ump"
-
+// line 49 "model.ump"
+// line 149 "model.ump"
 public class Customer extends Person
 {
 
@@ -18,24 +16,24 @@ public class Customer extends Person
 
   //Customer Associations
   private List<LoanedArtifact> loanedArtifacts;
-  private List<Donation> donations;
+  private List<Donation> customerDonatedArtifacts;
   private LoanRequest loanRequest;
-  private List<Ticket> tickets;
+  private List<Ticket> customerTickets;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Customer(String aPersonID, String aUsername, String aPassword, LoanRequest aLoanRequest)
+  public Customer(int aAccountID, String aUsername, String aPassword, LoanRequest aLoanRequest)
   {
-    super(aPersonID, aUsername, aPassword);
+    super(aAccountID, aUsername, aPassword);
     loanedArtifacts = new ArrayList<LoanedArtifact>();
-    donations = new ArrayList<Donation>();
+    customerDonatedArtifacts = new ArrayList<Donation>();
     if (!setLoanRequest(aLoanRequest))
     {
       throw new RuntimeException("Unable to create Customer due to aLoanRequest. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    tickets = new ArrayList<Ticket>();
+    customerTickets = new ArrayList<Ticket>();
   }
 
   //------------------------
@@ -72,33 +70,33 @@ public class Customer extends Person
     return index;
   }
   /* Code from template association_GetMany */
-  public Donation getDonation(int index)
+  public Donation getCustomerDonatedArtifact(int index)
   {
-    Donation aDonation = donations.get(index);
-    return aDonation;
+    Donation aCustomerDonatedArtifact = customerDonatedArtifacts.get(index);
+    return aCustomerDonatedArtifact;
   }
 
-  public List<Donation> getDonations()
+  public List<Donation> getCustomerDonatedArtifacts()
   {
-    List<Donation> newDonations = Collections.unmodifiableList(donations);
-    return newDonations;
+    List<Donation> newCustomerDonatedArtifacts = Collections.unmodifiableList(customerDonatedArtifacts);
+    return newCustomerDonatedArtifacts;
   }
 
-  public int numberOfDonations()
+  public int numberOfCustomerDonatedArtifacts()
   {
-    int number = donations.size();
+    int number = customerDonatedArtifacts.size();
     return number;
   }
 
-  public boolean hasDonations()
+  public boolean hasCustomerDonatedArtifacts()
   {
-    boolean has = donations.size() > 0;
+    boolean has = customerDonatedArtifacts.size() > 0;
     return has;
   }
 
-  public int indexOfDonation(Donation aDonation)
+  public int indexOfCustomerDonatedArtifact(Donation aCustomerDonatedArtifact)
   {
-    int index = donations.indexOf(aDonation);
+    int index = customerDonatedArtifacts.indexOf(aCustomerDonatedArtifact);
     return index;
   }
   /* Code from template association_GetOne */
@@ -107,33 +105,33 @@ public class Customer extends Person
     return loanRequest;
   }
   /* Code from template association_GetMany */
-  public Ticket getTicket(int index)
+  public Ticket getCustomerTicket(int index)
   {
-    Ticket aTicket = tickets.get(index);
-    return aTicket;
+    Ticket aCustomerTicket = customerTickets.get(index);
+    return aCustomerTicket;
   }
 
-  public List<Ticket> getTickets()
+  public List<Ticket> getCustomerTickets()
   {
-    List<Ticket> newTickets = Collections.unmodifiableList(tickets);
-    return newTickets;
+    List<Ticket> newCustomerTickets = Collections.unmodifiableList(customerTickets);
+    return newCustomerTickets;
   }
 
-  public int numberOfTickets()
+  public int numberOfCustomerTickets()
   {
-    int number = tickets.size();
+    int number = customerTickets.size();
     return number;
   }
 
-  public boolean hasTickets()
+  public boolean hasCustomerTickets()
   {
-    boolean has = tickets.size() > 0;
+    boolean has = customerTickets.size() > 0;
     return has;
   }
 
-  public int indexOfTicket(Ticket aTicket)
+  public int indexOfCustomerTicket(Ticket aCustomerTicket)
   {
-    int index = tickets.indexOf(aTicket);
+    int index = customerTickets.indexOf(aCustomerTicket);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
@@ -195,7 +193,7 @@ public class Customer extends Person
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addLoanedArtifactAt(LoanedArtifact aLoanedArtifact, int index)
-  {
+  {  
     boolean wasAdded = false;
     if(addLoanedArtifact(aLoanedArtifact))
     {
@@ -218,67 +216,67 @@ public class Customer extends Person
       loanedArtifacts.remove(aLoanedArtifact);
       loanedArtifacts.add(index, aLoanedArtifact);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
       wasAdded = addLoanedArtifactAt(aLoanedArtifact, index);
     }
     return wasAdded;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfDonations()
+  public static int minimumNumberOfCustomerDonatedArtifacts()
   {
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addDonation(Donation aDonation)
+  public boolean addCustomerDonatedArtifact(Donation aCustomerDonatedArtifact)
   {
     boolean wasAdded = false;
-    if (donations.contains(aDonation)) { return false; }
-    donations.add(aDonation);
+    if (customerDonatedArtifacts.contains(aCustomerDonatedArtifact)) { return false; }
+    customerDonatedArtifacts.add(aCustomerDonatedArtifact);
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeDonation(Donation aDonation)
+  public boolean removeCustomerDonatedArtifact(Donation aCustomerDonatedArtifact)
   {
     boolean wasRemoved = false;
-    if (donations.contains(aDonation))
+    if (customerDonatedArtifacts.contains(aCustomerDonatedArtifact))
     {
-      donations.remove(aDonation);
+      customerDonatedArtifacts.remove(aCustomerDonatedArtifact);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addDonationAt(Donation aDonation, int index)
-  {
+  public boolean addCustomerDonatedArtifactAt(Donation aCustomerDonatedArtifact, int index)
+  {  
     boolean wasAdded = false;
-    if(addDonation(aDonation))
+    if(addCustomerDonatedArtifact(aCustomerDonatedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfDonations()) { index = numberOfDonations() - 1; }
-      donations.remove(aDonation);
-      donations.add(index, aDonation);
+      if(index > numberOfCustomerDonatedArtifacts()) { index = numberOfCustomerDonatedArtifacts() - 1; }
+      customerDonatedArtifacts.remove(aCustomerDonatedArtifact);
+      customerDonatedArtifacts.add(index, aCustomerDonatedArtifact);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveDonationAt(Donation aDonation, int index)
+  public boolean addOrMoveCustomerDonatedArtifactAt(Donation aCustomerDonatedArtifact, int index)
   {
     boolean wasAdded = false;
-    if(donations.contains(aDonation))
+    if(customerDonatedArtifacts.contains(aCustomerDonatedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfDonations()) { index = numberOfDonations() - 1; }
-      donations.remove(aDonation);
-      donations.add(index, aDonation);
+      if(index > numberOfCustomerDonatedArtifacts()) { index = numberOfCustomerDonatedArtifacts() - 1; }
+      customerDonatedArtifacts.remove(aCustomerDonatedArtifact);
+      customerDonatedArtifacts.add(index, aCustomerDonatedArtifact);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
-      wasAdded = addDonationAt(aDonation, index);
+      wasAdded = addCustomerDonatedArtifactAt(aCustomerDonatedArtifact, index);
     }
     return wasAdded;
   }
@@ -294,59 +292,59 @@ public class Customer extends Person
     return wasSet;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfTickets()
+  public static int minimumNumberOfCustomerTickets()
   {
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addTicket(Ticket aTicket)
+  public boolean addCustomerTicket(Ticket aCustomerTicket)
   {
     boolean wasAdded = false;
-    if (tickets.contains(aTicket)) { return false; }
-    tickets.add(aTicket);
+    if (customerTickets.contains(aCustomerTicket)) { return false; }
+    customerTickets.add(aCustomerTicket);
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeTicket(Ticket aTicket)
+  public boolean removeCustomerTicket(Ticket aCustomerTicket)
   {
     boolean wasRemoved = false;
-    if (tickets.contains(aTicket))
+    if (customerTickets.contains(aCustomerTicket))
     {
-      tickets.remove(aTicket);
+      customerTickets.remove(aCustomerTicket);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addTicketAt(Ticket aTicket, int index)
-  {
+  public boolean addCustomerTicketAt(Ticket aCustomerTicket, int index)
+  {  
     boolean wasAdded = false;
-    if(addTicket(aTicket))
+    if(addCustomerTicket(aCustomerTicket))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
-      tickets.remove(aTicket);
-      tickets.add(index, aTicket);
+      if(index > numberOfCustomerTickets()) { index = numberOfCustomerTickets() - 1; }
+      customerTickets.remove(aCustomerTicket);
+      customerTickets.add(index, aCustomerTicket);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveTicketAt(Ticket aTicket, int index)
+  public boolean addOrMoveCustomerTicketAt(Ticket aCustomerTicket, int index)
   {
     boolean wasAdded = false;
-    if(tickets.contains(aTicket))
+    if(customerTickets.contains(aCustomerTicket))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfTickets()) { index = numberOfTickets() - 1; }
-      tickets.remove(aTicket);
-      tickets.add(index, aTicket);
+      if(index > numberOfCustomerTickets()) { index = numberOfCustomerTickets() - 1; }
+      customerTickets.remove(aCustomerTicket);
+      customerTickets.add(index, aCustomerTicket);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
-      wasAdded = addTicketAt(aTicket, index);
+      wasAdded = addCustomerTicketAt(aCustomerTicket, index);
     }
     return wasAdded;
   }
@@ -354,9 +352,9 @@ public class Customer extends Person
   public void delete()
   {
     loanedArtifacts.clear();
-    donations.clear();
+    customerDonatedArtifacts.clear();
     loanRequest = null;
-    tickets.clear();
+    customerTickets.clear();
     super.delete();
   }
 

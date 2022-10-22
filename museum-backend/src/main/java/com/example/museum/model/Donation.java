@@ -1,16 +1,11 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.*;
 
-// line 22 "model.ump"
-// line 118 "model.ump"
-
+// line 21 "model.ump"
+// line 111 "model.ump"
 public class Donation
 {
 
@@ -25,11 +20,10 @@ public class Donation
   //------------------------
 
   //Donation Attributes
-
   private int donationID;
 
   //Donation Associations
-  private List<Artifact> artifacts;
+  private List<Artifact> donatedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -38,7 +32,7 @@ public class Donation
   public Donation(int aDonationID)
   {
     donationID = aDonationID;
-    artifacts = new ArrayList<Artifact>();
+    donatedArtifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
@@ -58,96 +52,96 @@ public class Donation
     return donationID;
   }
   /* Code from template association_GetMany */
-  public Artifact getArtifact(int index)
+  public Artifact getDonatedArtifact(int index)
   {
-    Artifact aArtifact = artifacts.get(index);
-    return aArtifact;
+    Artifact aDonatedArtifact = donatedArtifacts.get(index);
+    return aDonatedArtifact;
   }
 
-  public List<Artifact> getArtifacts()
+  public List<Artifact> getDonatedArtifacts()
   {
-    List<Artifact> newArtifacts = Collections.unmodifiableList(artifacts);
-    return newArtifacts;
+    List<Artifact> newDonatedArtifacts = Collections.unmodifiableList(donatedArtifacts);
+    return newDonatedArtifacts;
   }
 
-  public int numberOfArtifacts()
+  public int numberOfDonatedArtifacts()
   {
-    int number = artifacts.size();
+    int number = donatedArtifacts.size();
     return number;
   }
 
-  public boolean hasArtifacts()
+  public boolean hasDonatedArtifacts()
   {
-    boolean has = artifacts.size() > 0;
+    boolean has = donatedArtifacts.size() > 0;
     return has;
   }
 
-  public int indexOfArtifact(Artifact aArtifact)
+  public int indexOfDonatedArtifact(Artifact aDonatedArtifact)
   {
-    int index = artifacts.indexOf(aArtifact);
+    int index = donatedArtifacts.indexOf(aDonatedArtifact);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfArtifacts()
+  public static int minimumNumberOfDonatedArtifacts()
   {
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addArtifact(Artifact aArtifact)
+  public boolean addDonatedArtifact(Artifact aDonatedArtifact)
   {
     boolean wasAdded = false;
-    if (artifacts.contains(aArtifact)) { return false; }
-    artifacts.add(aArtifact);
+    if (donatedArtifacts.contains(aDonatedArtifact)) { return false; }
+    donatedArtifacts.add(aDonatedArtifact);
     wasAdded = true;
     return wasAdded;
   }
 
-  public boolean removeArtifact(Artifact aArtifact)
+  public boolean removeDonatedArtifact(Artifact aDonatedArtifact)
   {
     boolean wasRemoved = false;
-    if (artifacts.contains(aArtifact))
+    if (donatedArtifacts.contains(aDonatedArtifact))
     {
-      artifacts.remove(aArtifact);
+      donatedArtifacts.remove(aDonatedArtifact);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addArtifactAt(Artifact aArtifact, int index)
-  {
+  public boolean addDonatedArtifactAt(Artifact aDonatedArtifact, int index)
+  {  
     boolean wasAdded = false;
-    if(addArtifact(aArtifact))
+    if(addDonatedArtifact(aDonatedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfArtifacts()) { index = numberOfArtifacts() - 1; }
-      artifacts.remove(aArtifact);
-      artifacts.add(index, aArtifact);
+      if(index > numberOfDonatedArtifacts()) { index = numberOfDonatedArtifacts() - 1; }
+      donatedArtifacts.remove(aDonatedArtifact);
+      donatedArtifacts.add(index, aDonatedArtifact);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveArtifactAt(Artifact aArtifact, int index)
+  public boolean addOrMoveDonatedArtifactAt(Artifact aDonatedArtifact, int index)
   {
     boolean wasAdded = false;
-    if(artifacts.contains(aArtifact))
+    if(donatedArtifacts.contains(aDonatedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfArtifacts()) { index = numberOfArtifacts() - 1; }
-      artifacts.remove(aArtifact);
-      artifacts.add(index, aArtifact);
+      if(index > numberOfDonatedArtifacts()) { index = numberOfDonatedArtifacts() - 1; }
+      donatedArtifacts.remove(aDonatedArtifact);
+      donatedArtifacts.add(index, aDonatedArtifact);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
-      wasAdded = addArtifactAt(aArtifact, index);
+      wasAdded = addDonatedArtifactAt(aDonatedArtifact, index);
     }
     return wasAdded;
   }
 
   public void delete()
   {
-    artifacts.clear();
+    donatedArtifacts.clear();
   }
 
 

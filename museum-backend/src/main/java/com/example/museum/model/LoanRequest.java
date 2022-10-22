@@ -1,16 +1,11 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.*;
 
-// line 55 "model.ump"
-// line 141 "model.ump"
-
+// line 43 "model.ump"
+// line 139 "model.ump"
 public class LoanRequest
 {
 
@@ -25,11 +20,10 @@ public class LoanRequest
   //------------------------
 
   //LoanRequest Attributes
-
   private int requestID;
 
   //LoanRequest Associations
-  private List<Artifact> artifacts;
+  private List<Artifact> requestedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -38,7 +32,7 @@ public class LoanRequest
   public LoanRequest(int aRequestID)
   {
     requestID = aRequestID;
-    artifacts = new ArrayList<Artifact>();
+    requestedArtifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
@@ -58,128 +52,128 @@ public class LoanRequest
     return requestID;
   }
   /* Code from template association_GetMany */
-  public Artifact getArtifact(int index)
+  public Artifact getRequestedArtifact(int index)
   {
-    Artifact aArtifact = artifacts.get(index);
-    return aArtifact;
+    Artifact aRequestedArtifact = requestedArtifacts.get(index);
+    return aRequestedArtifact;
   }
 
-  public List<Artifact> getArtifacts()
+  public List<Artifact> getRequestedArtifacts()
   {
-    List<Artifact> newArtifacts = Collections.unmodifiableList(artifacts);
-    return newArtifacts;
+    List<Artifact> newRequestedArtifacts = Collections.unmodifiableList(requestedArtifacts);
+    return newRequestedArtifacts;
   }
 
-  public int numberOfArtifacts()
+  public int numberOfRequestedArtifacts()
   {
-    int number = artifacts.size();
+    int number = requestedArtifacts.size();
     return number;
   }
 
-  public boolean hasArtifacts()
+  public boolean hasRequestedArtifacts()
   {
-    boolean has = artifacts.size() > 0;
+    boolean has = requestedArtifacts.size() > 0;
     return has;
   }
 
-  public int indexOfArtifact(Artifact aArtifact)
+  public int indexOfRequestedArtifact(Artifact aRequestedArtifact)
   {
-    int index = artifacts.indexOf(aArtifact);
+    int index = requestedArtifacts.indexOf(aRequestedArtifact);
     return index;
   }
   /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfArtifacts()
+  public static int minimumNumberOfRequestedArtifacts()
   {
     return 0;
   }
   /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfArtifacts()
+  public static int maximumNumberOfRequestedArtifacts()
   {
     return 5;
   }
   /* Code from template association_AddUnidirectionalOptionalN */
-  public boolean addArtifact(Artifact aArtifact)
+  public boolean addRequestedArtifact(Artifact aRequestedArtifact)
   {
     boolean wasAdded = false;
-    if (artifacts.contains(aArtifact)) { return false; }
-    if (numberOfArtifacts() < maximumNumberOfArtifacts())
+    if (requestedArtifacts.contains(aRequestedArtifact)) { return false; }
+    if (numberOfRequestedArtifacts() < maximumNumberOfRequestedArtifacts())
     {
-      artifacts.add(aArtifact);
+      requestedArtifacts.add(aRequestedArtifact);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean removeArtifact(Artifact aArtifact)
+  public boolean removeRequestedArtifact(Artifact aRequestedArtifact)
   {
     boolean wasRemoved = false;
-    if (artifacts.contains(aArtifact))
+    if (requestedArtifacts.contains(aRequestedArtifact))
     {
-      artifacts.remove(aArtifact);
+      requestedArtifacts.remove(aRequestedArtifact);
       wasRemoved = true;
     }
     return wasRemoved;
   }
   /* Code from template association_SetUnidirectionalOptionalN */
-  public boolean setArtifacts(Artifact... newArtifacts)
+  public boolean setRequestedArtifacts(Artifact... newRequestedArtifacts)
   {
     boolean wasSet = false;
-    ArrayList<Artifact> verifiedArtifacts = new ArrayList<Artifact>();
-    for (Artifact aArtifact : newArtifacts)
+    ArrayList<Artifact> verifiedRequestedArtifacts = new ArrayList<Artifact>();
+    for (Artifact aRequestedArtifact : newRequestedArtifacts)
     {
-      if (verifiedArtifacts.contains(aArtifact))
+      if (verifiedRequestedArtifacts.contains(aRequestedArtifact))
       {
         continue;
       }
-      verifiedArtifacts.add(aArtifact);
+      verifiedRequestedArtifacts.add(aRequestedArtifact);
     }
 
-    if (verifiedArtifacts.size() != newArtifacts.length || verifiedArtifacts.size() > maximumNumberOfArtifacts())
+    if (verifiedRequestedArtifacts.size() != newRequestedArtifacts.length || verifiedRequestedArtifacts.size() > maximumNumberOfRequestedArtifacts())
     {
       return wasSet;
     }
 
-    artifacts.clear();
-    artifacts.addAll(verifiedArtifacts);
+    requestedArtifacts.clear();
+    requestedArtifacts.addAll(verifiedRequestedArtifacts);
     wasSet = true;
     return wasSet;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addArtifactAt(Artifact aArtifact, int index)
-  {
+  public boolean addRequestedArtifactAt(Artifact aRequestedArtifact, int index)
+  {  
     boolean wasAdded = false;
-    if(addArtifact(aArtifact))
+    if(addRequestedArtifact(aRequestedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfArtifacts()) { index = numberOfArtifacts() - 1; }
-      artifacts.remove(aArtifact);
-      artifacts.add(index, aArtifact);
+      if(index > numberOfRequestedArtifacts()) { index = numberOfRequestedArtifacts() - 1; }
+      requestedArtifacts.remove(aRequestedArtifact);
+      requestedArtifacts.add(index, aRequestedArtifact);
       wasAdded = true;
     }
     return wasAdded;
   }
 
-  public boolean addOrMoveArtifactAt(Artifact aArtifact, int index)
+  public boolean addOrMoveRequestedArtifactAt(Artifact aRequestedArtifact, int index)
   {
     boolean wasAdded = false;
-    if(artifacts.contains(aArtifact))
+    if(requestedArtifacts.contains(aRequestedArtifact))
     {
       if(index < 0 ) { index = 0; }
-      if(index > numberOfArtifacts()) { index = numberOfArtifacts() - 1; }
-      artifacts.remove(aArtifact);
-      artifacts.add(index, aArtifact);
+      if(index > numberOfRequestedArtifacts()) { index = numberOfRequestedArtifacts() - 1; }
+      requestedArtifacts.remove(aRequestedArtifact);
+      requestedArtifacts.add(index, aRequestedArtifact);
       wasAdded = true;
-    }
-    else
+    } 
+    else 
     {
-      wasAdded = addArtifactAt(aArtifact, index);
+      wasAdded = addRequestedArtifactAt(aRequestedArtifact, index);
     }
     return wasAdded;
   }
 
   public void delete()
   {
-    artifacts.clear();
+    requestedArtifacts.clear();
   }
 
 

@@ -1,33 +1,32 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import java.util.*;
 
-// line 93 "model.ump"
-// line 173 "model.ump"
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-
+// line 81 "model.ump"
+// line 180 "model.ump"
 public class Room
 {
+
+  //------------------------
+  // ENUMERATIONS
+  //------------------------
+
+  public enum ArtType { Painting, Sculpture }
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Room Attributes
-
   private int roomID;
   private String name;
   private int capacity;
   private Artifact artifacts;
 
   //Room Associations
-  private Artifact artifact;
+  private List<Artifact> roomArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -39,6 +38,7 @@ public class Room
     name = aName;
     capacity = aCapacity;
     artifacts = aArtifacts;
+    roomArtifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
@@ -96,29 +96,97 @@ public class Room
   {
     return artifacts;
   }
-  /* Code from template association_GetOne */
-  public Artifact getArtifact()
+  /* Code from template association_GetMany */
+  public Artifact getRoomArtifact(int index)
   {
-    return artifact;
+    Artifact aRoomArtifact = roomArtifacts.get(index);
+    return aRoomArtifact;
   }
 
-  public boolean hasArtifact()
+  public List<Artifact> getRoomArtifacts()
   {
-    boolean has = artifact != null;
+    List<Artifact> newRoomArtifacts = Collections.unmodifiableList(roomArtifacts);
+    return newRoomArtifacts;
+  }
+
+  public int numberOfRoomArtifacts()
+  {
+    int number = roomArtifacts.size();
+    return number;
+  }
+
+  public boolean hasRoomArtifacts()
+  {
+    boolean has = roomArtifacts.size() > 0;
     return has;
   }
-  /* Code from template association_SetUnidirectionalOptionalOne */
-  public boolean setArtifact(Artifact aNewArtifact)
+
+  public int indexOfRoomArtifact(Artifact aRoomArtifact)
   {
-    boolean wasSet = false;
-    artifact = aNewArtifact;
-    wasSet = true;
-    return wasSet;
+    int index = roomArtifacts.indexOf(aRoomArtifact);
+    return index;
+  }
+  /* Code from template association_MinimumNumberOfMethod */
+  public static int minimumNumberOfRoomArtifacts()
+  {
+    return 0;
+  }
+  /* Code from template association_AddUnidirectionalMany */
+  public boolean addRoomArtifact(Artifact aRoomArtifact)
+  {
+    boolean wasAdded = false;
+    if (roomArtifacts.contains(aRoomArtifact)) { return false; }
+    roomArtifacts.add(aRoomArtifact);
+    wasAdded = true;
+    return wasAdded;
+  }
+
+  public boolean removeRoomArtifact(Artifact aRoomArtifact)
+  {
+    boolean wasRemoved = false;
+    if (roomArtifacts.contains(aRoomArtifact))
+    {
+      roomArtifacts.remove(aRoomArtifact);
+      wasRemoved = true;
+    }
+    return wasRemoved;
+  }
+  /* Code from template association_AddIndexControlFunctions */
+  public boolean addRoomArtifactAt(Artifact aRoomArtifact, int index)
+  {  
+    boolean wasAdded = false;
+    if(addRoomArtifact(aRoomArtifact))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfRoomArtifacts()) { index = numberOfRoomArtifacts() - 1; }
+      roomArtifacts.remove(aRoomArtifact);
+      roomArtifacts.add(index, aRoomArtifact);
+      wasAdded = true;
+    }
+    return wasAdded;
+  }
+
+  public boolean addOrMoveRoomArtifactAt(Artifact aRoomArtifact, int index)
+  {
+    boolean wasAdded = false;
+    if(roomArtifacts.contains(aRoomArtifact))
+    {
+      if(index < 0 ) { index = 0; }
+      if(index > numberOfRoomArtifacts()) { index = numberOfRoomArtifacts() - 1; }
+      roomArtifacts.remove(aRoomArtifact);
+      roomArtifacts.add(index, aRoomArtifact);
+      wasAdded = true;
+    } 
+    else 
+    {
+      wasAdded = addRoomArtifactAt(aRoomArtifact, index);
+    }
+    return wasAdded;
   }
 
   public void delete()
   {
-    artifact = null;
+    roomArtifacts.clear();
   }
 
 
@@ -128,7 +196,6 @@ public class Room
             "roomID" + ":" + getRoomID()+ "," +
             "name" + ":" + getName()+ "," +
             "capacity" + ":" + getCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "artifacts" + "=" + (getArtifacts() != null ? !getArtifacts().equals(this)  ? getArtifacts().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "artifact = "+(getArtifact()!=null?Integer.toHexString(System.identityHashCode(getArtifact())):"null");
+            "  " + "artifacts" + "=" + (getArtifacts() != null ? !getArtifacts().equals(this)  ? getArtifacts().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }

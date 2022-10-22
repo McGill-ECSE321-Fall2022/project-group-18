@@ -1,14 +1,10 @@
-package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
+package main.java.com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 
 // line 6 "model.ump"
-// line 106 "model.ump"
-@Entity
+// line 94 "model.ump"
 public class Artifact
 {
 
@@ -23,18 +19,15 @@ public class Artifact
   //------------------------
 
   //Artifact Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private int artID;
   private String name;
   private ArtType type;
+  private int artID;
   private boolean loanable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Artifact() {}
   public Artifact(String aName, ArtType aType, int aArtID, boolean aLoanable)
   {
     name = aName;
@@ -94,9 +87,6 @@ public class Artifact
     return artID;
   }
 
-  /**
-   * boolean loaned;
-   */
   public boolean getLoanable()
   {
     return loanable;
