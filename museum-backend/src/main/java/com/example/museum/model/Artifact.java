@@ -1,7 +1,6 @@
 package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +11,7 @@ import javax.persistence.Id;
 @Entity
 public class Artifact
 {
+  public Artifact() {}
 
   //------------------------
   // ENUMERATIONS
@@ -24,30 +24,36 @@ public class Artifact
   //------------------------
 
   //Artifact Attributes
-
-  private String name;
-  private ArtType type;
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   private int artID;
+  private String name;
+  private ArtType type;
   private boolean loanable;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Artifact() {}
-  public Artifact(String aName, ArtType aType, int aArtID, boolean aLoanable)
+  public Artifact(int aArtID, String aName, ArtType aType, boolean aLoanable)
   {
+    artID = aArtID;
     name = aName;
     type = aType;
-    artID = aArtID;
     loanable = aLoanable;
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setArtID(int aArtID)
+  {
+    boolean wasSet = false;
+    artID = aArtID;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setName(String aName)
   {
@@ -65,20 +71,17 @@ public class Artifact
     return wasSet;
   }
 
-  public boolean setArtID(int aArtID)
-  {
-    boolean wasSet = false;
-    artID = aArtID;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setLoanable(boolean aLoanable)
   {
     boolean wasSet = false;
     loanable = aLoanable;
     wasSet = true;
     return wasSet;
+  }
+
+  public int getArtID()
+  {
+    return artID;
   }
 
   public String getName()
@@ -89,11 +92,6 @@ public class Artifact
   public ArtType getType()
   {
     return type;
-  }
-
-  public int getArtID()
-  {
-    return artID;
   }
 
   public boolean getLoanable()
@@ -108,8 +106,8 @@ public class Artifact
   public String toString()
   {
     return super.toString() + "["+
-            "name" + ":" + getName()+ "," +
             "artID" + ":" + getArtID()+ "," +
+            "name" + ":" + getName()+ "," +
             "loanable" + ":" + getLoanable()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "type" + "=" + (getType() != null ? !getType().equals(this)  ? getType().toString().replaceAll("  ","    ") : "this" : "null");
   }

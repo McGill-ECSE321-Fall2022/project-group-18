@@ -4,7 +4,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 
 
 // line 34 "model.ump"
-// line 126 "model.ump"
+// line 122 "model.ump"
 public class Owner extends Person
 {
 

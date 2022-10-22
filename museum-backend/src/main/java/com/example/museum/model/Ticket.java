@@ -5,7 +5,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import java.sql.Date;
 
 // line 53 "model.ump"
-// line 154 "model.ump"
+// line 145 "model.ump"
 public class Ticket
 {
 
@@ -14,18 +14,18 @@ public class Ticket
   //------------------------
 
   //Ticket Attributes
-  private Date day;
   private int ticketID;
+  private Date day;
   private int price;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Ticket(Date aDay, int aTicketID, int aPrice)
+  public Ticket(int aTicketID, Date aDay, int aPrice)
   {
-    day = aDay;
     ticketID = aTicketID;
+    day = aDay;
     price = aPrice;
   }
 
@@ -33,18 +33,18 @@ public class Ticket
   // INTERFACE
   //------------------------
 
-  public boolean setDay(Date aDay)
-  {
-    boolean wasSet = false;
-    day = aDay;
-    wasSet = true;
-    return wasSet;
-  }
-
   public boolean setTicketID(int aTicketID)
   {
     boolean wasSet = false;
     ticketID = aTicketID;
+    wasSet = true;
+    return wasSet;
+  }
+
+  public boolean setDay(Date aDay)
+  {
+    boolean wasSet = false;
+    day = aDay;
     wasSet = true;
     return wasSet;
   }
@@ -57,14 +57,14 @@ public class Ticket
     return wasSet;
   }
 
-  public Date getDay()
-  {
-    return day;
-  }
-
   public int getTicketID()
   {
     return ticketID;
+  }
+
+  public Date getDay()
+  {
+    return day;
   }
 
   public int getPrice()

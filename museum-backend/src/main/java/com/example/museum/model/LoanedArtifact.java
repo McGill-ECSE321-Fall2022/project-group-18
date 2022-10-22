@@ -4,7 +4,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 
 
 // line 14 "model.ump"
-// line 104 "model.ump"
+// line 101 "model.ump"
 public class LoanedArtifact extends Artifact
 {
 
@@ -20,9 +20,9 @@ public class LoanedArtifact extends Artifact
   // CONSTRUCTOR
   //------------------------
 
-  public LoanedArtifact(String aName, ArtType aType, int aArtID, boolean aLoanable, int aLoanID, int aLoanFee)
+  public LoanedArtifact(int aArtID, String aName, ArtType aType, boolean aLoanable, int aLoanID, int aLoanFee)
   {
-    super(aName, aType, aArtID, aLoanable);
+    super(aArtID, aName, aType, aLoanable);
     loanID = aLoanID;
     loanFee = aLoanFee;
   }

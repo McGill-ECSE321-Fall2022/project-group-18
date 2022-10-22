@@ -5,7 +5,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import java.util.*;
 
 // line 21 "model.ump"
-// line 111 "model.ump"
+// line 108 "model.ump"
 public class Donation
 {
 

@@ -5,8 +5,8 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import java.sql.Date;
 import java.sql.Time;
 
-// line 73 "model.ump"
-// line 175 "model.ump"
+// line 74 "model.ump"
+// line 165 "model.ump"
 public class EmployeeHour
 {
 
@@ -19,19 +19,17 @@ public class EmployeeHour
   private Date day;
   private Time startTime;
   private Time endTime;
-  private Employee worker;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public EmployeeHour(int aEmployeeHourID, Date aDay, Time aStartTime, Time aEndTime, Employee aWorker)
+  public EmployeeHour(int aEmployeeHourID, Date aDay, Time aStartTime, Time aEndTime)
   {
     employeeHourID = aEmployeeHourID;
     day = aDay;
     startTime = aStartTime;
     endTime = aEndTime;
-    worker = aWorker;
   }
 
   //------------------------
@@ -70,14 +68,6 @@ public class EmployeeHour
     return wasSet;
   }
 
-  public boolean setWorker(Employee aWorker)
-  {
-    boolean wasSet = false;
-    worker = aWorker;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getEmployeeHourID()
   {
     return employeeHourID;
@@ -98,11 +88,6 @@ public class EmployeeHour
     return endTime;
   }
 
-  public Employee getWorker()
-  {
-    return worker;
-  }
-
   public void delete()
   {}
 
@@ -113,7 +98,6 @@ public class EmployeeHour
             "employeeHourID" + ":" + getEmployeeHourID()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "day" + "=" + (getDay() != null ? !getDay().equals(this)  ? getDay().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "worker" + "=" + (getWorker() != null ? !getWorker().equals(this)  ? getWorker().toString().replaceAll("  ","    ") : "this" : "null");
+            "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }

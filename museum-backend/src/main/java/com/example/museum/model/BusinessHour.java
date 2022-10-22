@@ -2,11 +2,16 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Date;
 import java.sql.Time;
 
 // line 67 "model.ump"
-// line 170 "model.ump"
+// line 160 "model.ump"
+@Entity
 public class BusinessHour
 {
 
@@ -15,6 +20,9 @@ public class BusinessHour
   //------------------------
 
   //BusinessHour Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private int businessHourID;
   private Date day;
   private Time openTime;
   private Time closeTime;
@@ -23,16 +31,29 @@ public class BusinessHour
   // CONSTRUCTOR
   //------------------------
 
-  public BusinessHour(Date aDay, Time aOpenTime, Time aCloseTime)
+  public BusinessHour(int aBusinessHourID, Date aDay, Time aOpenTime, Time aCloseTime)
   {
+    businessHourID = aBusinessHourID;
     day = aDay;
     openTime = aOpenTime;
     closeTime = aCloseTime;
   }
 
+  public BusinessHour() {
+
+  }
+
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setBusinessHourID(int aBusinessHourID)
+  {
+    boolean wasSet = false;
+    businessHourID = aBusinessHourID;
+    wasSet = true;
+    return wasSet;
+  }
 
   public boolean setDay(Date aDay)
   {
@@ -58,6 +79,11 @@ public class BusinessHour
     return wasSet;
   }
 
+  public int getBusinessHourID()
+  {
+    return businessHourID;
+  }
+
   public Date getDay()
   {
     return day;
@@ -79,7 +105,8 @@ public class BusinessHour
 
   public String toString()
   {
-    return super.toString() + "["+ "]" + System.getProperties().getProperty("line.separator") +
+    return super.toString() + "["+
+            "businessHourID" + ":" + getBusinessHourID()+ "]" + System.getProperties().getProperty("line.separator") +
             "  " + "day" + "=" + (getDay() != null ? !getDay().equals(this)  ? getDay().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "openTime" + "=" + (getOpenTime() != null ? !getOpenTime().equals(this)  ? getOpenTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "closeTime" + "=" + (getCloseTime() != null ? !getCloseTime().equals(this)  ? getCloseTime().toString().replaceAll("  ","    ") : "this" : "null");

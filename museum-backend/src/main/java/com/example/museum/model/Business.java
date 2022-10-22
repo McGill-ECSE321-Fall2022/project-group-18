@@ -2,12 +2,18 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 
 // line 60 "model.ump"
-// line 162 "model.ump"
+// line 151 "model.ump"
+@Entity
 public class Business
 {
 
@@ -16,15 +22,20 @@ public class Business
   //------------------------
 
   //Business Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int businessID;
   private int ticketFee;
 
   //Business Associations
+  @OneToMany
   private List<BusinessHour> businessHours;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+
+  public Business(){}
 
   public Business(int aBusinessID, int aTicketFee)
   {

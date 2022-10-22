@@ -4,7 +4,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 
 
 // line 27 "model.ump"
-// line 121 "model.ump"
+// line 117 "model.ump"
 public abstract class Person
 {
 
