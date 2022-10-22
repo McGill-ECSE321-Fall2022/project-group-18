@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 // line 15 "model.ump"
 // line 112 "model.ump"
-@Entity
+
 public class LoanedArtifact extends Artifact
 {
 
@@ -18,8 +18,7 @@ public class LoanedArtifact extends Artifact
   //------------------------
 
   //LoanedArtifact Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int loanID;
   private int loanFee;
 

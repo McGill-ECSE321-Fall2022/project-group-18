@@ -8,7 +8,7 @@ import java.sql.Time;
 
 // line 49 "model.ump"
 // line 135 "model.ump"
-@Entity
+
 public class Employee extends Person
 {
 

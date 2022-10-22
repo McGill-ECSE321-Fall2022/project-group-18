@@ -10,7 +10,7 @@ import java.sql.Date;
 
 // line 66 "model.ump"
 // line 152 "model.ump"
-@Entity
+
 public class Ticket
 {
 
@@ -20,8 +20,7 @@ public class Ticket
 
   //Ticket Attributes
   private Date day;
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int ticketID;
   private int price;
 

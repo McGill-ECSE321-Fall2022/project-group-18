@@ -10,7 +10,7 @@ import java.util.*;
 
 // line 22 "model.ump"
 // line 118 "model.ump"
-@Entity
+
 public class Donation
 {
 
@@ -25,8 +25,7 @@ public class Donation
   //------------------------
 
   //Donation Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int donationID;
 
   //Donation Associations

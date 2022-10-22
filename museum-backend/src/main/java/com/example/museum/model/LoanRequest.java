@@ -10,7 +10,7 @@ import java.util.*;
 
 // line 55 "model.ump"
 // line 141 "model.ump"
-@Entity
+
 public class LoanRequest
 {
 
@@ -25,8 +25,7 @@ public class LoanRequest
   //------------------------
 
   //LoanRequest Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int requestID;
 
   //LoanRequest Associations

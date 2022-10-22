@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 // line 42 "model.ump"
 // line 130 "model.ump"
-@Entity
+
 public class Owner extends Person
 {
 

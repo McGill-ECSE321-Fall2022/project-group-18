@@ -11,7 +11,7 @@ import java.sql.Time;
 
 // line 85 "model.ump"
 // line 168 "model.ump"
-@Entity
+
 public class EmployeeHour
 {
 
@@ -20,8 +20,7 @@ public class EmployeeHour
   //------------------------
 
   //EmployeeHour Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int employeeHourID;
   private Date day;
   private Time startTime;

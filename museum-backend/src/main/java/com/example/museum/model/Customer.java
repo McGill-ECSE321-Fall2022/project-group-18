@@ -8,7 +8,7 @@ import java.sql.Date;
 
 // line 61 "model.ump"
 // line 147 "model.ump"
-@Entity
+
 public class Customer extends Person
 {
 

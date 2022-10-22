@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+
 public class Room
 {
 
@@ -20,8 +20,7 @@ public class Room
   //------------------------
 
   //Room Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
+
   private int roomID;
   private String name;
   private int capacity;

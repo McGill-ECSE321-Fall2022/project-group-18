@@ -15,7 +15,7 @@ import javax.persistence.Id;
  */
 // line 35 "model.ump"
 // line 125 "model.ump"
-@Entity
+
 public abstract class Person
 {
 
@@ -25,8 +25,6 @@ public abstract class Person
 
   //Person Attributes
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
   private String personID;
   private String username;
   private String password;
