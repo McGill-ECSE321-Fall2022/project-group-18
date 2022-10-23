@@ -29,7 +29,6 @@ public class Ticket
   // CONSTRUCTOR
   //------------------------
 
-  public Ticket() {}
 
   public Ticket(int aTicketID, Date aDay, int aPrice)
   {
