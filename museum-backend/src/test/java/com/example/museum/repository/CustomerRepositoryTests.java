@@ -1,7 +1,6 @@
 package com.example.museum.repository;
 
 import com.example.museum.model.Customer;
-import com.example.museum.model.LoanRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,38 +13,27 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CustomerRepositoryTests {
     @Autowired
     private CustomerRepository customerRepository;
-    @Autowired
-    private LoanRequestRepository loanRequestRepository;
 
     @AfterEach
     public void clearDatabase() {
         customerRepository.deleteAll();
-        loanRequestRepository.deleteAll();
     }
 
     @Test
     public void testPersistAndLoadCustomer() {
-        LoanRequest loanRequest = new LoanRequest();
-
-        loanRequest = loanRequestRepository.save(loanRequest);
-        int loanRequestId = loanRequest.getRequestID();
-
         String customerUsername = "Customer";
         String customerPassword = "password";
 
         Customer customer = new Customer();
         customer.setUsername(customerUsername);
         customer.setPassword(customerPassword);
-        customer.setLoanRequest(loanRequest);
 
         customer = customerRepository.save(customer);
         int customerId = customer.getAccountID();
 
         customer = null;
-        loanRequest = null;
 
-        customer = customerRepository.findCustomerByAccountID(customerId);
-        loanRequest = loanRequestRepository.findLoanRequestByRequestID(loanRequestId);
+        customer = customerRepository.findByAccountID(customerId);
 
         assertNotNull(customer);
         assertEquals(customerId, customer.getAccountID());

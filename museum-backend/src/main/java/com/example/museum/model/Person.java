@@ -6,10 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 
 // line 27 "model.ump"
 // line 117 "model.ump"
 @Entity
+@Inheritance
 public abstract class Person {
 
   // ------------------------
