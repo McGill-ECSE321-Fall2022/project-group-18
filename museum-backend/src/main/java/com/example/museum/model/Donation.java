@@ -30,7 +30,7 @@ public class Donation
 
   //Donation Associations
   @OneToMany
-  private List<Artifact> donatedArtifacts;
+  private List<ArtifactAbs> donatedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -41,7 +41,7 @@ public class Donation
   public Donation(int aDonationID)
   {
     donationID = aDonationID;
-    donatedArtifacts = new ArrayList<Artifact>();
+    donatedArtifacts = new ArrayList<ArtifactAbs>();
   }
 
   //------------------------
@@ -50,7 +50,7 @@ public class Donation
 
 //   setters for @OneToMany annotation
   public boolean setNewDonationArtifactsList() {
-    donatedArtifacts = new ArrayList<Artifact>();
+    donatedArtifacts = new ArrayList<ArtifactAbs>();
     return true;
   }
 
@@ -67,15 +67,15 @@ public class Donation
     return donationID;
   }
   /* Code from template association_GetMany */
-  public Artifact getDonatedArtifact(int index)
+  public ArtifactAbs getDonatedArtifact(int index)
   {
-    Artifact aDonatedArtifact = donatedArtifacts.get(index);
+    ArtifactAbs aDonatedArtifact = donatedArtifacts.get(index);
     return aDonatedArtifact;
   }
 
-  public List<Artifact> getDonatedArtifacts()
+  public List<ArtifactAbs> getDonatedArtifacts()
   {
-    List<Artifact> newDonatedArtifacts = Collections.unmodifiableList(donatedArtifacts);
+    List<ArtifactAbs> newDonatedArtifacts = Collections.unmodifiableList(donatedArtifacts);
     return newDonatedArtifacts;
   }
 
