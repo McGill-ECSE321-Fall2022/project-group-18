@@ -5,7 +5,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import java.util.*;
 
 // line 81 "model.ump"
-// line 170 "model.ump"
+// line 169 "model.ump"
 public class Room
 {
 
@@ -23,7 +23,6 @@ public class Room
   private int roomID;
   private String name;
   private int capacity;
-  private Artifact artifacts;
 
   //Room Associations
   private List<Artifact> roomArtifacts;
@@ -32,12 +31,11 @@ public class Room
   // CONSTRUCTOR
   //------------------------
 
-  public Room(int aRoomID, String aName, int aCapacity, Artifact aArtifacts)
+  public Room(int aRoomID, String aName, int aCapacity)
   {
     roomID = aRoomID;
     name = aName;
     capacity = aCapacity;
-    artifacts = aArtifacts;
     roomArtifacts = new ArrayList<Artifact>();
   }
 
@@ -69,14 +67,6 @@ public class Room
     return wasSet;
   }
 
-  public boolean setArtifacts(Artifact aArtifacts)
-  {
-    boolean wasSet = false;
-    artifacts = aArtifacts;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getRoomID()
   {
     return roomID;
@@ -90,11 +80,6 @@ public class Room
   public int getCapacity()
   {
     return capacity;
-  }
-
-  public Artifact getArtifacts()
-  {
-    return artifacts;
   }
   /* Code from template association_GetMany */
   public Artifact getRoomArtifact(int index)
@@ -153,7 +138,7 @@ public class Room
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addRoomArtifactAt(Artifact aRoomArtifact, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addRoomArtifact(aRoomArtifact))
     {
@@ -176,8 +161,8 @@ public class Room
       roomArtifacts.remove(aRoomArtifact);
       roomArtifacts.add(index, aRoomArtifact);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addRoomArtifactAt(aRoomArtifact, index);
     }
@@ -195,7 +180,6 @@ public class Room
     return super.toString() + "["+
             "roomID" + ":" + getRoomID()+ "," +
             "name" + ":" + getName()+ "," +
-            "capacity" + ":" + getCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "artifacts" + "=" + (getArtifacts() != null ? !getArtifacts().equals(this)  ? getArtifacts().toString().replaceAll("  ","    ") : "this" : "null");
+            "capacity" + ":" + getCapacity()+ "]";
   }
 }
