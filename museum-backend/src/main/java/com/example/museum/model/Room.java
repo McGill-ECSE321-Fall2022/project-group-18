@@ -36,7 +36,7 @@ public class Room
 
   //Room Associations
   @OneToMany
-  private List<Artifact> roomArtifacts;
+  private List<ArtifactAbs> roomArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -49,7 +49,7 @@ public class Room
     roomID = aRoomID;
     name = aName;
     capacity = aCapacity;
-    roomArtifacts = new ArrayList<Artifact>();
+    roomArtifacts = new ArrayList<ArtifactAbs>();
   }
 
   //------------------------
@@ -57,7 +57,7 @@ public class Room
   //------------------------
 
   public boolean setNewRoomArtifactsList() {
-    roomArtifacts = new ArrayList<Artifact>();
+    roomArtifacts = new ArrayList<ArtifactAbs>();
     return true;
   }
 
@@ -101,15 +101,15 @@ public class Room
   }
 
   /* Code from template association_GetMany */
-  public Artifact getRoomArtifact(int index)
+  public ArtifactAbs getRoomArtifact(int index)
   {
-    Artifact aRoomArtifact = roomArtifacts.get(index);
+    ArtifactAbs aRoomArtifact = roomArtifacts.get(index);
     return aRoomArtifact;
   }
 
-  public List<Artifact> getRoomArtifacts()
+  public List<ArtifactAbs> getRoomArtifacts()
   {
-    List<Artifact> newRoomArtifacts = Collections.unmodifiableList(roomArtifacts);
+    List<ArtifactAbs> newRoomArtifacts = Collections.unmodifiableList(roomArtifacts);
     return newRoomArtifacts;
   }
 

@@ -1,6 +1,7 @@
 package com.example.museum.repository;
 
 import com.example.museum.model.Artifact;
+import com.example.museum.model.ArtifactAbs;
 import com.example.museum.model.Room;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,9 @@ public class RoomRepositoryTests {
     public void testPersistAndLoadRoom() {
         // Create Artifact
         boolean loanable1 = true;
-        Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
+        ArtifactAbs.ArtType artType1 = ArtifactAbs.ArtType.Sculpture;
         String artName1 = "David";
-        Artifact artifact1 = new Artifact();
+        ArtifactAbs artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);
         artifact1.setName(artName1);
         artifact1.setType(artType1);
@@ -41,14 +42,14 @@ public class RoomRepositoryTests {
         boolean loanable2 = false;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
-        Artifact artifact2 = new Artifact();
+        ArtifactAbs artifact2 = new Artifact();
         artifact2.setLoanable(loanable2);
         artifact2.setName(artName2);
         artifact2.setType(artType2);
         // Save Artifact
-        artifact1 = artifactRepository.save(artifact1);
+        artifact1 = artifactRepository.save((Artifact) artifact1);
         int artID1 = artifact1.getArtID();
-        artifact2 = artifactRepository.save(artifact2);
+        artifact2 = artifactRepository.save((Artifact) artifact2);
         int artID2 = artifact2.getArtID();
         // Create Room
         String roomName = "Large Display Room 1";
@@ -57,8 +58,8 @@ public class RoomRepositoryTests {
         room.setName(roomName);
         room.setCapacity(roomCapacity);
         room.setNewRoomArtifactsList();
-        room.addRoomArtifact(artifact1);
-        room.addRoomArtifact(artifact2);
+        room.addRoomArtifact((Artifact) artifact1);
+        room.addRoomArtifact((Artifact) artifact2);
         // Save Room
         room = roomRepository.save(room);
         int roomID = room.getRoomID();
@@ -70,7 +71,7 @@ public class RoomRepositoryTests {
         // Assert that Room has correct attributes
         assertNotNull(room);
         assertEquals(roomID, room.getRoomID());
-        List<Artifact> artifactArrayList = room.getRoomArtifacts();
+        List<ArtifactAbs> artifactArrayList = room.getRoomArtifacts();
         assertEquals(artifactArrayList.size(), 2);
         artifact1 = artifactArrayList.get(0);
         artifact2 = artifactArrayList.get(1);

@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface ArtifactRepository extends ArtifactAbsRepository<Artifact> {
+public interface ArtifactRepository extends ArtifactAbsRepository<Artifact>,  CrudRepository<Artifact, Integer> {
 }
