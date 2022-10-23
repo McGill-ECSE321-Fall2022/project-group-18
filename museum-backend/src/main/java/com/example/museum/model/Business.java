@@ -35,7 +35,9 @@ public class Business
   // CONSTRUCTOR
   //------------------------
 
-  public Business(){}
+  public Business(){
+    businessHours = new ArrayList<BusinessHour>();
+  }
 
   public Business(int aBusinessID, int aTicketFee)
   {
