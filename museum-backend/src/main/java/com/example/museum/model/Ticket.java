@@ -2,10 +2,15 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.sql.Date;
 
 // line 53 "model.ump"
 // line 145 "model.ump"
+@Entity
 public class Ticket
 {
 
@@ -14,6 +19,8 @@ public class Ticket
   //------------------------
 
   //Ticket Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int ticketID;
   private Date day;
   private int price;
@@ -29,6 +36,10 @@ public class Ticket
     ticketID = aTicketID;
     day = aDay;
     price = aPrice;
+  }
+
+  public Ticket() {
+
   }
 
   //------------------------
