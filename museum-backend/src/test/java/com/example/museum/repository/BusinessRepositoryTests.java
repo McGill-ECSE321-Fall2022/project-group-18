@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,19 +48,23 @@ public class BusinessRepositoryTests {
         int ticketFee = 10;
         Business business = new Business();
         business.setTicketFee(ticketFee);
+        business.addBusinessHour(businessHour);
         business = businessRepository.save(business);
         int businessID = business.getBusinessID();
 
         businessHour = null;
         business = null;
 
-        businessHour = businessHourRepository.findBusinessHourByBusinessHourID(businessHourID);
         business = businessRepository.findBusinessByBusinessID(businessID);
 
         assertNotNull(business);
         assertEquals(businessID, business.getBusinessID());
+        List<BusinessHour> businessHourList = business.getBusinessHours();
 
-        assertNotNull(businessHour);
-        assertEquals(businessHourID, businessHour.getBusinessHourID());
+        assertEquals(1, businessHourList.size());
+        assertNotNull(business.getBusinessHour(0));
+        assertEquals(day, business.getBusinessHour(0).getDay());
+        assertEquals(open, business.getBusinessHour(0).getOpenTime());
+        assertEquals(close, business.getBusinessHour(0).getCloseTime());
     }
 }
