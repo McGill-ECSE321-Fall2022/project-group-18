@@ -30,11 +30,11 @@ public class LoanedArtifactRepositoryTests {
         // Save artifact
 
         loanedMonaLisa = loanedArtifactRepository.save(loanedMonaLisa);
-        int id = loanedMonaLisa.getLoanID();
+        int id = loanedMonaLisa.getArtID();
 
         // Read object from database
 
-        loanedMonaLisa = loanedArtifactRepository.findLoanedArtifactByLoanID(id);
+        loanedMonaLisa = loanedArtifactRepository.findByArtID(id);
 
         // Assert that object has correct attributes
 

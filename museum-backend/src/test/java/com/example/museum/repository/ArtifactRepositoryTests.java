@@ -38,7 +38,7 @@ public class ArtifactRepositoryTests {
 
         artifact = null;
 
-        artifact = artifactRepository.findArtifactByArtID(id);
+        artifact = artifactRepository.findByArtID(id);
 
         assertNotNull(artifact);
         assertEquals(id, artifact.getArtID());

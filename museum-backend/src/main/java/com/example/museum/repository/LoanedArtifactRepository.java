@@ -1,8 +1,10 @@
 package com.example.museum.repository;
 
+import com.example.museum.model.ArtifactAbs;
 import com.example.museum.model.LoanedArtifact;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-public interface LoanedArtifactRepository extends CrudRepository<LoanedArtifact, Integer> {
-    public LoanedArtifact findLoanedArtifactByLoanID(int id);
+@Transactional
+public interface LoanedArtifactRepository extends ArtifactAbsRepository<LoanedArtifact> {
 }

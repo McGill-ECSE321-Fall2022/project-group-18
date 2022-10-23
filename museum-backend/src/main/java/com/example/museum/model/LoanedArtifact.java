@@ -10,7 +10,7 @@ import javax.persistence.Id;
 // line 14 "model.ump"
 // line 101 "model.ump"
 @Entity
-public class LoanedArtifact extends Artifact
+public class LoanedArtifact extends ArtifactAbs
 {
 
   //------------------------
@@ -18,9 +18,6 @@ public class LoanedArtifact extends Artifact
   //------------------------
 
   //LoanedArtifact Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private int loanID;
   private int loanFee;
 
   //------------------------
@@ -29,10 +26,9 @@ public class LoanedArtifact extends Artifact
 
   public LoanedArtifact() {}
 
-  public LoanedArtifact(int aArtID, String aName, ArtType aType, boolean aLoanable, int aLoanID, int aLoanFee)
+  public LoanedArtifact(String aName, ArtType aType, int aArtID, boolean aLoanable, int aLoanFee)
   {
-    super(aArtID, aName, aType, aLoanable);
-    loanID = aLoanID;
+    super(aName, aType, aArtID, aLoanable);
     loanFee = aLoanFee;
   }
 
@@ -40,13 +36,6 @@ public class LoanedArtifact extends Artifact
   // INTERFACE
   //------------------------
 
-  public boolean setLoanID(int aLoanID)
-  {
-    boolean wasSet = false;
-    loanID = aLoanID;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setLoanFee(int aLoanFee)
   {
@@ -56,10 +45,6 @@ public class LoanedArtifact extends Artifact
     return wasSet;
   }
 
-  public int getLoanID()
-  {
-    return loanID;
-  }
 
   public int getLoanFee()
   {
@@ -72,10 +57,4 @@ public class LoanedArtifact extends Artifact
   }
 
 
-  public String toString()
-  {
-    return super.toString() + "["+
-            "loanID" + ":" + getLoanID()+ "," +
-            "loanFee" + ":" + getLoanFee()+ "]";
-  }
 }
