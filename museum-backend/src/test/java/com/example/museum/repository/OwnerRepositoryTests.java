@@ -47,13 +47,13 @@ public class OwnerRepositoryTests {
         business = null;
 
         owner = ownerRepository.findByAccountID(ownerId);
-        business = businessRepository.findBusinessByBusinessID(businessID);
+        // business = businessRepository.findBusinessByBusinessID(businessID);
 
         assertNotNull(owner);
         assertEquals(ownerId, owner.getAccountID());
         assertEquals(ownerUsername, owner.getUsername());
         assertEquals(ownerPassword, owner.getPassword());
-        assertEquals(business, owner.getBusiness());
-        assertEquals(businessID, business.getBusinessID());
+        // assertEquals(business, owner.getBusiness());
+        assertEquals(businessID, owner.getBusiness().getBusinessID());
     }
 }
