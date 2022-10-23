@@ -27,6 +27,7 @@ public class Customer extends Person {
   private List<Donation> customerDonatedArtifacts;
   @OneToOne
   private LoanRequest loanRequest;
+
   @OneToMany
   private List<Ticket> customerTickets;
 
