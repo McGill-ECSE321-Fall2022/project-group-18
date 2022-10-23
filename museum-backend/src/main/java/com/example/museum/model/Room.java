@@ -1,11 +1,20 @@
 package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 
 // line 81 "model.ump"
 // line 170 "model.ump"
+@Entity
 public class Room
 {
 
@@ -20,30 +29,40 @@ public class Room
   //------------------------
 
   //Room Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int roomID;
   private String name;
   private int capacity;
-  private Artifact artifacts;
+  // private Artifact artifacts; // This should be an error when creating domain model
 
   //Room Associations
+  @OneToMany
   private List<Artifact> roomArtifacts;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public Room(int aRoomID, String aName, int aCapacity, Artifact aArtifacts)
+  public Room() {}
+
+  public Room(int aRoomID, String aName, int aCapacity)
   {
     roomID = aRoomID;
     name = aName;
     capacity = aCapacity;
-    artifacts = aArtifacts;
+    // artifacts = aArtifacts;
     roomArtifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setNewRoomArtifactsList() {
+    roomArtifacts = new ArrayList<Artifact>();
+    return true;
+  }
 
   public boolean setRoomID(int aRoomID)
   {
@@ -69,13 +88,13 @@ public class Room
     return wasSet;
   }
 
-  public boolean setArtifacts(Artifact aArtifacts)
-  {
-    boolean wasSet = false;
-    artifacts = aArtifacts;
-    wasSet = true;
-    return wasSet;
-  }
+//  public boolean setArtifacts(Artifact aArtifacts)
+//  {
+//    boolean wasSet = false;
+//    artifacts = aArtifacts;
+//    wasSet = true;
+//    return wasSet;
+//  }
 
   public int getRoomID()
   {
@@ -92,10 +111,10 @@ public class Room
     return capacity;
   }
 
-  public Artifact getArtifacts()
-  {
-    return artifacts;
-  }
+//  public Artifact getArtifacts()
+//  {
+//    return artifacts;
+//  }
   /* Code from template association_GetMany */
   public Artifact getRoomArtifact(int index)
   {
@@ -196,6 +215,6 @@ public class Room
             "roomID" + ":" + getRoomID()+ "," +
             "name" + ":" + getName()+ "," +
             "capacity" + ":" + getCapacity()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "artifacts" + "=" + (getArtifacts() != null ? !getArtifacts().equals(this)  ? getArtifacts().toString().replaceAll("  ","    ") : "this" : "null");
+            "  ";
   }
 }

@@ -2,10 +2,12 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.*;
 import java.util.*;
 
 // line 43 "model.ump"
 // line 133 "model.ump"
+@Entity
 public class LoanRequest
 {
 
@@ -20,14 +22,19 @@ public class LoanRequest
   //------------------------
 
   //LoanRequest Attributes
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int requestID;
 
   //LoanRequest Associations
+  @OneToMany
   private List<Artifact> requestedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+
+  protected LoanRequest() {}
 
   public LoanRequest(int aRequestID)
   {
@@ -38,6 +45,11 @@ public class LoanRequest
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setNewRequestedArtifactsList () {
+    this.requestedArtifacts = new ArrayList<Artifact>();
+    return true;
+  }
 
   public boolean setRequestID(int aRequestID)
   {
