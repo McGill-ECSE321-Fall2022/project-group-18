@@ -66,5 +66,7 @@ public class BusinessRepositoryTests {
         assertEquals(day, business.getBusinessHour(0).getDay());
         assertEquals(open, business.getBusinessHour(0).getOpenTime());
         assertEquals(close, business.getBusinessHour(0).getCloseTime());
+        assertNotNull(business.getBusinessHour(0).getBusinessHourID());
+        assertEquals(businessHourID, business.getBusinessHour(0).getBusinessHourID());
     }
 }
