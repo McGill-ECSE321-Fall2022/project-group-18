@@ -20,13 +20,14 @@ public class CustomerRepositoryTests {
     @AfterEach
     public void clearDatabase() {
         customerRepository.deleteAll();
+        loanRequestRepository.deleteAll();
     }
 
     @Test
     public void testPersistAndLoadCustomer() {
         LoanRequest loanRequest = new LoanRequest();
 
-        loanRequest = loanRequest.save(loanRequest);
+        loanRequest = loanRequestRepository.save(loanRequest);
         int loanRequestId = loanRequest.getRequestID();
 
         String customerUsername = "Customer";
