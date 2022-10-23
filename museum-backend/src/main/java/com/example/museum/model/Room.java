@@ -1,11 +1,19 @@
 package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 
-// line 81 "model.ump"
-// line 169 "model.ump"
+
+@Entity
 public class Room
 {
 
@@ -20,16 +28,21 @@ public class Room
   //------------------------
 
   //Room Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int roomID;
   private String name;
   private int capacity;
 
   //Room Associations
+  @OneToMany
   private List<Artifact> roomArtifacts;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+
+  public Room() {}
 
   public Room(int aRoomID, String aName, int aCapacity)
   {
@@ -42,6 +55,11 @@ public class Room
   //------------------------
   // INTERFACE
   //------------------------
+
+  public boolean setNewRoomArtifactsList() {
+    roomArtifacts = new ArrayList<Artifact>();
+    return true;
+  }
 
   public boolean setRoomID(int aRoomID)
   {
@@ -81,6 +99,7 @@ public class Room
   {
     return capacity;
   }
+
   /* Code from template association_GetMany */
   public Artifact getRoomArtifact(int index)
   {
