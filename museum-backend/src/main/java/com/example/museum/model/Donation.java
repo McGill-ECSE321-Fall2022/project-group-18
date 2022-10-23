@@ -2,10 +2,12 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.*;
 import java.util.*;
 
 // line 21 "model.ump"
 // line 108 "model.ump"
+@Entity
 public class Donation
 {
 
@@ -20,24 +22,37 @@ public class Donation
   //------------------------
 
   //Donation Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int donationID;
 
+
+
   //Donation Associations
-  private List<Artifact> donatedArtifacts;
+  @OneToMany
+  private List<ArtifactAbs> donatedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
+  public Donation() {}
+
   public Donation(int aDonationID)
   {
     donationID = aDonationID;
-    donatedArtifacts = new ArrayList<Artifact>();
+    donatedArtifacts = new ArrayList<ArtifactAbs>();
   }
 
   //------------------------
   // INTERFACE
   //------------------------
+
+//   setters for @OneToMany annotation
+  public boolean setNewDonationArtifactsList() {
+    donatedArtifacts = new ArrayList<ArtifactAbs>();
+    return true;
+  }
 
   public boolean setDonationID(int aDonationID)
   {
@@ -52,15 +67,15 @@ public class Donation
     return donationID;
   }
   /* Code from template association_GetMany */
-  public Artifact getDonatedArtifact(int index)
+  public ArtifactAbs getDonatedArtifact(int index)
   {
-    Artifact aDonatedArtifact = donatedArtifacts.get(index);
+    ArtifactAbs aDonatedArtifact = donatedArtifacts.get(index);
     return aDonatedArtifact;
   }
 
-  public List<Artifact> getDonatedArtifacts()
+  public List<ArtifactAbs> getDonatedArtifacts()
   {
-    List<Artifact> newDonatedArtifacts = Collections.unmodifiableList(donatedArtifacts);
+    List<ArtifactAbs> newDonatedArtifacts = Collections.unmodifiableList(donatedArtifacts);
     return newDonatedArtifacts;
   }
 
