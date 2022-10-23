@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 @SpringBootTest
 public class ArtifactRepositoryTests {
@@ -32,7 +30,6 @@ public class ArtifactRepositoryTests {
         artifact.setName(name);
         artifact.setType(type);
 
-
         artifact = artifactRepository.save(artifact);
         int id = artifact.getArtID();
 
@@ -48,6 +45,5 @@ public class ArtifactRepositoryTests {
 
     }
 }
-
 
 
