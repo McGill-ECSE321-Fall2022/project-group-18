@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 
 @SpringBootTest
 public class ArtifactRepositoryTests {
@@ -32,7 +30,6 @@ public class ArtifactRepositoryTests {
         artifact.setName(name);
         artifact.setType(type);
 
-
         artifact = artifactRepository.save(artifact);
         int id = artifact.getArtID();
 
@@ -49,19 +46,17 @@ public class ArtifactRepositoryTests {
     }
 }
 
-
-//        String name = "Anakin Skywalker";
-//        Person person = new Person();
-//        person.setName(name);
+// String name = "Anakin Skywalker";
+// Person person = new Person();
+// person.setName(name);
 //
-//        person = personRepository.save(person);
-//        int id = person.getId();
+// person = personRepository.save(person);
+// int id = person.getId();
 //
-//        person = null;
+// person = null;
 //
-//        person = personRepository.findPersonById(id);
+// person = personRepository.findPersonById(id);
 //
-//        assertNotNull(person);
-//        assertEquals(id, person.getId());
-//        assertEquals(name, person.getName());
-
+// assertNotNull(person);
+// assertEquals(id, person.getId());
+// assertEquals(name, person.getName());
