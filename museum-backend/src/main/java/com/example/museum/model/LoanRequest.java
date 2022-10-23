@@ -34,7 +34,7 @@ public class LoanRequest
   // CONSTRUCTOR
   //------------------------
 
-  protected LoanRequest() {}
+  public LoanRequest() {}
 
   public LoanRequest(int aRequestID)
   {

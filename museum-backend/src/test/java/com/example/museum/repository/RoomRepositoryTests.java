@@ -60,7 +60,7 @@ public class RoomRepositoryTests {
         room.addRoomArtifact(artifact1);
         room.addRoomArtifact(artifact2);
         // Save Room
-        roomRepository.save(room);
+        room = roomRepository.save(room);
         int roomID = room.getRoomID();
         // Read Room from DB
         room = null;
