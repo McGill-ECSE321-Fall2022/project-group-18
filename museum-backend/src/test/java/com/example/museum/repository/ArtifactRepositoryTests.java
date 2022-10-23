@@ -50,18 +50,4 @@ public class ArtifactRepositoryTests {
 }
 
 
-//        String name = "Anakin Skywalker";
-//        Person person = new Person();
-//        person.setName(name);
-//
-//        person = personRepository.save(person);
-//        int id = person.getId();
-//
-//        person = null;
-//
-//        person = personRepository.findPersonById(id);
-//
-//        assertNotNull(person);
-//        assertEquals(id, person.getId());
-//        assertEquals(name, person.getName());
 

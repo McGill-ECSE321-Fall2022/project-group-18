@@ -2,10 +2,12 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.31.1.5860.78bb27cc6 modeling language!*/
 
 
+import javax.persistence.*;
 import java.util.*;
 
 // line 21 "model.ump"
 // line 108 "model.ump"
+@Entity
 public class Donation
 {
 
@@ -20,14 +22,21 @@ public class Donation
   //------------------------
 
   //Donation Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int donationID;
 
+
+
   //Donation Associations
+  @OneToMany
   private List<Artifact> donatedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
+
+  public Donation() {}
 
   public Donation(int aDonationID)
   {
@@ -38,6 +47,12 @@ public class Donation
   //------------------------
   // INTERFACE
   //------------------------
+
+//   setters for @OneToMany annotation
+  public boolean setNewDonationArtifactsList() {
+    donatedArtifacts = new ArrayList<Artifact>();
+    return true;
+  }
 
   public boolean setDonationID(int aDonationID)
   {
