@@ -77,7 +77,7 @@ public class DonationRepositoryTests {
         assertNotNull(donation);
         assertEquals(donationID, donation.getDonationID());
 
-        List<ArtifactAbs> artifactArrayList = donation.getDonatedArtifacts();
+        List<Artifact> artifactArrayList = donation.getDonatedArtifacts();
         assertEquals(artifactArrayList.size(), 2);
 
         artifact1 = (Artifact) artifactArrayList.get(0);

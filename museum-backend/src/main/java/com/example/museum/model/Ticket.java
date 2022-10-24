@@ -29,6 +29,7 @@ public class Ticket
   // CONSTRUCTOR
   //------------------------
 
+
   public Ticket(int aTicketID, Date aDay, int aPrice)
   {
     ticketID = aTicketID;

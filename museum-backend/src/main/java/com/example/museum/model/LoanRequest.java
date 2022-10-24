@@ -40,7 +40,7 @@ public class LoanRequest
   {
     requestID = aRequestID;
     requestedArtifacts = new ArrayList<Artifact>();
-  }
+}
 
   //------------------------
   // INTERFACE

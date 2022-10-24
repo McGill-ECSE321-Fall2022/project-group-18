@@ -2,6 +2,7 @@ package com.example.museum.repository;
 
 import com.example.museum.model.LoanRequest;
 import com.example.museum.model.Artifact;
+import com.example.museum.model.LoanedArtifact;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

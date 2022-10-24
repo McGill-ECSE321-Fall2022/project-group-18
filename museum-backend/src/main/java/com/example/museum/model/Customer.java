@@ -27,6 +27,7 @@ public class Customer extends Person {
   private List<Donation> customerDonatedArtifacts;
   @OneToOne
   private LoanRequest loanRequest;
+
   @OneToMany
   private List<Ticket> customerTickets;
 
@@ -52,6 +53,19 @@ public class Customer extends Person {
   // INTERFACE
   // ------------------------
   /* Code from template association_GetMany */
+
+  public void setLoanedArtifactsList() {
+    this.loanedArtifacts = new ArrayList<LoanedArtifact>();
+  }
+
+  public void setCustomerDonatedArtifactsList() {
+    this.customerDonatedArtifacts = new ArrayList<Donation>();
+  }
+
+  public void setCustomerTicketsList() {
+    this.customerTickets = new ArrayList<Ticket>();
+  }
+
   public LoanedArtifact getLoanedArtifact(int index) {
     LoanedArtifact aLoanedArtifact = loanedArtifacts.get(index);
     return aLoanedArtifact;

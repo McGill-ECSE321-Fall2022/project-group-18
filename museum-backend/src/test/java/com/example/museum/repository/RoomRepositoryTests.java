@@ -34,7 +34,7 @@ public class RoomRepositoryTests {
         boolean loanable1 = true;
         ArtifactAbs.ArtType artType1 = ArtifactAbs.ArtType.Sculpture;
         String artName1 = "David";
-        ArtifactAbs artifact1 = new Artifact();
+        Artifact artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);
         artifact1.setName(artName1);
         artifact1.setType(artType1);
@@ -42,7 +42,7 @@ public class RoomRepositoryTests {
         boolean loanable2 = false;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
-        ArtifactAbs artifact2 = new Artifact();
+        Artifact artifact2 = new Artifact();
         artifact2.setLoanable(loanable2);
         artifact2.setName(artName2);
         artifact2.setType(artType2);
@@ -71,7 +71,7 @@ public class RoomRepositoryTests {
         // Assert that Room has correct attributes
         assertNotNull(room);
         assertEquals(roomID, room.getRoomID());
-        List<ArtifactAbs> artifactArrayList = room.getRoomArtifacts();
+        List<Artifact> artifactArrayList = room.getRoomArtifacts();
         assertEquals(artifactArrayList.size(), 2);
         artifact1 = artifactArrayList.get(0);
         artifact2 = artifactArrayList.get(1);
