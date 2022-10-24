@@ -136,7 +136,7 @@ public class Room
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addRoomArtifact(Artifact aRoomArtifact)
+  public boolean addRoomArtifact(ArtifactAbs aRoomArtifact)
   {
     boolean wasAdded = false;
     if (roomArtifacts.contains(aRoomArtifact)) { return false; }
@@ -145,7 +145,7 @@ public class Room
     return wasAdded;
   }
 
-  public boolean removeRoomArtifact(Artifact aRoomArtifact)
+  public boolean removeRoomArtifact(ArtifactAbs aRoomArtifact)
   {
     boolean wasRemoved = false;
     if (roomArtifacts.contains(aRoomArtifact))
@@ -156,7 +156,7 @@ public class Room
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addRoomArtifactAt(Artifact aRoomArtifact, int index)
+  public boolean addRoomArtifactAt(ArtifactAbs aRoomArtifact, int index)
   {
     boolean wasAdded = false;
     if(addRoomArtifact(aRoomArtifact))
@@ -170,7 +170,7 @@ public class Room
     return wasAdded;
   }
 
-  public boolean addOrMoveRoomArtifactAt(Artifact aRoomArtifact, int index)
+  public boolean addOrMoveRoomArtifactAt(ArtifactAbs aRoomArtifact, int index)
   {
     boolean wasAdded = false;
     if(roomArtifacts.contains(aRoomArtifact))

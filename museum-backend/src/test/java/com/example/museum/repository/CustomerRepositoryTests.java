@@ -34,7 +34,17 @@ public class CustomerRepositoryTests {
 
     @AfterEach
     public void clearDatabase() {
+        // customer->donation->artifact
+        // customer->loanRequest->loanedArtifact
+        // customer->loanedArtifact === should not be set if this loaned Artifact does not belong to customer yet
+        // customer->loanedArtifact2 === this is ok as loanedArtifact logically cannot be loanedArtifact2
+        // customer->ticket
         customerRepository.deleteAll();
+        donationRepository.deleteAll();
+        loanRequestRepository.deleteAll();
+        loanedArtifactRepository.deleteAll();
+        artifactRepository.deleteAll();
+        ticketRepository.deleteAll();
     }
 
     @Test
@@ -43,8 +53,16 @@ public class CustomerRepositoryTests {
         int loanFee = 1000;
         LoanedArtifact loanedArtifact = new LoanedArtifact();
         loanedArtifact.setLoanFee(loanFee);
+
         loanedArtifact = loanedArtifactRepository.save(loanedArtifact);
         int loanedArtifactID = loanedArtifact.getArtID();
+
+        int loanFee2 = 2000;
+        LoanedArtifact loanedArtifact2 = new LoanedArtifact();
+        loanedArtifact2.setLoanFee(loanFee2);
+
+        loanedArtifact2 = loanedArtifactRepository.save(loanedArtifact2);
+        int loanedArtifactID2 = loanedArtifact2.getArtID();
 
         // Artifact
         boolean loanable = true;
@@ -67,7 +85,7 @@ public class CustomerRepositoryTests {
         // Loan Request
         LoanRequest loanRequest = new LoanRequest();
         loanRequest.setNewRequestedArtifactsList();
-        loanRequest.addRequestedArtifact(artifact);
+        loanRequest.addRequestedArtifact(loanedArtifact);
         loanRequest = loanRequestRepository.save(loanRequest);
         int loanRequestID = loanRequest.getRequestID();
 
@@ -86,15 +104,26 @@ public class CustomerRepositoryTests {
         Customer customer = new Customer();
         customer.setUsername(customerUsername);
         customer.setPassword(customerPassword);
-        customer.addLoanedArtifact(loanedArtifact);
-        customer.addCustomerDonatedArtifact(donation);
+
+        customer.setCustomerTicketsList();
+        customer.setCustomerDonatedArtifactsList();
+        customer.setLoanedArtifactsList();
+
         customer.setLoanRequest(loanRequest);
+
+        customer.addLoanedArtifact(loanedArtifact2);
+        customer.addCustomerDonatedArtifact(donation);
         customer.addCustomerTicket(ticket);
 
         customer = customerRepository.save(customer);
         int customerId = customer.getAccountID();
 
         customer = null;
+        ticket = null;
+        loanRequest = null;
+        donation = null;
+        artifact = null;
+        loanedArtifact = null;
 
         customer = customerRepository.findByAccountID(customerId);
 
@@ -102,9 +131,14 @@ public class CustomerRepositoryTests {
         assertEquals(customerId, customer.getAccountID());
         assertEquals(customerUsername, customer.getUsername());
         assertEquals(customerPassword, customer.getPassword());
-        assertEquals(donationID, customer.getCustomerDonatedArtifact(0));
-        assertEquals(loanedArtifactID, customer.getLoanedArtifact(0));
-        assertEquals(loanRequestID, customer.getLoanRequest());
-        assertEquals(ticketID, customer.getCustomerTicket(0));
+
+        assertEquals(donationID, customer.getCustomerDonatedArtifact(0).getDonationID());
+
+        assertEquals(loanedArtifactID2, customer.getLoanedArtifact(0).getArtID());
+
+        assertEquals(loanRequestID, customer.getLoanRequest().getRequestID());
+        assertEquals(loanedArtifactID, customer.getLoanRequest().getRequestedArtifact(0).getArtID());
+
+        assertEquals(ticketID, customer.getCustomerTicket(0).getTicketID());
     }
 }

@@ -91,7 +91,7 @@ public class Donation
     return has;
   }
 
-  public int indexOfDonatedArtifact(Artifact aDonatedArtifact)
+  public int indexOfDonatedArtifact(ArtifactAbs aDonatedArtifact)
   {
     int index = donatedArtifacts.indexOf(aDonatedArtifact);
     return index;
@@ -102,7 +102,7 @@ public class Donation
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addDonatedArtifact(Artifact aDonatedArtifact)
+  public boolean addDonatedArtifact(ArtifactAbs aDonatedArtifact)
   {
     boolean wasAdded = false;
     if (donatedArtifacts.contains(aDonatedArtifact)) { return false; }
@@ -111,7 +111,7 @@ public class Donation
     return wasAdded;
   }
 
-  public boolean removeDonatedArtifact(Artifact aDonatedArtifact)
+  public boolean removeDonatedArtifact(ArtifactAbs aDonatedArtifact)
   {
     boolean wasRemoved = false;
     if (donatedArtifacts.contains(aDonatedArtifact))
@@ -122,7 +122,7 @@ public class Donation
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addDonatedArtifactAt(Artifact aDonatedArtifact, int index)
+  public boolean addDonatedArtifactAt(ArtifactAbs aDonatedArtifact, int index)
   {  
     boolean wasAdded = false;
     if(addDonatedArtifact(aDonatedArtifact))
