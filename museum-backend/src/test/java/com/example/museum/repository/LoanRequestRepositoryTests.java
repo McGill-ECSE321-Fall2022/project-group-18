@@ -20,12 +20,12 @@ public class LoanRequestRepositoryTests {
     private LoanRequestRepository loanRequestRepository;
 
     @Autowired
-    private LoanedArtifactRepository loanedArtifactRepository;
+    private ArtifactRepository artifactRepository;
 
     @AfterEach
     public void clearDatabase() {
         loanRequestRepository.deleteAll();
-        loanedArtifactRepository.deleteAll();
+        artifactRepository.deleteAll();
     }
 
     @Test
@@ -34,7 +34,7 @@ public class LoanRequestRepositoryTests {
         boolean loanable1 = true;
         Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
         String artName1 = "David";
-        LoanedArtifact artifact1 = new LoanedArtifact();
+        Artifact artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);
         artifact1.setName(artName1);
         artifact1.setType(artType1);
@@ -42,14 +42,14 @@ public class LoanRequestRepositoryTests {
         boolean loanable2 = true;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
-        LoanedArtifact artifact2 = new LoanedArtifact();
+        Artifact artifact2 = new Artifact();
         artifact2.setLoanable(loanable2);
         artifact2.setName(artName2);
         artifact2.setType(artType2);
         // Save Artifact
-        artifact1 = loanedArtifactRepository.save(artifact1);
+        artifact1 = artifactRepository.save(artifact1);
         int artID1 = artifact1.getArtID();
-        artifact2 = loanedArtifactRepository.save(artifact2);
+        artifact2 = artifactRepository.save(artifact2);
         int artID2 = artifact2.getArtID();
         // Create LoanRequest
         LoanRequest loanRequest = new LoanRequest();

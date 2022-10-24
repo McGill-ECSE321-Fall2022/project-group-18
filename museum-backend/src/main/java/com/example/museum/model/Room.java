@@ -36,7 +36,7 @@ public class Room
 
   //Room Associations
   @OneToMany
-  private List<ArtifactAbs> roomArtifacts;
+  private List<Artifact> roomArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -49,7 +49,7 @@ public class Room
     roomID = aRoomID;
     name = aName;
     capacity = aCapacity;
-    roomArtifacts = new ArrayList<ArtifactAbs>();
+    roomArtifacts = new ArrayList<Artifact>();
   }
 
   //------------------------
@@ -57,7 +57,7 @@ public class Room
   //------------------------
 
   public boolean setNewRoomArtifactsList() {
-    roomArtifacts = new ArrayList<ArtifactAbs>();
+    roomArtifacts = new ArrayList<Artifact>();
     return true;
   }
 
@@ -101,15 +101,15 @@ public class Room
   }
 
   /* Code from template association_GetMany */
-  public ArtifactAbs getRoomArtifact(int index)
+  public Artifact getRoomArtifact(int index)
   {
-    ArtifactAbs aRoomArtifact = roomArtifacts.get(index);
+    Artifact aRoomArtifact = roomArtifacts.get(index);
     return aRoomArtifact;
   }
 
-  public List<ArtifactAbs> getRoomArtifacts()
+  public List<Artifact> getRoomArtifacts()
   {
-    List<ArtifactAbs> newRoomArtifacts = Collections.unmodifiableList(roomArtifacts);
+    List<Artifact> newRoomArtifacts = Collections.unmodifiableList(roomArtifacts);
     return newRoomArtifacts;
   }
 
@@ -136,7 +136,7 @@ public class Room
     return 0;
   }
   /* Code from template association_AddUnidirectionalMany */
-  public boolean addRoomArtifact(ArtifactAbs aRoomArtifact)
+  public boolean addRoomArtifact(Artifact aRoomArtifact)
   {
     boolean wasAdded = false;
     if (roomArtifacts.contains(aRoomArtifact)) { return false; }
@@ -145,7 +145,7 @@ public class Room
     return wasAdded;
   }
 
-  public boolean removeRoomArtifact(ArtifactAbs aRoomArtifact)
+  public boolean removeRoomArtifact(Artifact aRoomArtifact)
   {
     boolean wasRemoved = false;
     if (roomArtifacts.contains(aRoomArtifact))
@@ -156,7 +156,7 @@ public class Room
     return wasRemoved;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addRoomArtifactAt(ArtifactAbs aRoomArtifact, int index)
+  public boolean addRoomArtifactAt(Artifact aRoomArtifact, int index)
   {
     boolean wasAdded = false;
     if(addRoomArtifact(aRoomArtifact))
@@ -170,7 +170,7 @@ public class Room
     return wasAdded;
   }
 
-  public boolean addOrMoveRoomArtifactAt(ArtifactAbs aRoomArtifact, int index)
+  public boolean addOrMoveRoomArtifactAt(Artifact aRoomArtifact, int index)
   {
     boolean wasAdded = false;
     if(roomArtifacts.contains(aRoomArtifact))

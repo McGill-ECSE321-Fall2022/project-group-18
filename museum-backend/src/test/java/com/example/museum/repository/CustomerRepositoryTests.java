@@ -1,11 +1,6 @@
 package com.example.museum.repository;
 
-import com.example.museum.model.Customer;
-import com.example.museum.model.Donation;
-import com.example.museum.model.Ticket;
-import com.example.museum.model.LoanRequest;
-import com.example.museum.model.LoanedArtifact;
-import com.example.museum.model.Artifact;
+import com.example.museum.model.*;
 
 import java.sql.Date;
 
@@ -57,13 +52,6 @@ public class CustomerRepositoryTests {
         loanedArtifact = loanedArtifactRepository.save(loanedArtifact);
         int loanedArtifactID = loanedArtifact.getArtID();
 
-        int loanFee2 = 2000;
-        LoanedArtifact loanedArtifact2 = new LoanedArtifact();
-        loanedArtifact2.setLoanFee(loanFee2);
-
-        loanedArtifact2 = loanedArtifactRepository.save(loanedArtifact2);
-        int loanedArtifactID2 = loanedArtifact2.getArtID();
-
         // Artifact
         boolean loanable = true;
         String name = "Mona Lisa";
@@ -75,6 +63,17 @@ public class CustomerRepositoryTests {
         artifact = artifactRepository.save(artifact);
         int artID1 = artifact.getArtID();
 
+        boolean loanable2 = false;
+        Artifact.ArtType artType2 = Artifact.ArtType.Painting;
+        String artName2 = "Portrait of Dr. Gachet";
+        Artifact artifact2 = new Artifact();
+        artifact2.setLoanable(loanable2);
+        artifact2.setName(artName2);
+        artifact2.setType(artType2);
+
+        artifact2 = artifactRepository.save(artifact2);
+        int artID2 = artifact2.getArtID();
+
         // Donation
         Donation donation = new Donation();
         donation.setNewDonationArtifactsList();
@@ -85,7 +84,7 @@ public class CustomerRepositoryTests {
         // Loan Request
         LoanRequest loanRequest = new LoanRequest();
         loanRequest.setNewRequestedArtifactsList();
-        loanRequest.addRequestedArtifact(loanedArtifact);
+        loanRequest.addRequestedArtifact(artifact2);
         loanRequest = loanRequestRepository.save(loanRequest);
         int loanRequestID = loanRequest.getRequestID();
 
@@ -111,7 +110,7 @@ public class CustomerRepositoryTests {
 
         customer.setLoanRequest(loanRequest);
 
-        customer.addLoanedArtifact(loanedArtifact2);
+        customer.addLoanedArtifact(loanedArtifact);
         customer.addCustomerDonatedArtifact(donation);
         customer.addCustomerTicket(ticket);
 
@@ -134,10 +133,9 @@ public class CustomerRepositoryTests {
 
         assertEquals(donationID, customer.getCustomerDonatedArtifact(0).getDonationID());
 
-        assertEquals(loanedArtifactID2, customer.getLoanedArtifact(0).getArtID());
+        assertEquals(loanedArtifactID, customer.getLoanedArtifact(0).getArtID());
 
         assertEquals(loanRequestID, customer.getLoanRequest().getRequestID());
-        assertEquals(loanedArtifactID, customer.getLoanRequest().getRequestedArtifact(0).getArtID());
 
         assertEquals(ticketID, customer.getCustomerTicket(0).getTicketID());
     }

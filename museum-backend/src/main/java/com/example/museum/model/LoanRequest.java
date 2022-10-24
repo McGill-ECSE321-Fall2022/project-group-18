@@ -28,7 +28,7 @@ public class LoanRequest
 
   //LoanRequest Associations
   @OneToMany
-  private List<LoanedArtifact> requestedArtifacts;
+  private List<Artifact> requestedArtifacts;
 
   //------------------------
   // CONSTRUCTOR
@@ -39,7 +39,7 @@ public class LoanRequest
   public LoanRequest(int aRequestID)
   {
     requestID = aRequestID;
-    requestedArtifacts = new ArrayList<LoanedArtifact>();
+    requestedArtifacts = new ArrayList<Artifact>();
 }
 
   //------------------------
@@ -47,7 +47,7 @@ public class LoanRequest
   //------------------------
 
   public boolean setNewRequestedArtifactsList () {
-    this.requestedArtifacts = new ArrayList<LoanedArtifact>();
+    this.requestedArtifacts = new ArrayList<Artifact>();
     return true;
   }
 
@@ -64,15 +64,15 @@ public class LoanRequest
     return requestID;
   }
   /* Code from template association_GetMany */
-  public LoanedArtifact getRequestedArtifact(int index)
+  public Artifact getRequestedArtifact(int index)
   {
-    LoanedArtifact aRequestedArtifact = requestedArtifacts.get(index);
+    Artifact aRequestedArtifact = requestedArtifacts.get(index);
     return aRequestedArtifact;
   }
 
-  public List<LoanedArtifact> getRequestedArtifacts()
+  public List<Artifact> getRequestedArtifacts()
   {
-    List<LoanedArtifact> newRequestedArtifacts = Collections.unmodifiableList(requestedArtifacts);
+    List<Artifact> newRequestedArtifacts = Collections.unmodifiableList(requestedArtifacts);
     return newRequestedArtifacts;
   }
 
@@ -88,7 +88,7 @@ public class LoanRequest
     return has;
   }
 
-  public int indexOfRequestedArtifact(LoanedArtifact aRequestedArtifact)
+  public int indexOfRequestedArtifact(Artifact aRequestedArtifact)
   {
     int index = requestedArtifacts.indexOf(aRequestedArtifact);
     return index;
@@ -104,7 +104,7 @@ public class LoanRequest
     return 5;
   }
   /* Code from template association_AddUnidirectionalOptionalN */
-  public boolean addRequestedArtifact(LoanedArtifact aRequestedArtifact)
+  public boolean addRequestedArtifact(Artifact aRequestedArtifact)
   {
     boolean wasAdded = false;
     if (requestedArtifacts.contains(aRequestedArtifact)) { return false; }
@@ -116,7 +116,7 @@ public class LoanRequest
     return wasAdded;
   }
 
-  public boolean removeRequestedArtifact(LoanedArtifact aRequestedArtifact)
+  public boolean removeRequestedArtifact(Artifact aRequestedArtifact)
   {
     boolean wasRemoved = false;
     if (requestedArtifacts.contains(aRequestedArtifact))
@@ -127,11 +127,11 @@ public class LoanRequest
     return wasRemoved;
   }
   /* Code from template association_SetUnidirectionalOptionalN */
-  public boolean setRequestedArtifacts(LoanedArtifact... newRequestedArtifacts)
+  public boolean setRequestedArtifacts(Artifact... newRequestedArtifacts)
   {
     boolean wasSet = false;
-    ArrayList<LoanedArtifact> verifiedRequestedArtifacts = new ArrayList<LoanedArtifact>();
-    for (LoanedArtifact aRequestedArtifact : newRequestedArtifacts)
+    ArrayList<Artifact> verifiedRequestedArtifacts = new ArrayList<Artifact>();
+    for (Artifact aRequestedArtifact : newRequestedArtifacts)
     {
       if (verifiedRequestedArtifacts.contains(aRequestedArtifact))
       {
@@ -151,7 +151,7 @@ public class LoanRequest
     return wasSet;
   }
   /* Code from template association_AddIndexControlFunctions */
-  public boolean addRequestedArtifactAt(LoanedArtifact aRequestedArtifact, int index)
+  public boolean addRequestedArtifactAt(Artifact aRequestedArtifact, int index)
   {  
     boolean wasAdded = false;
     if(addRequestedArtifact(aRequestedArtifact))
@@ -165,7 +165,7 @@ public class LoanRequest
     return wasAdded;
   }
 
-  public boolean addOrMoveRequestedArtifactAt(LoanedArtifact aRequestedArtifact, int index)
+  public boolean addOrMoveRequestedArtifactAt(Artifact aRequestedArtifact, int index)
   {
     boolean wasAdded = false;
     if(requestedArtifacts.contains(aRequestedArtifact))
