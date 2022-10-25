@@ -25,6 +25,8 @@ public class Ticket
   private Date day;
   private int price;
 
+
+
   //------------------------
   // CONSTRUCTOR
   //------------------------
