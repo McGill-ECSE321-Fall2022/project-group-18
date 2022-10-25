@@ -1,30 +1,27 @@
 package com.example.museum.repository;
 
-import com.example.museum.model.LoanRequest;
+import com.example.museum.model.Loan;
 import com.example.museum.model.Artifact;
-import com.example.museum.model.LoanedArtifact;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class LoanRequestRepositoryTests {
+public class LoanRepositoryTests {
 
     @Autowired
-    private LoanRequestRepository loanRequestRepository;
+    private LoanRepository loanRepository;
 
     @Autowired
     private ArtifactRepository artifactRepository;
 
     @AfterEach
     public void clearDatabase() {
-        loanRequestRepository.deleteAll();
+        loanRepository.deleteAll();
         artifactRepository.deleteAll();
     }
 
@@ -52,25 +49,25 @@ public class LoanRequestRepositoryTests {
         artifact2 = artifactRepository.save(artifact2);
         int artID2 = artifact2.getArtID();
         // Create LoanRequest
-        LoanRequest loanRequest = new LoanRequest();
-        loanRequest.setNewRequestedArtifactsList();
-        loanRequest.addRequestedArtifact(artifact1);
-        loanRequest.addRequestedArtifact(artifact2);
+        Loan loan = new Loan();
+        loan.setNewrequestedArtifactsList();
+        loan.addRequestedArtifact(artifact1);
+        loan.addRequestedArtifact(artifact2);
         // Save LoanRequest
-        loanRequest = loanRequestRepository.save(loanRequest);
-        int loanRequestID = loanRequest.getRequestID();
+        loan = loanRepository.save(loan);
+        int loanID = loan.getRequestID();
         // Read LoanRequest from DB
-        loanRequest = null;
+        loan = null;
         artifact1 = null;
         artifact2 = null;
-        loanRequest = loanRequestRepository.findLoanRequestByRequestID(loanRequestID);
+        loan = loanRepository.findLoanRequestByRequestID(loanID);
         // Assert that Room has correct attributes
-        assertNotNull(loanRequest);
-        assertEquals(loanRequestID, loanRequest.getRequestID());
-        assertNotNull(loanRequest.getRequestedArtifact(0).getArtID());
-        assertEquals(artID1, loanRequest.getRequestedArtifact(0).getArtID());
-        assertNotNull(loanRequest.getRequestedArtifact(1));
-        assertEquals(artID2, loanRequest.getRequestedArtifact(1).getArtID());
+        assertNotNull(loan);
+        assertEquals(loanID, loan.getRequestID());
+        assertNotNull(loan.getRequestedArtifact(0));
+        assertEquals(artID1, loan.getRequestedArtifact(0).getArtID());
+        assertNotNull(loan.getRequestedArtifact(1));
+        assertEquals(artID2, loan.getRequestedArtifact(1).getArtID());
     }
 
 }

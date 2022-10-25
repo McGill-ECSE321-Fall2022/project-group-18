@@ -8,8 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Date;
 
-// line 53 "model.ump"
-// line 145 "model.ump"
+// line 40 "model.ump"
 @Entity
 public class Ticket
 {
@@ -29,16 +28,13 @@ public class Ticket
   // CONSTRUCTOR
   //------------------------
 
+  public Ticket() {}
 
   public Ticket(int aTicketID, Date aDay, int aPrice)
   {
     ticketID = aTicketID;
     day = aDay;
     price = aPrice;
-  }
-
-  public Ticket() {
-
   }
 
   //------------------------
