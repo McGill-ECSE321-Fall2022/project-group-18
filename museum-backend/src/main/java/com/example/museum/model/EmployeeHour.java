@@ -5,16 +5,25 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import java.sql.Date;
 import java.sql.Time;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 // line 74 "model.ump"
 // line 165 "model.ump"
+@Entity
 public class EmployeeHour
 {
+  public EmployeeHour() {}
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //EmployeeHour Attributes
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
   private int employeeHourID;
   private Date day;
   private Time startTime;
@@ -36,7 +45,9 @@ public class EmployeeHour
   // INTERFACE
   //------------------------
 
-  public boolean setEmployeeHourID(int aEmployeeHourID)
+  
+
+public boolean setEmployeeHourID(int aEmployeeHourID)
   {
     boolean wasSet = false;
     employeeHourID = aEmployeeHourID;

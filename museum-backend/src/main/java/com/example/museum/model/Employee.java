@@ -3,19 +3,26 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 
 
 import java.util.*;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
 import java.sql.Date;
 import java.sql.Time;
 
 // line 38 "model.ump"
 // line 127 "model.ump"
+@Entity
 public class Employee extends Person
 {
+  public Employee() {}
 
   //------------------------
   // MEMBER VARIABLES
   //------------------------
 
   //Employee Associations
+  @OneToMany
   private List<EmployeeHour> employeeHours;
 
   //------------------------
