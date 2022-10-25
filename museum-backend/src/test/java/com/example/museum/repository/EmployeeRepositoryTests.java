@@ -46,7 +46,8 @@ public class EmployeeRepositoryTests {
         Employee employee = new Employee();
         employee.setUsername(employeeUsername);
         employee.setPassword(employeePassword);
-        
+        employee.setEmployeeHourList();
+        employee.addEmployeeHour(employeeHour);
 
         employee = employeeRepository.save(employee);
         int employeeId = employee.getAccountID();
@@ -62,11 +63,8 @@ public class EmployeeRepositoryTests {
         assertEquals(employeeUsername, employee.getUsername());
         assertEquals(employeePassword, employee.getPassword());
 
-        assertNotNull(employeeHour);
-        assertEquals(employeeHourId, employeeHour.getEmployeeHourID());
-        assertEquals(day, employeeHour.getDay());
-        assertEquals(startTime,employeeHour.getStartTime());
-        assertEquals(endTime, employeeHour.getEndTime());
+        assertNotNull(employee.getEmployeeHour(0));
+        assertEquals(employeeHourId,employee.getEmployeeHour(0).getEmployeeHourID());
 
 
     }

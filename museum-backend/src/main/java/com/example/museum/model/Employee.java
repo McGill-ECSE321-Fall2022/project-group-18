@@ -39,6 +39,11 @@ public class Employee extends Person
   // INTERFACE
   //------------------------
   /* Code from template association_GetMany */
+
+  public void setEmployeeHourList() {
+    this.employeeHours = new ArrayList<EmployeeHour>();
+  }
+
   public EmployeeHour getEmployeeHour(int index)
   {
     EmployeeHour aEmployeeHour = employeeHours.get(index);
