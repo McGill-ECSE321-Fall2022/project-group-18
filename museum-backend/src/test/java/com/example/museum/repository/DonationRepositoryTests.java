@@ -1,7 +1,6 @@
 package com.example.museum.repository;
 
 import com.example.museum.model.Artifact;
-import com.example.museum.model.ArtifactAbs;
 import com.example.museum.model.Donation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

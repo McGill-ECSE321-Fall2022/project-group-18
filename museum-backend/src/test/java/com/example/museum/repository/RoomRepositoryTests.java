@@ -1,7 +1,6 @@
 package com.example.museum.repository;
 
 import com.example.museum.model.Artifact;
-import com.example.museum.model.ArtifactAbs;
 import com.example.museum.model.Room;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,7 @@ public class RoomRepositoryTests {
     public void testPersistAndLoadRoom() {
         // Create Artifact
         boolean loanable1 = true;
-        ArtifactAbs.ArtType artType1 = ArtifactAbs.ArtType.Sculpture;
+        Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
         String artName1 = "David";
         Artifact artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);

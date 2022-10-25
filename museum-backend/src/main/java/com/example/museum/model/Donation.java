@@ -5,8 +5,7 @@ package com.example.museum.model;/*PLEASE DO NOT EDIT THIS CODE*/
 import javax.persistence.*;
 import java.util.*;
 
-// line 21 "model.ump"
-// line 108 "model.ump"
+// line 14 "model.ump"
 @Entity
 public class Donation
 {
@@ -22,11 +21,9 @@ public class Donation
   //------------------------
 
   //Donation Attributes
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int donationID;
-
-
 
   //Donation Associations
   @OneToMany
@@ -48,10 +45,8 @@ public class Donation
   // INTERFACE
   //------------------------
 
-//   setters for @OneToMany annotation
-  public boolean setNewDonationArtifactsList() {
-    donatedArtifacts = new ArrayList<Artifact>();
-    return true;
+  public void setNewDonationArtifactsList() {
+    this.donatedArtifacts = new ArrayList<>();
   }
 
   public boolean setDonationID(int aDonationID)
@@ -123,7 +118,7 @@ public class Donation
   }
   /* Code from template association_AddIndexControlFunctions */
   public boolean addDonatedArtifactAt(Artifact aDonatedArtifact, int index)
-  {  
+  {
     boolean wasAdded = false;
     if(addDonatedArtifact(aDonatedArtifact))
     {
@@ -146,8 +141,8 @@ public class Donation
       donatedArtifacts.remove(aDonatedArtifact);
       donatedArtifacts.add(index, aDonatedArtifact);
       wasAdded = true;
-    } 
-    else 
+    }
+    else
     {
       wasAdded = addDonatedArtifactAt(aDonatedArtifact, index);
     }

@@ -17,13 +17,11 @@ public class CustomerRepositoryTests {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private LoanedArtifactRepository loanedArtifactRepository;
-    @Autowired
     private ArtifactRepository artifactRepository;
     @Autowired
     private DonationRepository donationRepository;
     @Autowired
-    private LoanRequestRepository loanRequestRepository;
+    private LoanRepository loanRepository;
     @Autowired
     private TicketRepository ticketRepository;
 
@@ -36,22 +34,13 @@ public class CustomerRepositoryTests {
         // customer->ticket
         customerRepository.deleteAll();
         donationRepository.deleteAll();
-        loanRequestRepository.deleteAll();
-        loanedArtifactRepository.deleteAll();
+        loanRepository.deleteAll();
         artifactRepository.deleteAll();
         ticketRepository.deleteAll();
     }
 
     @Test
     public void testPersistAndLoadCustomer() {
-        // LoanedArtifact
-        int loanFee = 1000;
-        LoanedArtifact loanedArtifact = new LoanedArtifact();
-        loanedArtifact.setLoanFee(loanFee);
-
-        loanedArtifact = loanedArtifactRepository.save(loanedArtifact);
-        int loanedArtifactID = loanedArtifact.getArtID();
-
         // Artifact
         boolean loanable = true;
         String name = "Mona Lisa";
@@ -81,12 +70,12 @@ public class CustomerRepositoryTests {
         donation = donationRepository.save(donation);
         int donationID = donation.getDonationID();
 
-        // Loan Request
-        LoanRequest loanRequest = new LoanRequest();
-        loanRequest.setNewRequestedArtifactsList();
-        loanRequest.addRequestedArtifact(artifact2);
-        loanRequest = loanRequestRepository.save(loanRequest);
-        int loanRequestID = loanRequest.getRequestID();
+        // Loan
+        Loan loan = new Loan();
+        loan.setNewrequestedArtifactsList();
+        loan.addRequestedArtifact(artifact2);
+        loan = loanRepository.save(loan);
+        int loanID = loan.getRequestID();
 
         // Ticket
         Date day = new Date(2022, 10, 13);
@@ -106,23 +95,20 @@ public class CustomerRepositoryTests {
 
         customer.setCustomerTicketsList();
         customer.setCustomerDonatedArtifactsList();
-        customer.setLoanedArtifactsList();
+        customer.setLoansList();
 
-        customer.setLoanRequest(loanRequest);
-
-        customer.addLoanedArtifact(loanedArtifact);
         customer.addCustomerDonatedArtifact(donation);
         customer.addCustomerTicket(ticket);
+        customer.addLoan(loan);
 
         customer = customerRepository.save(customer);
         int customerId = customer.getAccountID();
 
         customer = null;
         ticket = null;
-        loanRequest = null;
+        loan = null;
         donation = null;
         artifact = null;
-        loanedArtifact = null;
 
         customer = customerRepository.findByAccountID(customerId);
 
@@ -133,9 +119,7 @@ public class CustomerRepositoryTests {
 
         assertEquals(donationID, customer.getCustomerDonatedArtifact(0).getDonationID());
 
-        assertEquals(loanedArtifactID, customer.getLoanedArtifact(0).getArtID());
-
-        assertEquals(loanRequestID, customer.getLoanRequest().getRequestID());
+        assertEquals(loanID, customer.getLoan(0).getRequestID());
 
         assertEquals(ticketID, customer.getCustomerTicket(0).getTicketID());
     }
