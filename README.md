@@ -27,7 +27,7 @@ No payments will be handled by the museum website.
 | Team Member | GitHub | Major | Member Role | Deliverable 1 hours | Deliverable 2 hours | Deliverable 3 hours | 
 | --- | --- | --- | --- | --- | --- | --- |
 | Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager | 20 | - | - |
-| Feihong Chu | 8d5b9b | ___ | Senior Developer | ___ | - | - |
+| Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer | 15 | - | - |
 | Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 17 | - | - |
 | Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |10 | - | - |
 | Zachary Godden | ZachGodden | ___ | Software Developer | ___ | - | - |
