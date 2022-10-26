@@ -28,7 +28,7 @@ No payments will be handled by the museum website.
 | --- | --- | --- | --- | --- | --- | --- |
 | Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager | 20 | - | - |
 | Feihong Chu | 8d5b9b | ___ | QA Engineer | ___ | - | - |
-| Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 15 | - | - |
+| Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 17 | - | - |
 | Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |10 | - | - |
 | Zachary Godden | ZachGodden | ___ | Software Developer | ___ | - | - |
 | Mohammad Shaheer Bilal | mohammadShaheerb | U3 Computer Engineer | Software Developer | 12 | - | - |
