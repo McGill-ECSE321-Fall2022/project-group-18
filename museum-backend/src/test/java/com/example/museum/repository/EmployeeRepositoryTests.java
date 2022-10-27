@@ -62,7 +62,6 @@ public class EmployeeRepositoryTests {
         assertEquals(employeeId, employee.getAccountID());
         assertEquals(employeeUsername, employee.getUsername());
         assertEquals(employeePassword, employee.getPassword());
-
         assertNotNull(employee.getEmployeeHour(0));
         assertEquals(employeeHourId,employee.getEmployeeHour(0).getEmployeeHourID());
 

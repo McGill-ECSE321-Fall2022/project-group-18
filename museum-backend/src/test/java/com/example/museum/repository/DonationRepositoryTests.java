@@ -79,12 +79,12 @@ public class DonationRepositoryTests {
         List<Artifact> artifactArrayList = donation.getDonatedArtifacts();
         assertEquals(artifactArrayList.size(), 2);
 
-        artifact1 = (Artifact) artifactArrayList.get(0);
+        artifact1 = artifactArrayList.get(0);
         assertNotNull(artifact1);
         assertEquals(artID1, artifact1.getArtID());
 
 
-        artifact2 = (Artifact) artifactArrayList.get(1);
+        artifact2 = artifactArrayList.get(1);
         assertNotNull(artifact2);
         assertEquals(artID2, artifact2.getArtID());
 

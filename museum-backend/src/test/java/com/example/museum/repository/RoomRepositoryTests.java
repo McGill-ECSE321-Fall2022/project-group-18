@@ -33,18 +33,22 @@ public class RoomRepositoryTests {
         boolean loanable1 = true;
         Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
         String artName1 = "David";
+        boolean loaned1 = false;
         Artifact artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);
         artifact1.setName(artName1);
         artifact1.setType(artType1);
+        artifact1.setLoaned(loaned1);
 
         boolean loanable2 = false;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
+        boolean loaned2 = false;
         Artifact artifact2 = new Artifact();
         artifact2.setLoanable(loanable2);
         artifact2.setName(artName2);
         artifact2.setType(artType2);
+        artifact2.setLoaned(loaned2);
         // Save Artifact
         artifact1 = artifactRepository.save((Artifact) artifact1);
         int artID1 = artifact1.getArtID();
@@ -76,7 +80,13 @@ public class RoomRepositoryTests {
         artifact2 = artifactArrayList.get(1);
         assertNotNull(artifact1);
         assertEquals(artID1, artifact1.getArtID());
+        assertEquals(artName1, artifact1.getName());
+        assertEquals(loanable1, artifact1.getLoanable());
+        assertEquals(loaned1, artifact1.getLoaned());
         assertNotNull(artifact2);
         assertEquals(artID2, artifact2.getArtID());
+        assertEquals(artName2, artifact2.getName());
+        assertEquals(loanable2, artifact2.getLoanable());
+        assertEquals(loaned2, artifact2.getLoaned());
     }
 }

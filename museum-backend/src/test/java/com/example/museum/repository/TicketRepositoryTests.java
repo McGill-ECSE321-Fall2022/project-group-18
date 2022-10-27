@@ -41,6 +41,7 @@ public class TicketRepositoryTests {
 
         // Assert that object has correct attributes
         assertNotNull(mondayOctoberTenth);
+        assertEquals(id, mondayOctoberTenth.getTicketID());
         assertEquals(date, mondayOctoberTenth.getDay());
         assertEquals(price, mondayOctoberTenth.getPrice());
     }
