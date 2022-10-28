@@ -60,10 +60,14 @@ public class LoanRepositoryTests {
         artifact2 = artifactRepository.save(artifact2);
         int artID2 = artifact2.getArtID();
         // Create LoanRequest
+        int loanFee = 1000;
+        boolean approved = true;
         Loan loan = new Loan();
         loan.setNewrequestedArtifactsList();
         loan.addRequestedArtifact(artifact1);
         loan.addRequestedArtifact(artifact2);
+        loan.setLoanFee(loanFee);
+        loan.setApproved(approved);
         // Save LoanRequest
         loan = loanRepository.save(loan);
         int loanID = loan.getRequestID();
@@ -76,6 +80,8 @@ public class LoanRepositoryTests {
         assertNotNull(loan);
         // Test if attributes are correct
         assertEquals(loanID, loan.getRequestID());
+        assertEquals(loanFee, loan.getLoanFee());
+        assertEquals(approved, loan.getApproved());
         // Test if associations are correct
         assertNotNull(loan.getRequestedArtifact(0));
         assertEquals(artID1, loan.getRequestedArtifact(0).getArtID());
