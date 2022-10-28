@@ -27,7 +27,7 @@ No payments will be handled by the museum website.
 | Team Member | GitHub | Major | Member Role | Deliverable 1 hours | Individual Efforts | 
 | --- | --- | --- | --- | --- | --- |
 | Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager | 20 | - |
-| Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer | 15 | - |
+| Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer | 16 | Updating domain model, testing persistence of Room and Loans, editing the wiki |
 | Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 18 | Domain modeling with Umple, creating issues and managing the project tab, testing persistence of Business and BusinessHour classes, documentation of the wiki and readme |
 | Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |10 | - |
 | Zachary Godden | ZachGodden | ___ | Software Developer | ___ | - |
@@ -36,9 +36,3 @@ No payments will be handled by the museum website.
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
 [Project Report 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-1)
-
-# Running gradle tests
-To test the persistence of the museum backend:
-- Open the project with museum-backend as the root directory
-- Open a terminal and navigate to the museum-backend directory
-- Enter the command: gradle test
