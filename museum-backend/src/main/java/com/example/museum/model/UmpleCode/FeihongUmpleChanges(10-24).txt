@@ -1,0 +1,50 @@
+enum ArtType {painting, sculpture}
+
+class Artifact {
+  int artID;
+  String name;
+  ArtType type;
+  * roomArtifacts <- 1 Room;
+  boolean loanable;
+  boolean loaned;
+}
+
+
+class Donation{
+  1 -> * Artifact donatedArtifacts;
+  * customerDonatedArtifacts <- 1 Customer;
+  int donationID;
+}
+
+class Person {
+  abstract;
+  int accountID;
+  String username;
+  String password;
+}
+
+
+class Loan {
+  int requestID;
+  * loans <- 1 Customer;
+  int loanFee;
+  boolean approved;
+  1 -> 1..5 Artifact requestedArtifacts;
+}
+
+class Customer {
+  isA Person;
+}
+
+class Ticket{
+  * customerTickets <- 1 Customer;
+  int ticketID;
+  Date day;
+  int price;
+}
+
+class Room{
+  int roomID;
+  String name;
+  int capacity;
+}
