@@ -24,7 +24,7 @@ No payments will be handled by the museum website.
 
 # Team Members
 
-| Team Member | GitHub | Major | Member Role | Deliverable 1 hours | Individual Efforts | 
+| Team Member | GitHub | Major | Member Role | Deliverable 1 hours | Deliverable 1 Individual Efforts | 
 | --- | --- | --- | --- | --- | ----------- |
 | Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager | 20 | Creating requirements, creating use case with MSS and alternatives, helped for the domain model, created the folder structure (setting everything), did persistence layer and persistence testing for artifacts, donations and loan artifacts, created and edited the wiki  |
 | Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer | 17 | Updating domain model, testing persistence of Room and Loans, editing the wiki, updating the testing files |
