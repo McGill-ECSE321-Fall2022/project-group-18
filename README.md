@@ -31,7 +31,7 @@ No payments will be handled by the museum website.
 | Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 18 | Domain modeling with Umple, creating issues and managing the project tab, testing persistence of Business and BusinessHour classes, documentation of the wiki and readme |
 | Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |10 | Testing persistence of Owner and Customer classes, which extend the abstract class Person. |
 | Zachary Godden | ZachGodden | U3 Computer Engineer | Software Developer | 10 | Testing Ticket persistence layer |
-| Mohammad Shaheer Bilal | mohammadShaheerb | U3 Computer Engineer | Software Developer | 12 | - |
+| Mohammad Shaheer Bilal | mohammadShaheerb | U3 Computer Engineer | Software Developer | 12 | Testing persistence of Employee and EmployeeHour classes, creating use case with MSS and alternative scenarios and helped with domain model. |
 
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
