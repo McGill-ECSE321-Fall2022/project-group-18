@@ -91,10 +91,10 @@ public class LoanRepositoryTests {
         assertEquals(loaned1, loan.getRequestedArtifact(0).getLoaned());
         assertNotNull(loan.getRequestedArtifact(1));
         assertEquals(artID2, loan.getRequestedArtifact(1).getArtID());
-        assertEquals(loanable2, loan.getRequestedArtifact(0).getLoanable());
-        assertEquals(artName2, loan.getRequestedArtifact(0).getName());
-        assertEquals(artType2, loan.getRequestedArtifact(0).getType());
-        assertEquals(loaned2, loan.getRequestedArtifact(0).getLoaned());
+        assertEquals(loanable2, loan.getRequestedArtifact(1).getLoanable());
+        assertEquals(artName2, loan.getRequestedArtifact(1).getName());
+        assertEquals(artType2, loan.getRequestedArtifact(1).getType());
+        assertEquals(loaned2, loan.getRequestedArtifact(1).getLoaned());
     }
 
 }
