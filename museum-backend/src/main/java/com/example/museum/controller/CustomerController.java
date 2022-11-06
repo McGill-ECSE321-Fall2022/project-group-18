@@ -11,27 +11,29 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer")
-public class LoginController {
-
+public class CustomerController {
     @Autowired
-    LoginService loginService;
+    CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createCustomer(@RequestBody String body){
+    public ResponseEntity createCustomer(@RequestBody String body) {
         ObjectMapper mapper = new ObjectMapper();
-        try{
+        try {
+            System.out.println(body);
             Customer customer = mapper.readValue(body, Customer.class);
-            Customer persistedCustomer = loginService.createCustomer(customer);
+            Customer persistedCustomer = customerService.createCustomer(customer);
             return new ResponseEntity<>(persistedCustomer, HttpStatus.CREATED);
         } catch (Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.out.println("error");
         }
+
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getCustomer(@PathVariable(name="id") int id) {
-        return loginService.retrieveCustomer(id)
+    public ResponseEntity getCustomer(@PathVariable(name = "id") int id) {
+        return customerService.retrieveCustomer(id)
                 .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
