@@ -1,6 +1,6 @@
 package com.example.museum.controller;
 
-import com.example.museum.model.Customer;
+import com.example.museum.model.Owner;
 import com.example.museum.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,18 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customer")
-public class CustomerController {
+@RequestMapping("/owner")
+public class OwnerController {
     @Autowired
-    CustomerService customerService;
+    OwnerService ownerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createCustomer(@RequestBody String body) {
+    public ResponseEntity createOwner(@RequestBody String body) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            Customer customer = mapper.readValue(body, Customer.class);
-            Customer persistedCustomer = customerService.createCustomer(customer);
-            return new ResponseEntity<>(persistedCustomer, HttpStatus.CREATED);
+            Owner owner = mapper.readValue(body, Owner.class);
+            Owner persistedOwner = ownerService.createOwner(owner);
+            return new ResponseEntity<>(persistedOwner, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,9 +30,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getCustomer(@PathVariable(name = "id") int id) {
-        return customerService.retrieveCustomer(id)
-                .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+    public ResponseEntity getOwner(@PathVariable(name = "id") int id) {
+        return ownerService.retrieveOwner(id)
+                .map(owner -> new ResponseEntity<>(owner, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

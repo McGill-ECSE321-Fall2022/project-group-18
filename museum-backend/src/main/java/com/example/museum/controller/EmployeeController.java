@@ -1,6 +1,6 @@
 package com.example.museum.controller;
 
-import com.example.museum.model.Customer;
+import com.example.museum.model.Employee;
 import com.example.museum.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,18 +10,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/customer")
-public class CustomerController {
+@RequestMapping("/employee")
+public class EmployeeController {
     @Autowired
-    CustomerService customerService;
+    EmployeeService employeeService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createCustomer(@RequestBody String body) {
+    public ResponseEntity createEmployee(@RequestBody String body) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            Customer customer = mapper.readValue(body, Customer.class);
-            Customer persistedCustomer = customerService.createCustomer(customer);
-            return new ResponseEntity<>(persistedCustomer, HttpStatus.CREATED);
+            Employee employee = mapper.readValue(body, Employee.class);
+            Employee persistedEmployee = employeeService.createEmployee(employee);
+            return new ResponseEntity<>(persistedEmployee, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,9 +30,9 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getCustomer(@PathVariable(name = "id") int id) {
-        return customerService.retrieveCustomer(id)
-                .map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+    public ResponseEntity getEmployee(@PathVariable(name = "id") int id) {
+        return employeeService.retrieveEmployee(id)
+                .map(employee -> new ResponseEntity<>(employee, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
