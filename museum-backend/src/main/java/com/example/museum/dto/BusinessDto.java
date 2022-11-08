@@ -1,14 +1,13 @@
 package com.example.museum.dto;
 
 import com.example.museum.model.Business;
-import com.example.museum.model.BusinessHour;
 
 import java.util.List;
 
 public class BusinessDto {
     private int businessID;
     private int ticketFee;
-    private List<BusinessHour> businessHours;
+    private List<BusinessHourDto> businessHours;
 
     public BusinessDto(Business business){
         this.businessID = businessID;
@@ -24,7 +23,7 @@ public class BusinessDto {
         return ticketFee;
     }
 
-    public List<BusinessHour> getBusinessHours() {
+    public List<BusinessHourDto> getBusinessHours() {
         return businessHours;
     }
 }

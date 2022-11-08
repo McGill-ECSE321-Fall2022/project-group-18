@@ -8,9 +8,13 @@ import com.example.museum.model.Customer;
 import com.example.museum.service.BusinessHourService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Date;
+import java.sql.Time;
 
 @RestController
 @RequestMapping("/businessHour")
@@ -20,7 +24,14 @@ public class BusinessHourController {
     BusinessHourService businessHourService;
 
         @RequestMapping(method = RequestMethod.POST)
-        public ResponseEntity createBusinessHour(@RequestBody BusinessHour businessHour) {
+        public ResponseEntity createBusinessHour(@RequestParam Date day,
+                                                 @RequestParam String openTime,
+                                                 @RequestParam String closeTime){
+//                (@RequestBody BusinessHour businessHour)
+            BusinessHour businessHour = new BusinessHour();
+            businessHour.setDay(day);
+            businessHour.setOpenTime(Time.valueOf(openTime));
+            businessHour.setCloseTime(Time.valueOf(closeTime));
             businessHour = businessHourService.createBusinessHour(businessHour);
             return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
         }
