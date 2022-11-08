@@ -11,7 +11,8 @@ import javax.persistence.Id;
 // line 4 "model.ump"
 // line 56 "model.ump"
 @Entity
-public class Artifact
+public class
+Artifact
 {
 
   //------------------------
