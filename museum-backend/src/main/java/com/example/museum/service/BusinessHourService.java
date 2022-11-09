@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 
 @Service
 public class BusinessHourService {
@@ -20,6 +21,11 @@ public class BusinessHourService {
     public BusinessHour createBusinessHour(BusinessHour businessHour) {
         if (businessHourRepository.findBusinessHourByBusinessHourID(businessHour.getBusinessHourID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A business hour with the given id already exists.");
+        }
+        for(BusinessHour bh : businessHourRepository.findAll()){
+            if(bh.getDay().equals(businessHour.getDay())){
+                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
+            }
         }
 
         businessHour = businessHourRepository.save(businessHour);
