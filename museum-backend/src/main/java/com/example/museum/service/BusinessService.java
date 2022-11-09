@@ -23,19 +23,21 @@ public class BusinessService {
     private BusinessRepository businessRepository;
 
     @Transactional
-    public BusinessDto getBusinessByID(int id){
+    public Business getBusinessByID(int id){
         Business business = businessRepository.findBusinessByBusinessID(id);
         if(business == null){
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Business not found");
         }
-        return new BusinessDto(business);
+        return business;
     }
 
     @Transactional
-    public BusinessDto createBusiness(BusinessDto businessRequest){
-        Business business = new Business();
-        setBusinessHours(business, businessRequest);
-        return new BusinessDto(business);
+    public Business createBusiness(Business businessRequest){
+        if (businessRepository.findBusinessByBusinessID(businessRequest.getBusinessID()) != null) {
+            throw new DatabaseException(HttpStatus.CONFLICT, "A business with the given id already exists.");
+        }
+        Business business = businessRepository.save(businessRequest);
+        return business;
     }
 
     //sets business hours from businessDto to business.

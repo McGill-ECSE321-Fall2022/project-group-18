@@ -1,20 +1,12 @@
 package com.example.museum.controller;
 
-import com.example.museum.dto.BusinessDto;
 import com.example.museum.dto.BusinessHourDto;
-import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
-import com.example.museum.model.Customer;
 import com.example.museum.service.BusinessHourService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Date;
-import java.sql.Time;
 
 @RestController
 //@RequestMapping("/businessHour")
@@ -23,56 +15,17 @@ public class BusinessHourController {
     @Autowired
     BusinessHourService businessHourService;
 
-        @PostMapping("/businessHour")
-        public ResponseEntity<BusinessHourDto> createBusinessHour(@RequestBody BusinessHourDto request) {
-            BusinessHour businessHourToCreate = new BusinessHour();
-            businessHourToCreate.setDay(request.getDay());
-            businessHourToCreate.setOpenTime(request.getOpenTime());
-            businessHourToCreate.setCloseTime(request.getCloseTime());
-            BusinessHour createdBusinessHour = businessHourService.createBusinessHour(businessHourToCreate);
-            BusinessHourDto responseBusinessHour = new BusinessHourDto(createdBusinessHour);
-            return new ResponseEntity<BusinessHourDto>(responseBusinessHour, HttpStatus.CREATED);
-        }
-        /*
-        @PostMapping("/event")
-	    public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto request) {
-		    Event eventToCreate = request.toModel();
-		    Event createdEvent = eventService.createEvent(eventToCreate);
-		    EventResponseDto response = new EventResponseDto(createdEvent);
-		    return new ResponseEntity<EventResponseDto>(response, HttpStatus.CREATED);
-	    }
-         */
+    @PostMapping("/businessHour")
+    public ResponseEntity<BusinessHourDto> createBusinessHour(@RequestBody BusinessHourDto request) {
+        BusinessHour businessHourToCreate = request.toModel();
+        BusinessHour createdBusinessHour = businessHourService.createBusinessHour(businessHourToCreate);
+        BusinessHourDto response = new BusinessHourDto(createdBusinessHour);
+        return new ResponseEntity<BusinessHourDto>(response, HttpStatus.CREATED);
+    }
 
-//    public ResponseEntity createBusinessHour(@RequestParam Date day,
-//                                             @RequestParam String openTime,
-//                                             @RequestParam String closeTime){
-////                (@RequestBody BusinessHour businessHour)
-//        BusinessHour businessHour = new BusinessHour();
-//        businessHour.setDay(day);
-//        businessHour.setOpenTime(Time.valueOf(openTime));
-//        businessHour.setCloseTime(Time.valueOf(closeTime));
-//        businessHour = businessHourService.createBusinessHour(businessHour);
-//        return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
-//    }
-
-        @GetMapping("/businessHour/{id}")
-        public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
+    @GetMapping("/businessHour/{id}")
+    public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
-
-
-
-
-//    @GetMapping("/event/{name}")
-//    public ResponseEntity<EventDto> getEventByName(@PathVariable String name) {
-//        Event event = eventService.getEventByName(name);
-//        return new ResponseEntity<EventDto>(new EventDto(event), HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/event")
-//    public ResponseEntity<EventDto> createEvent(@RequestBody Event event) {
-//        event = eventService.createEvent(event);
-//        return new ResponseEntity<EventDto>(new EventDto(event), HttpStatus.CREATED);
-//    }
 }
