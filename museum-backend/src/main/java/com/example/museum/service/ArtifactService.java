@@ -4,8 +4,9 @@ import com.example.museum.model.Artifact;
 import com.example.museum.repository.ArtifactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 
 @Service
 public class ArtifactService {
