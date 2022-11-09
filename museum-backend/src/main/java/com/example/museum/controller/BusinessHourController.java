@@ -17,26 +17,45 @@ import java.sql.Date;
 import java.sql.Time;
 
 @RestController
-@RequestMapping("/businessHour")
+//@RequestMapping("/businessHour")
 public class BusinessHourController {
 
     @Autowired
     BusinessHourService businessHourService;
 
-        @RequestMapping(method = RequestMethod.POST)
-        public ResponseEntity createBusinessHour(@RequestParam Date day,
-                                                 @RequestParam String openTime,
-                                                 @RequestParam String closeTime){
-//                (@RequestBody BusinessHour businessHour)
-            BusinessHour businessHour = new BusinessHour();
-            businessHour.setDay(day);
-            businessHour.setOpenTime(Time.valueOf(openTime));
-            businessHour.setCloseTime(Time.valueOf(closeTime));
-            businessHour = businessHourService.createBusinessHour(businessHour);
-            return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
+        @PostMapping("/businessHour")
+        public ResponseEntity<BusinessHourDto> createBusinessHour(@RequestBody BusinessHourDto request) {
+            BusinessHour businessHourToCreate = new BusinessHour();
+            businessHourToCreate.setDay(request.getDay());
+            businessHourToCreate.setOpenTime(request.getOpenTime());
+            businessHourToCreate.setCloseTime(request.getCloseTime());
+            BusinessHour createdBusinessHour = businessHourService.createBusinessHour(businessHourToCreate);
+            BusinessHourDto responseBusinessHour = new BusinessHourDto(createdBusinessHour);
+            return new ResponseEntity<BusinessHourDto>(responseBusinessHour, HttpStatus.CREATED);
         }
+        /*
+        @PostMapping("/event")
+	    public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto request) {
+		    Event eventToCreate = request.toModel();
+		    Event createdEvent = eventService.createEvent(eventToCreate);
+		    EventResponseDto response = new EventResponseDto(createdEvent);
+		    return new ResponseEntity<EventResponseDto>(response, HttpStatus.CREATED);
+	    }
+         */
 
-        @GetMapping("/id")
+//    public ResponseEntity createBusinessHour(@RequestParam Date day,
+//                                             @RequestParam String openTime,
+//                                             @RequestParam String closeTime){
+////                (@RequestBody BusinessHour businessHour)
+//        BusinessHour businessHour = new BusinessHour();
+//        businessHour.setDay(day);
+//        businessHour.setOpenTime(Time.valueOf(openTime));
+//        businessHour.setCloseTime(Time.valueOf(closeTime));
+//        businessHour = businessHourService.createBusinessHour(businessHour);
+//        return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
+//    }
+
+        @GetMapping("/businessHour/{id}")
         public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
