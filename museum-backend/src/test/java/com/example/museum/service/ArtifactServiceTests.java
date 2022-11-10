@@ -12,7 +12,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ArtifactServiceTests {
@@ -42,6 +43,34 @@ public class ArtifactServiceTests {
         assertEquals(artifact.getLoanable(), testArtifact.getLoanable());
         assertEquals(artifact.getLoaned(), testArtifact.getLoaned());
 
+    }
+
+    @Test
+    public void testCreateArtifact(){
+        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final int artID = 10;
+        final String name = "TheSculpture";
+        final Artifact.ArtType type = Artifact.ArtType.Sculpture;
+        final boolean loanable = false;
+        final boolean loaned = false;
+
+        Artifact artifact = new Artifact();
+        artifact.setArtID(artID);
+        artifact.setName(name);
+        artifact.setType(type);
+        artifact.setLoanable(loanable);
+        artifact.setLoaned(loaned);
+
+        Artifact returnedArtfact = artifactService.createArtifact(artifact);
+
+        assertNotNull(returnedArtfact);
+        assertEquals(name, returnedArtfact.getName());
+        assertEquals(type, returnedArtfact.getType());
+        assertEquals(loanable, returnedArtfact.getLoanable());
+        assertEquals(loaned, returnedArtfact.getLoaned());
+
+        verify(artifactRepository, times(1)).save(artifact);
 
     }
 }
