@@ -115,10 +115,16 @@ public class CustomerRepositoryTests {
 
         String customerUsername = "Customer";
         String customerPassword = "password";
+        String firstName = "Bob";
+        String lastName = "Vance";
+        int credit = 69;
         // Create a customer object with its attributes and associations
         Customer customer = new Customer();
         customer.setUsername(customerUsername);
         customer.setPassword(customerPassword);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setCredit(credit);
 
         customer.setCustomerTicketsList();
         customer.setCustomerDonatedArtifactsList();
@@ -145,6 +151,9 @@ public class CustomerRepositoryTests {
         assertEquals(customerId, customer.getAccountID());
         assertEquals(customerUsername, customer.getUsername());
         assertEquals(customerPassword, customer.getPassword());
+        assertEquals(firstName, customer.getFirstName());
+        assertEquals(lastName, customer.getLastName());
+        assertEquals(credit, customer.getCredit());
         // Test if the associations are correct
         assertEquals(donationID, customer.getCustomerDonatedArtifact(0).getDonationID());
         assertEquals(artID1, customer.getCustomerDonatedArtifact(0).getDonatedArtifact(0).getArtID());

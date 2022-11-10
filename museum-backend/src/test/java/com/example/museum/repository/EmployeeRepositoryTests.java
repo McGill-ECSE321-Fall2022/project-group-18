@@ -50,10 +50,15 @@ public class EmployeeRepositoryTests {
 
         String employeeUsername = "employee";
         String employeePassword = "password";
+        String employeeFirstName = "Jim";
+        String employeeLastName = "Halpert";
         // Create an employee object with some attributes and associations
         Employee employee = new Employee();
         employee.setUsername(employeeUsername);
         employee.setPassword(employeePassword);
+        employee.setFirstName(employeeFirstName);
+        employee.setLastName(employeeLastName);
+
         employee.setEmployeeHourList();
         employee.addEmployeeHour(employeeHour);
         // Save the employee in its database, tests its writing
@@ -71,6 +76,8 @@ public class EmployeeRepositoryTests {
         assertEquals(employeeId, employee.getAccountID());
         assertEquals(employeeUsername, employee.getUsername());
         assertEquals(employeePassword, employee.getPassword());
+        assertEquals(employeeFirstName, employee.getFirstName());
+        assertEquals(employeeLastName, employee.getLastName());
         // Test if the associations are correct
         assertNotNull(employee.getEmployeeHour(0));
         assertEquals(employeeHourId,employee.getEmployeeHour(0).getEmployeeHourID());
