@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class BusinessHourService {
@@ -23,8 +25,10 @@ public class BusinessHourService {
         if (businessHourRepository.findBusinessHourByBusinessHourID(businessHour.getBusinessHourID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A business hour with the given id already exists.");
         }
-        for(BusinessHour bh : businessHourRepository.findAll()){
-            if(bh.getDay().equals(businessHour.getDay())){
+        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
+        while(bHours.hasNext()){
+            BusinessHour bh = bHours.next();
+            if(bh.getDay().toString().equals(businessHour.getDay().toString())){
                 throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
             }
         }
@@ -44,8 +48,10 @@ public class BusinessHourService {
 
 //    TODO: do we need to save the business before returning it (to update the database)?
     public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime){
-        for(BusinessHour bh : businessHourRepository.findAll()){
-            if(bh.getDay().equals(day)){
+        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
+        while(bHours.hasNext()){
+            BusinessHour bh = bHours.next();
+            if(bh.getDay().toString().equals(day.toString())){
                 throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
             }
         }
