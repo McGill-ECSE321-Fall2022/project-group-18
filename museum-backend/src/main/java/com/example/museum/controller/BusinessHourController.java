@@ -25,15 +25,9 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.CREATED);
     }
 
-    /*
-    TODO: test!
-    - create a business hour in the database
-    - set new business hour fields inside a new BusinessHour object and call this method (with the id of the first business hour)
-    - make sure the id didn't change?
-    - make sure the fields from the database object were modified to the fields from the second business hour object
-     */
-    @PostMapping("/businessHour/update/{id}")
-    public ResponseEntity<BusinessHourDto> updateBusinessHour(@RequestBody BusinessHourDto request, @PathVariable int id){
+    //tested
+    @PutMapping("/businessHour/update/{id}")
+    public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id, @RequestBody BusinessHourDto request){
         BusinessHour updatedBusinessHour = businessHourService.modifyBusinessHourById(id, request.getDay(), request.getOpenTime(), request.getCloseTime());
         BusinessHourDto response = new BusinessHourDto(updatedBusinessHour);
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.OK);
