@@ -42,19 +42,19 @@ public class BusinessHourService {
         return businessHour;
     }
 
-    //TODO: do we need to save the business before returning it (to update the database)?
-//    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime){
-//        for(BusinessHour bh : businessHourRepository.findAll()){
-//            if(bh.getDay().equals(day)){
-//                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
-//            }
-//        }
-//        BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
-//        businessHour.setDay(day);
-//        businessHour.setOpenTime(openTime);
-//        businessHour.setCloseTime(closeTime);
-//        //I assume we need to save the new one to the database
-//        BusinessHour updatedBusinessHour = businessHourRepository.save(businessHour);
-//        return updatedBusinessHour;
-//    }
+//    TODO: do we need to save the business before returning it (to update the database)?
+    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime){
+        for(BusinessHour bh : businessHourRepository.findAll()){
+            if(bh.getDay().equals(day)){
+                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
+            }
+        }
+        BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
+        businessHour.setDay(day);
+        businessHour.setOpenTime(openTime);
+        businessHour.setCloseTime(closeTime);
+        //I assume we need to save the new one to the database
+        BusinessHour updatedBusinessHour = businessHourRepository.save(businessHour);
+        return updatedBusinessHour;
+    }
 }
