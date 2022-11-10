@@ -1,6 +1,5 @@
 package com.example.museum.controller;
 
-import com.example.museum.dto.ArtifactResponseDto;
 import com.example.museum.dto.BusinessDto;
 import com.example.museum.model.Business;
 import com.example.museum.service.BusinessService;
