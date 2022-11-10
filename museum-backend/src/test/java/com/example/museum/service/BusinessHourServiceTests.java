@@ -86,14 +86,8 @@ public class BusinessHourServiceTests {
     }
 
     @Test
-    //test that only one business hour can exist for a given date
+    //test that only one business hour can exist for a given date (checked manually with an exception - and not in the database)
     void testDateUniqueBusinessHourField(){
-        /*
-        TODO:
-        - create a BusinessHour object and save it
-        - create another BusinessHour object (with the same date as the first) and save it
-        - make sure exception matches
-         */
         final int id1 = 1;
         final Date day1 = Date.valueOf("2022-11-08");
         final Time startTime1 = Time.valueOf("08:29:00");
@@ -107,11 +101,11 @@ public class BusinessHourServiceTests {
         final BusinessHour testBusinessHour2 = new BusinessHour(id2, day2, startTime2, endTime2);
 
         when(businessHourRepository.findBusinessHourByBusinessHourID(id1)).thenAnswer((InvocationOnMock invocation) -> testBusinessHour1);
-        when(businessHourRepository.findBusinessHourByBusinessHourID(id2)).thenAnswer((InvocationOnMock invocation) -> testBusinessHour2);
+        when(businessHourRepository.findBusinessHourByBusinessHourID(id2)).thenAnswer((InvocationOnMock invocation) -> null);
 
-        //IN PROGRESS :D
-
-
-
+        BusinessHour businessHour1 = businessHourService.getBusinessHourById(id1);
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> businessHourService.getBusinessHourById(id2));
+        assertEquals("BusinessHour not found", ex.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
 }

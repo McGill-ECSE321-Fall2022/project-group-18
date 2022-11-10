@@ -28,4 +28,6 @@ public class BusinessHourController {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
+
+
 }
