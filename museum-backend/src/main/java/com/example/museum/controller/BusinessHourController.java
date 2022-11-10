@@ -46,5 +46,10 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
 
+    /*
+    TODO: More functionality:
+    - delete business hour?
+     */
+
 
 }
