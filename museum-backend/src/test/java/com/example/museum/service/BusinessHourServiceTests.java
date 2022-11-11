@@ -88,24 +88,29 @@ public class BusinessHourServiceTests {
     @Test
     //test that only one business hour can exist for a given date (checked manually with an exception - and not in the database)
     void testDateUniqueBusinessHourField(){
-        final int id1 = 1;
         final Date day1 = Date.valueOf("2022-11-08");
         final Time startTime1 = Time.valueOf("08:29:00");
         final Time endTime1 = Time.valueOf("16:45:00");
-        final BusinessHour testBusinessHour1 = new BusinessHour(id1, day1, startTime1, endTime1);
+        final BusinessHour testBusinessHour1 = new BusinessHour();
+        testBusinessHour1.setDay(day1);
+        testBusinessHour1.setOpenTime(startTime1);
+        testBusinessHour1.setCloseTime(endTime1);
+        BusinessHour returnedBusinessHour1 = businessHourService.createBusinessHour(testBusinessHour1);
 
-        final int id2 = 2;
         final Date day2 = Date.valueOf("2022-11-08");
         final Time startTime2 = Time.valueOf("08:45:00");
         final Time endTime2 = Time.valueOf("16:55:00");
-        final BusinessHour testBusinessHour2 = new BusinessHour(id2, day2, startTime2, endTime2);
+        final BusinessHour testBusinessHour2 = new BusinessHour();
+        testBusinessHour2.setDay(day2);
+        testBusinessHour2.setOpenTime(startTime2);
+        testBusinessHour2.setCloseTime(endTime2);
+        DatabaseException exception = assertThrows(DatabaseException.class, () -> businessHourService.createBusinessHour(testBusinessHour2));
+        assertEquals("A BusinessHour with the given date already exists", exception.getMessage());
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
 
-        when(businessHourRepository.findBusinessHourByBusinessHourID(id1)).thenAnswer((InvocationOnMock invocation) -> testBusinessHour1);
-        when(businessHourRepository.findBusinessHourByBusinessHourID(id2)).thenAnswer((InvocationOnMock invocation) -> null);
+        verify(businessHourRepository, times(1)).save(testBusinessHour1);
+        verify(businessHourRepository, times(0)).save(testBusinessHour2);
 
-        BusinessHour businessHour1 = businessHourService.getBusinessHourById(id1);
-        DatabaseException ex = assertThrows(DatabaseException.class, () -> businessHourService.getBusinessHourById(id2));
-        assertEquals("BusinessHour not found", ex.getMessage());
-        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+
     }
 }

@@ -33,7 +33,8 @@ public class DonationDto {
         Donation donation = new Donation();
         donation.setDonationID(this.getDonationID());
         for(ArtifactDto a : this.getArtifacts()){
-            donation.addDonatedArtifact(a.toModel());
+            Artifact art = a.toModel();
+            donation.addDonatedArtifact(art);
         }
         return donation;
     }

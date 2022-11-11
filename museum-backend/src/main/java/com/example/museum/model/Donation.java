@@ -33,7 +33,9 @@ public class Donation
   // CONSTRUCTOR
   //------------------------
 
-  public Donation() {}
+  public Donation() {
+    donatedArtifacts = new ArrayList<Artifact>();
+  }
 
   public Donation(int aDonationID)
   {
