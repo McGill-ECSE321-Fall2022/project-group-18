@@ -38,6 +38,7 @@ public class DonationRepositoryTests {
         boolean loaned1 = true;
         boolean loanable1 = true;
         String name1 = "Mona Lisa";
+        int loanFee1 = 5;
         Artifact.ArtType artType1 = Artifact.ArtType.Painting;
         // Create an artifact object with some attributes
         Artifact artifact1 = new Artifact();
@@ -45,11 +46,13 @@ public class DonationRepositoryTests {
         artifact1.setName(name1);
         artifact1.setType(artType1);
         artifact1.setLoaned(loaned1);
+        artifact1.setLoanFee(loanFee1);
 
         // Create 2nd artifact
         boolean loaned2 = false;
         boolean loanable2 = false;
         String name2 = "David";
+        int loanFee2 = 6;
         Artifact.ArtType artType2 = Artifact.ArtType.Sculpture;
         // Create an artifact object with some attributes
         Artifact artifact2 = new Artifact();
@@ -57,6 +60,7 @@ public class DonationRepositoryTests {
         artifact2.setName(name2);
         artifact2.setType(artType2);
         artifact2.setLoaned(loaned2);
+        artifact2.setLoanFee(loanFee2);
 
         // Save the artifact in its database, tests its writing
         // Keep track with its automatically generated ID
@@ -94,6 +98,7 @@ public class DonationRepositoryTests {
         assertEquals(name1, artifact1.getName());
         assertEquals(artType1, artifact1.getType());
         assertEquals(loaned1, artifact1.getLoaned());
+        assertEquals(loanFee1, artifact1.getLoanFee());
         artifact2 = artifactArrayList.get(1);
         assertNotNull(artifact2);
         assertEquals(artID2, artifact2.getArtID());
@@ -101,5 +106,6 @@ public class DonationRepositoryTests {
         assertEquals(name2, artifact2.getName());
         assertEquals(artType2, artifact2.getType());
         assertEquals(loaned2, artifact2.getLoaned());
+        assertEquals(loanFee2, artifact2.getLoanFee());
     }
 }
