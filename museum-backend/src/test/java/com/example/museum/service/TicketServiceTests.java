@@ -33,7 +33,7 @@ public class TicketServiceTests {
         final int id = 1;
         final Date day = Date.valueOf("2022-11-08");
         final Ticket testTicket = new Ticket(id, day);
-        when(TicketRepository.findTicketByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> testTicket);
+        when(TicketRepository.findByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> testTicket);
 
         Ticket Ticket = TicketService.getTicketById(id);
 

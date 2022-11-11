@@ -4,6 +4,8 @@ import com.example.museum.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import com.example.museum.model.Ticket;
+import com.example.museum.repository.TicketRepository;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
@@ -17,8 +19,8 @@ public class TicketService {
     TicketRepository ticketRepository;
 
     @Transactional
-    public TicketService createTicket(Ticket ticket){
-        if(ticketRepository.findTicketByTicketID(ticket.getTicketID()) != null){
+    public Ticket createTicket(Ticket ticket){
+        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
             throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
         }
 
@@ -34,7 +36,17 @@ public class TicketService {
         return ticket;
     }
 
-    public Ticket modifyTicketById(int id, Date day, Time openTime, Time closeTime){
+    @Transactional
+    public Ticket getTicketById(int id){
+        Ticket ticket = TicketRepository.findByTicketID(id);
+        if(ticket == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Ticket not found");
+        }
+        return ticket;
+    }
+
+
+    public Ticket modifyTicketById(int id, Date day){
         Iterator<Ticket> t = TicketRepository.findAll().iterator();
         while(t.hasNext()){
             Ticket curT = t.next();
@@ -42,7 +54,7 @@ public class TicketService {
                 throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
             }
         }
-        Ticket Ticket = TicketRepository.findTicketByTicketID(id);
+        Ticket Ticket = TicketRepository.findByTicketID(id);
         Ticket.setDay(day);
         //I assume we need to save the new one to the database
         Ticket updatedTicket = TicketRepository.save(Ticket);
