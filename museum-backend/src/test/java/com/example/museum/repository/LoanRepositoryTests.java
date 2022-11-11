@@ -34,6 +34,7 @@ public class LoanRepositoryTests {
         // Create Artifact
         boolean loanable1 = true;
         boolean loaned1 = true;
+        int loanFee1 = 45;
         Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
         String artName1 = "David";
         // Create a new artifact object with some attributes
@@ -42,9 +43,11 @@ public class LoanRepositoryTests {
         artifact1.setName(artName1);
         artifact1.setType(artType1);
         artifact1.setLoaned(loaned1);
+        artifact1.setLoanFee(loanFee1);
 
         boolean loaned2 = false;
         boolean loanable2 = true;
+        int loanFee2 = 44;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
         // Create an artifact object with some attributes
@@ -53,6 +56,7 @@ public class LoanRepositoryTests {
         artifact2.setName(artName2);
         artifact2.setType(artType2);
         artifact2.setLoaned(loaned2);
+        artifact2.setLoanFee(loanFee2);
         // Save Artifact
         artifact1 = artifactRepository.save(artifact1);
         // Keep track with the automatically generated ID
@@ -89,12 +93,14 @@ public class LoanRepositoryTests {
         assertEquals(artName1, loan.getRequestedArtifact(0).getName());
         assertEquals(artType1, loan.getRequestedArtifact(0).getType());
         assertEquals(loaned1, loan.getRequestedArtifact(0).getLoaned());
+        assertEquals(loanFee1, loan.getRequestedArtifact(0).getLoanFee());
         assertNotNull(loan.getRequestedArtifact(1));
         assertEquals(artID2, loan.getRequestedArtifact(1).getArtID());
         assertEquals(loanable2, loan.getRequestedArtifact(1).getLoanable());
         assertEquals(artName2, loan.getRequestedArtifact(1).getName());
         assertEquals(artType2, loan.getRequestedArtifact(1).getType());
         assertEquals(loaned2, loan.getRequestedArtifact(1).getLoaned());
+        assertEquals(loanFee2, loan.getRequestedArtifact(1).getLoanFee());
     }
 
 }

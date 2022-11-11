@@ -29,12 +29,14 @@ public class ArtifactRepositoryTests {
     public void testPersistAndLoadArtifact() {
         boolean loanable = true;
         String name = "Mona Lisa";
+        int loanFee = 69;
         Artifact.ArtType type = Artifact.ArtType.Painting;
         // Create an artiface with some attributes
         Artifact artifact = new Artifact();
         artifact.setLoanable(loanable);
         artifact.setName(name);
         artifact.setType(type);
+        artifact.setLoanFee(loanFee);
         // Save the artifact in its database, tests its writing
         artifact = artifactRepository.save(artifact);
         // Keep track with its automatically generated ID
@@ -52,6 +54,7 @@ public class ArtifactRepositoryTests {
         assertEquals(loanable, artifact.getLoanable());
         assertEquals(name, artifact.getName());
         assertEquals(type, artifact.getType());
+        assertEquals(loanFee, artifact.getLoanFee());
 
     }
 }
