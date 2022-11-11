@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class BusinessHourService {
         if (businessHourRepository.findBusinessHourByBusinessHourID(businessHour.getBusinessHourID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A business hour with the given id already exists.");
         }
+//        List<BusinessHour> bhours = (List<BusinessHour>) businessHourRepository.findAll().iterator();
         Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
         while(bHours.hasNext()){
             BusinessHour bh = bHours.next();
