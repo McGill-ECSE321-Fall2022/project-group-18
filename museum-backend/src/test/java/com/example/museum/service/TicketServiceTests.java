@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
-import java.sql.Time;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -45,7 +44,7 @@ public class TicketServiceTests {
     void testGetTicketByInvalidID(){
         final int invalidID = 2;
 
-        when(TicketRepository.findTicketByTicketID(invalidID)).thenAnswer((InvocationOnMock) -> null);
+        when(TicketRepository.findByTicketID(invalidID)).thenAnswer((InvocationOnMock) -> null);
 
         DatabaseException ex = assertThrows(DatabaseException.class, () -> TicketService.getTicketById(invalidID));
 
