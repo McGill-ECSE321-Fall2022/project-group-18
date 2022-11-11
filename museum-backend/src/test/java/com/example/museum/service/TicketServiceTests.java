@@ -73,12 +73,12 @@ public class TicketServiceTests {
     @Test
         //test that only one Ticket can exist for a given date (checked manually with an exception - and not in the database)
     void testDateUniqueTicketField(){
-        final Date day1 = Date.valueOf("2022-11-12”);
+        final Date day1 = Date.valueOf("2022-11-12");
         final Ticket testTicket1 = new Ticket();
         testTicket1.setDay(day1);
         Ticket returnedTicket1 = TicketService.createTicket(testTicket1);
 
-        final Date day2 = Date.valueOf("2022-11-12”);
+        final Date day2 = Date.valueOf("2022-11-12");
         final Ticket testTicket2 = new Ticket();
         testTicket2.setDay(day2);
         DatabaseException exception = assertThrows(DatabaseException.class, () -> TicketService.createTicket(testTicket2));
