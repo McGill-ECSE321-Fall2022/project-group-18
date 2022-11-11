@@ -40,22 +40,26 @@ public class RoomRepositoryTests {
         Artifact.ArtType artType1 = Artifact.ArtType.Sculpture;
         String artName1 = "David";
         boolean loaned1 = false;
+        int loanFee1 = 7;
         Artifact artifact1 = new Artifact();
         artifact1.setLoanable(loanable1);
         artifact1.setName(artName1);
         artifact1.setType(artType1);
         artifact1.setLoaned(loaned1);
+        artifact1.setLoanFee(loanFee1);
 
         // Create another Artifact object with attributes
         boolean loanable2 = false;
         Artifact.ArtType artType2 = Artifact.ArtType.Painting;
         String artName2 = "Portrait of Dr. Gachet";
         boolean loaned2 = false;
+        int loanFee2 = 9;
         Artifact artifact2 = new Artifact();
         artifact2.setLoanable(loanable2);
         artifact2.setName(artName2);
         artifact2.setType(artType2);
         artifact2.setLoaned(loaned2);
+        artifact2.setLoanFee(loanFee2);
         // Save Artifact
         artifact1 = artifactRepository.save((Artifact) artifact1);
         int artID1 = artifact1.getArtID();
@@ -99,6 +103,7 @@ public class RoomRepositoryTests {
         assertEquals(loanable1, artifact1.getLoanable());
         assertEquals(loaned1, artifact1.getLoaned());
         assertEquals(artType1, artifact1.getType());
+        assertEquals(loanFee1, artifact1.getLoanFee());
         // Repeat for artifact 2
         assertNotNull(artifact2);
         assertEquals(artID2, artifact2.getArtID());
@@ -106,5 +111,6 @@ public class RoomRepositoryTests {
         assertEquals(loanable2, artifact2.getLoanable());
         assertEquals(loaned2, artifact2.getLoaned());
         assertEquals(artType2, artifact2.getType());
+        assertEquals(loanFee2, artifact2.getLoanFee());
     }
 }

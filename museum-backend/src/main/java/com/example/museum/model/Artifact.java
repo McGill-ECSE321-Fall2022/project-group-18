@@ -33,19 +33,21 @@ Artifact
   private ArtType type;
   private boolean loanable;
   private boolean loaned;
+  private int loanFee;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
   public Artifact() {}
-  public Artifact(int aArtID, String aName, ArtType aType, boolean aLoanable, boolean aLoaned)
+  public Artifact(int aArtID, String aName, ArtType aType, boolean aLoanable, boolean aLoaned, int aLoanFee)
   {
     artID = aArtID;
     name = aName;
     type = aType;
     loanable = aLoanable;
     loaned = aLoaned;
+    loanFee = aLoanFee;
   }
 
   //------------------------
@@ -92,6 +94,13 @@ Artifact
     return wasSet;
   }
 
+  public boolean setLoanFee(int aLoanFee){
+    boolean wasSet = false;
+    loanFee = aLoanFee;
+    wasSet = true;
+    return wasSet;
+  }
+
   public int getArtID()
   {
     return artID;
@@ -116,6 +125,8 @@ Artifact
   {
     return loaned;
   }
+
+  public int getLoanFee(){ return loanFee; }
 
   public void delete()
   {}

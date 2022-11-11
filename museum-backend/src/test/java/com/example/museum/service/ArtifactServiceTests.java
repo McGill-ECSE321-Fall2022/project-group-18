@@ -31,7 +31,8 @@ public class ArtifactServiceTests {
         final Artifact.ArtType type = Artifact.ArtType.Painting;
         final boolean loanable = true;
         final boolean loaned = false;
-        final Artifact testArtifact = new Artifact(id, name, type, loanable, loaned);
+        final int loanFee = 87;
+        final Artifact testArtifact = new Artifact(id, name, type, loanable, loaned, loanFee);
 
         when(artifactRepository.findByArtID(id)).thenAnswer((InvocationOnMock invocation) -> testArtifact);
 
@@ -42,6 +43,7 @@ public class ArtifactServiceTests {
         assertEquals(artifact.getType(), testArtifact.getType());
         assertEquals(artifact.getLoanable(), testArtifact.getLoanable());
         assertEquals(artifact.getLoaned(), testArtifact.getLoaned());
+        assertEquals(artifact.getLoanFee(), testArtifact.getLoanFee());
 
     }
 
