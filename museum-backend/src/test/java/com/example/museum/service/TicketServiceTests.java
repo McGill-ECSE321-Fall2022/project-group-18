@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,7 +32,7 @@ public class TicketServiceTests {
     public void testGetTicketID(){
         final int id = 1;
         final Date day = Date.valueOf("2022-11-08");
-        final Ticket testTicket = new Ticket(id, day);
+        final Ticket testTicket = new Ticket(id, day, 25);
         when(TicketRepository.findByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> testTicket);
 
         Ticket Ticket = TicketService.getTicketById(id);
@@ -58,35 +59,33 @@ public class TicketServiceTests {
         when(TicketRepository.save(any(Ticket.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
         final Date day = Date.valueOf("2022-11-11");
-        Ticket t = new Ticket();
-        t.setDay(day);
-        Ticket returnedTicket = TicketService.createTicket(t);
+        Ticket returnedTicket = TicketService.createTicket(day, 34);
 
         //checking fields - just like persistence testing
         assertNotNull(returnedTicket);
         assertEquals(day, returnedTicket.getDay());
 
         //the most important part - making sure we actually performed a save operation
-        verify(TicketRepository, times(1)).save(t);
+        verify(TicketRepository, times(1)).save(returnedTicket);
     }
 
     @Test
         //test that only one Ticket can exist for a given date (checked manually with an exception - and not in the database)
     void testDateUniqueTicketField(){
-        final Date day1 = Date.valueOf("2022-11-12");
-        final Ticket testTicket1 = new Ticket();
-        testTicket1.setDay(day1);
-        Ticket returnedTicket1 = TicketService.createTicket(testTicket1);
+        Date day = Date.valueOf("2022-11-12");
+        Ticket existingTicket = new Ticket();
+        existingTicket.setDay(day);
+        ArrayList<Ticket> existingTickets = new ArrayList<Ticket>();
+        existingTickets.add(existingTicket);
 
-        final Date day2 = Date.valueOf("2022-11-12");
-        final Ticket testTicket2 = new Ticket();
-        testTicket2.setDay(day2);
-        DatabaseException exception = assertThrows(DatabaseException.class, () -> TicketService.createTicket(testTicket2));
+        when(TicketRepository.findByTicketID(any(Integer.class))).thenReturn(null);
+        when(TicketRepository.findAll()).thenReturn(existingTickets);
+
+
+        DatabaseException exception = assertThrows(DatabaseException.class, () -> TicketService.createTicket(day, 21));
         assertEquals("A Ticket with the given date already exists", exception.getMessage());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
 
-        verify(TicketRepository, times(1)).save(testTicket1);
-        verify(TicketRepository, times(0)).save(testTicket2);
     }
 }
 

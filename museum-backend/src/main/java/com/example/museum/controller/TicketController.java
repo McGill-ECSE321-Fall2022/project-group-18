@@ -18,7 +18,7 @@ public class TicketController {
     @PostMapping("/Ticket")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto request) {
         Ticket TicketToCreate = request.toModel();
-        Ticket createdTicket = TicketService.createTicket(TicketToCreate);
+        Ticket createdTicket = TicketService.createTicket(null, -1);
         TicketDto response = new TicketDto(createdTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
     }

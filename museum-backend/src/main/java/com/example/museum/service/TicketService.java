@@ -19,7 +19,10 @@ public class TicketService {
     TicketRepository ticketRepository;
 
     @Transactional
-    public Ticket createTicket(Ticket ticket){
+    public Ticket createTicket(Date day, int price){
+        Ticket ticket = new Ticket();
+        ticket.setDay(day);
+        ticket.setPrice(price);
         if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
             throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
         }
