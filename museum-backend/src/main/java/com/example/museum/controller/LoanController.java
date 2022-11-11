@@ -1,2 +1,3 @@
-package com.example.museum.controller;public class LoanController {
+package com.example.museum.controller;
+public class LoanController {
 }

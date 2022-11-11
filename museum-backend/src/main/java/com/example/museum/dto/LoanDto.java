@@ -1,2 +1,3 @@
-package com.example.museum.dto;public class LoanDto {
+package com.example.museum.dto;
+public class LoanDto {
 }
