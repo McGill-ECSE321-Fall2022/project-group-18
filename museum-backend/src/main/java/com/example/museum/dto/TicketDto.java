@@ -9,10 +9,12 @@ public class TicketDto {
 
     private int TicketID;
     private Date day;
+    private int price;
 
     public TicketDto(Ticket Ticket){
         this.TicketID = Ticket.getTicketID();
         this.day = Ticket.getDay();
+        this.price = Ticket.getPrice();
     }
 
     public TicketDto(){}
@@ -24,6 +26,8 @@ public class TicketDto {
     public Date getDay(){
         return day;
     }
+
+    public int getPrice(){ return price; }
 
     public Ticket toModel(){
         Ticket Ticket = new Ticket();

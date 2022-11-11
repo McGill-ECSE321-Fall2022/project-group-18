@@ -49,7 +49,7 @@ public class TicketService {
     }
 
 
-    public Ticket modifyTicketById(int id, Date day){
+    public Ticket modifyTicketById(int id, Date day, int price){
         Iterator<Ticket> t = ticketRepository.findAll().iterator();
         while(t.hasNext()){
             Ticket curT = t.next();
@@ -59,6 +59,7 @@ public class TicketService {
         }
         Ticket Ticket = ticketRepository.findByTicketID(id);
         Ticket.setDay(day);
+        Ticket.setPrice(price);
         //I assume we need to save the new one to the database
         Ticket updatedTicket = ticketRepository.save(Ticket);
         return updatedTicket;
