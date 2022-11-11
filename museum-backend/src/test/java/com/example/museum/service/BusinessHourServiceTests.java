@@ -110,7 +110,5 @@ public class BusinessHourServiceTests {
 
         verify(businessHourRepository, times(1)).save(testBusinessHour1);
         verify(businessHourRepository, times(0)).save(testBusinessHour2);
-
-
     }
 }
