@@ -38,7 +38,7 @@ public class TicketService {
 
     @Transactional
     public Ticket getTicketById(int id){
-        Ticket ticket = TicketRepository.findByTicketID(id);
+        Ticket ticket = ticketRepository.findByTicketID(id);
         if(ticket == null){
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Ticket not found");
         }
@@ -47,17 +47,17 @@ public class TicketService {
 
 
     public Ticket modifyTicketById(int id, Date day){
-        Iterator<Ticket> t = TicketRepository.findAll().iterator();
+        Iterator<Ticket> t = ticketRepository.findAll().iterator();
         while(t.hasNext()){
             Ticket curT = t.next();
             if(curT.getDay().toString().equals(day.toString())){
                 throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
             }
         }
-        Ticket Ticket = TicketRepository.findByTicketID(id);
+        Ticket Ticket = ticketRepository.findByTicketID(id);
         Ticket.setDay(day);
         //I assume we need to save the new one to the database
-        Ticket updatedTicket = TicketRepository.save(Ticket);
+        Ticket updatedTicket = ticketRepository.save(Ticket);
         return updatedTicket;
     }
 
