@@ -10,13 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("/businessHour")
+// @RequestMapping("/businessHour")
 public class BusinessHourController {
 
     @Autowired
     BusinessHourService businessHourService;
 
-    //tested
+    // tested
     @PostMapping("/businessHour")
     public ResponseEntity<BusinessHourDto> createBusinessHour(@RequestBody BusinessHourDto request) {
         BusinessHour businessHourToCreate = request.toModel();
@@ -25,15 +25,17 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.CREATED);
     }
 
-    //tested
-    @PutMapping("/businessHour/update/{id}")
-    public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id, @RequestBody BusinessHourDto request){
-        BusinessHour updatedBusinessHour = businessHourService.modifyBusinessHourById(id, request.getDay(), request.getOpenTime(), request.getCloseTime());
+    // tested
+    @PostMapping("/businessHour/{id}")
+    public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id,
+            @RequestBody BusinessHourDto request) {
+        BusinessHour updatedBusinessHour = businessHourService.modifyBusinessHourById(id, request.getDay(),
+                request.getOpenTime(), request.getCloseTime());
         BusinessHourDto response = new BusinessHourDto(updatedBusinessHour);
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.OK);
     }
 
-    //tested
+    // tested
     @GetMapping("/businessHour/{id}")
     public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
@@ -41,9 +43,8 @@ public class BusinessHourController {
     }
 
     /*
-    TODO: More functionality:
-    - delete business hour?
+     * TODO: More functionality:
+     * - delete business hour?
      */
-
 
 }

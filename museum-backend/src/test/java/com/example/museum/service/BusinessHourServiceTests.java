@@ -118,6 +118,8 @@ public class BusinessHourServiceTests {
         testBusinessHour2.setCloseTime(endTime2);
         //this is definitely cheating - but I see no way to represent iterables and do this legitimately
         when(businessHourRepository.save(testBusinessHour2)).thenAnswer((InvocationOnMock invocation) -> null);
+//        Iterable<BusinessHour> resultBHour = new Iterable<BusinessHour>();
+//        when(businessHourRepository.findAll()).thenAnswer(() -> new Iterable<BusinessHour>)
         BusinessHour returnedBusinessHour2 = businessHourService.createBusinessHour(testBusinessHour2);
         assertNull(returnedBusinessHour2);
 
