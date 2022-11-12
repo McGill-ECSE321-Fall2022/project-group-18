@@ -40,19 +40,19 @@ public class LoanService {
     }
 
     @Transactional
-    public Loan createLoan(int loanFee, boolean approval, List<Artifact> artifactList) {
-        if (artifactList.size() == 0 || artifactList.size() > 5) {
+    public Loan createLoan(int loanFee, boolean approval, List<Integer> artifactIDList) {
+        if (artifactIDList.size() == 0 || artifactIDList.size() > 5) {
             throw new RuntimeException("Each loan can only contain maximum of 5 artifacts");
         }
         Loan loan = new Loan();
         loan.setLoanFee(loanFee);
         loan.setApproved(approval);
         loan.setNewrequestedArtifactsList();
-        for (Artifact artifact: artifactList) {
-            if (!artifactRepo.existsById(artifact.getArtID())) {
+        for (int artifactID: artifactIDList) {
+            if (!artifactRepo.existsById(artifactID)) {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Loan is not in database");
             }
-            loan.addRequestedArtifact(artifact);
+            loan.addRequestedArtifact(artifactRepo.findByArtID(artifactID));
         }
         loan = loanRepo.save(loan);
         return loan;
