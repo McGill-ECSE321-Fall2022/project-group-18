@@ -5,14 +5,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-public class DatabaseExceptionHandler {
-    @ControllerAdvice
-    public class EventRegistrationExceptionHandler extends ResponseEntityExceptionHandler {
-
-        @ExceptionHandler(DatabaseException.class)
-        public ResponseEntity<String> handleEventRegistrationException(DatabaseException ex) {
-            return new ResponseEntity<String>(ex.getMessage(), ex.getStatus());
-        }
-
+@ControllerAdvice
+public class DatabaseExceptionHandler extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<String> handleEventRegistrationException(DatabaseException ex) {
+        return new ResponseEntity<String>(ex.getMessage(), ex.getStatus());
     }
 }
