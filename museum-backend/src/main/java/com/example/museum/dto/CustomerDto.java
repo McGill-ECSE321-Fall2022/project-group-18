@@ -4,6 +4,8 @@ import com.example.museum.model.Customer;
 import com.example.museum.model.Donation;
 import com.example.museum.model.Loan;
 
+import java.util.*;
+
 public class CustomerDto {
     private int accountID;
     private String username;
