@@ -75,4 +75,14 @@ public class CustomerService {
         Customer updatedCustomer = customerRepository.save(customer);
         return updatedCustomer;
     }
+
+    @Transactional
+    public void deleteCustomerByID(int id) {
+        Customer customer = customerRepository.findByAccountID(id);
+        if (customer == null) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+
+        customerRepository.deleteById(id);
+    }
 }
