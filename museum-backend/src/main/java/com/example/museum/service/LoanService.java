@@ -40,20 +40,23 @@ public class LoanService {
     }
 
     @Transactional
-    public Loan createLoan(int loanFee, boolean approval, List<Integer> artifactIDList) {
+    public Loan createLoan(List<Integer> artifactIDList) {
         if (artifactIDList.size() == 0 || artifactIDList.size() > 5) {
             throw new RuntimeException("Each loan can only contain maximum of 5 artifacts");
         }
         Loan loan = new Loan();
-        loan.setLoanFee(loanFee);
-        loan.setApproved(approval);
+        int loanFee = 0;
+        loan.setApproved(false);
         loan.setNewrequestedArtifactsList();
         for (int artifactID: artifactIDList) {
             if (!artifactRepo.existsById(artifactID)) {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Loan is not in database");
             }
-            loan.addRequestedArtifact(artifactRepo.findByArtID(artifactID));
+            Artifact artifact = artifactRepo.findByArtID(artifactID);
+            loan.addRequestedArtifact(artifact);
+            loanFee += artifact.getLoanFee();
         }
+        loan.setLoanFee(loanFee);
         loan = loanRepo.save(loan);
         return loan;
     }
@@ -74,19 +77,19 @@ public class LoanService {
         return true;
     }
 
-    @Transactional
-    public boolean setLoanFee(int loanID, int newLoanFee) {
-        if (!loanRepo.existsById(loanID)) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
-        }
-        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
-        int currentLoanFee = loan.getLoanFee();
-        if (currentLoanFee == newLoanFee) {
-            return false;
-        }
-        loan.setLoanFee(newLoanFee);
-        loanRepo.save(loan);
-        return true;
-    }
+//    @Transactional
+//    public boolean setLoanFee(int loanID, int newLoanFee) {
+//        if (!loanRepo.existsById(loanID)) {
+//            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+//        }
+//        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
+//        int currentLoanFee = loan.getLoanFee();
+//        if (currentLoanFee == newLoanFee) {
+//            return false;
+//        }
+//        loan.setLoanFee(newLoanFee);
+//        loanRepo.save(loan);
+//        return true;
+//    }
 
 }

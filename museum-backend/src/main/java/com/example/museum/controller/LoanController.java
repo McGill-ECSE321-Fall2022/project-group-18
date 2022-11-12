@@ -30,14 +30,20 @@ public class LoanController {
     }
 
     @PostMapping("/loan")
-    public ResponseEntity<LoanDto> createLoan(@RequestParam int fee, @RequestParam boolean approval, @RequestParam List<Integer> artifactIDList) {
+    public ResponseEntity<LoanDto> createLoan(@RequestParam List<Integer> artifactIDList) {
 //        Loan loan = loanDto.toModel();
 //        for (int artifactID: artifactIDList) {
 //            loan.addRequestedArtifact(artifactService.getArtifactByArtID(artifactID));
 //        }
 
-        Loan loan = loanService.createLoan(fee, approval, artifactIDList);
+        Loan loan = loanService.createLoan(artifactIDList);
         LoanDto response = new LoanDto(loan);
         return new ResponseEntity<LoanDto>(response, HttpStatus.OK);
+    }
+
+    public ResponseEntity<LoanDto> updateLoanApproval(int loanID) {
+        loanService.setLoanApprovalToTrue(loanID);
+        Loan loan = loanService.getLoanByID(loanID);
+        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 }
