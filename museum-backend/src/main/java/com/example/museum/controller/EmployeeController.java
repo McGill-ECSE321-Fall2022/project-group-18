@@ -21,6 +21,13 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/employee/login")
+    public ResponseEntity<String> loginEmployee(@RequestBody EmployeeDto request) {
+        Employee employeeToLogin = request.toModel();
+        employeeService.loginEmployee(employeeToLogin);
+        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+    }
+
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeByBusinessID(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeByID(id);
