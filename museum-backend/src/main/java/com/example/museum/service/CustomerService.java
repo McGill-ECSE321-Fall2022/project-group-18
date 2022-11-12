@@ -62,7 +62,7 @@ public class CustomerService {
     // return false;
     // }
 
-    public Customer modifyCustomerByID(int id, String username, String password) {
+    public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
         if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
                 ownerRepository)) {
@@ -70,6 +70,8 @@ public class CustomerService {
         }
         customer.setUsername(username);
         customer.setPassword(password);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
         Customer updatedCustomer = customerRepository.save(customer);
         return updatedCustomer;
     }

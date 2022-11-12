@@ -61,7 +61,7 @@ public class EmployeeService {
     // return false;
     // }
 
-    public Employee modifyEmployeeByID(int id, String username, String password) {
+    public Employee modifyEmployeeByID(int id, String username, String password, String firstName, String lastName) {
         Employee employee = employeeRepository.findByAccountID(id);
         if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
                 ownerRepository)) {
@@ -69,6 +69,8 @@ public class EmployeeService {
         }
         employee.setUsername(username);
         employee.setPassword(password);
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
         Employee updatedEmployee = employeeRepository.save(employee);
         return updatedEmployee;
     }

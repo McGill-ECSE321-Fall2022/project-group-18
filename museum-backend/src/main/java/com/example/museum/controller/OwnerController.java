@@ -27,9 +27,10 @@ public class OwnerController {
         return new ResponseEntity<OwnerDto>(new OwnerDto(owner), HttpStatus.OK);
     }
 
-    @PutMapping("/owner/{id}")
+    @PostMapping("/owner/{id}")
     public ResponseEntity<OwnerDto> updatedOwner(@PathVariable int id, @RequestBody OwnerDto request) {
-        Owner updatedOwner = ownerService.modifyOwnerByID(id, request.getUsername(), request.getPassword());
+        Owner updatedOwner = ownerService.modifyOwnerByID(id, request.getUsername(), request.getPassword(),
+                request.getFirstName(), request.getLastName());
         OwnerDto response = new OwnerDto(updatedOwner);
         return new ResponseEntity<OwnerDto>(response, HttpStatus.OK);
     }

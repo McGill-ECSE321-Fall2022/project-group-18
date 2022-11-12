@@ -62,7 +62,7 @@ public class OwnerService {
     // return false;
     // }
 
-    public Owner modifyOwnerByID(int id, String username, String password) {
+    public Owner modifyOwnerByID(int id, String username, String password, String firstName, String lastName) {
         Owner owner = ownerRepository.findByAccountID(id);
         if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
                 ownerRepository)) {
@@ -70,6 +70,8 @@ public class OwnerService {
         }
         owner.setUsername(username);
         owner.setPassword(password);
+        owner.setFirstName(firstName);
+        owner.setLastName(lastName);
         Owner updatedOwner = ownerRepository.save(owner);
         return updatedOwner;
     }

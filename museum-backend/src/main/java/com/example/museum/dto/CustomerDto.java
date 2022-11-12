@@ -8,6 +8,8 @@ public class CustomerDto {
     private int accountID;
     private String username;
     private String password;
+    private String firstName;
+    private String lastName;
     private List<DonationDto> customerDonatedArtifacts;
     private List<LoanDto> loans;
     private List<TicketDto> customerTickets;
@@ -16,6 +18,8 @@ public class CustomerDto {
         this.accountID = customer.getAccountID();
         this.username = customer.getUsername();
         this.password = customer.getPassword();
+        this.firstName = customer.getFirstName();
+        this.lastName = customer.getLastName();
         this.customerDonatedArtifacts = new ArrayList<>();
 
         for (Donation don : customer.getCustomerDonatedArtifacts()) {
@@ -48,6 +52,14 @@ public class CustomerDto {
 
     public String getPassword() {
         return this.password;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
     }
 
     public List<DonationDto> getCustomerDonatedArtifact() {

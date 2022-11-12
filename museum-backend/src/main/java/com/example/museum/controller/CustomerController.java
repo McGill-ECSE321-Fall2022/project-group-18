@@ -27,9 +27,10 @@ public class CustomerController {
         return new ResponseEntity<CustomerDto>(new CustomerDto(customer), HttpStatus.OK);
     }
 
-    @PutMapping("/customer/{id}")
+    @PostMapping("/customer/{id}")
     public ResponseEntity<CustomerDto> updatedCustomer(@PathVariable int id, @RequestBody CustomerDto request) {
-        Customer updatedCustomer = customerService.modifyCustomerByID(id, request.getUsername(), request.getPassword());
+        Customer updatedCustomer = customerService.modifyCustomerByID(id, request.getUsername(), request.getPassword(),
+                request.getFirstName(), request.getLastName());
         CustomerDto response = new CustomerDto(updatedCustomer);
         return new ResponseEntity<CustomerDto>(response, HttpStatus.OK);
     }
