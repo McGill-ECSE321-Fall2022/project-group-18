@@ -16,16 +16,15 @@ public class TicketController {
     TicketService TicketService;
 
     @PostMapping("/Ticket")
-    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto request) {
-        Ticket TicketToCreate = request.toModel();
-        Ticket createdTicket = TicketService.createTicket(null, -1);
+    public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
+        Ticket createdTicket = TicketService.createTicket(ticket.getDay(), ticket.getPrice());
         TicketDto response = new TicketDto(createdTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
     }
 
     //tested
     @PutMapping("/Ticket/update/{id}")
-    public ResponseEntity<TicketDto> updateTicket(@PathVariable int id, @RequestBody TicketDto request){
+    public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request){
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(), request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package com.example.museum.dto;
 
 import com.example.museum.model.Ticket;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -8,6 +9,7 @@ import java.sql.Time;
 public class TicketDto {
 
     private int TicketID;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date day;
     private int price;
 
