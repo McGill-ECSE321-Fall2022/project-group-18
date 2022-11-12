@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +42,7 @@ public class BusinessHourIntegrationTest {
         public void testCreateGetUpdateBusinessHour() {
                 int id = testCreateBusinessHour();
                 testGetBusinessHour(id);
-                // testUpdateBusinessHour(id);
+                testUpdateBusinessHour(id);
         }
 
         private int testCreateBusinessHour() {
@@ -82,42 +83,51 @@ public class BusinessHourIntegrationTest {
         }
 
         // Testing for update, does not seem to be very simple, might not be needed
-        // private void testUpdateBusinessHour(int id) {
-        // ResponseEntity<BusinessHourDto> response =
-        // client.getForEntity("/businessHour/" + id, BusinessHourDto.class);
-        // final Time prevOpenTime = response.getBody().getOpenTime();
-        // final Time updatedOpenTime = Time.valueOf("09:29:00");
+        private void testUpdateBusinessHour(int id) {
+                ResponseEntity<BusinessHourDto> response = client.getForEntity("/businessHour/" + id,
+                                BusinessHourDto.class);
+                final Time prevOpenTime = response.getBody().getOpenTime();
+                final Time updatedOpenTime = Time.valueOf("09:29:00");
+                final BusinessHourDto businessHourDto = new BusinessHourDto(new BusinessHour(0,
+                                response.getBody().getDay(), updatedOpenTime, response.getBody().getCloseTime()));
+                ResponseEntity<BusinessHourDto> response2 = client.postForEntity("/businessHour/" + id, businessHourDto,
+                                BusinessHourDto.class);
 
-        // //
-        // ResponseEntity<BusinessHourDto> response = client.exchange("/businessHour/" +
-        // id, HttpMethod.PUT,
-        // BusinessHourDto.class);
-        // }
+                assertNotNull(response2);
+                assertEquals(HttpStatus.OK, response2.getStatusCode());
+                assertNotNull(response2.getBody());
+                assertEquals(id, response2.getBody().getBusinessHourID());
+                // assertEquals(day, response2.getBody().getDay());
+                assertNotEquals(prevOpenTime, response2.getBody().getOpenTime());
+        }
 
         // @Test
         // public void testCreateInvalidBusinessHour() {
-        //         // Create a BusinessHour object and post it
-        //         final Date day1 = Date.valueOf("2022-11-08");
-        //         final Time openTime1 = Time.valueOf("08:29:00");
-        //         final Time closeTime1 = Time.valueOf("16:45:00");
-        //         final BusinessHourDto businessHourDto1 = new BusinessHourDto(
-        //                         new BusinessHour(0, day1, openTime1, closeTime1));
-        //         ResponseEntity<BusinessHourDto> response1 = client.postForEntity("/businessHour", businessHourDto1,
-        //                         BusinessHourDto.class);
+        // // Create a BusinessHour object and post it
+        // final Date day1 = Date.valueOf("2022-11-08");
+        // final Time openTime1 = Time.valueOf("08:29:00");
+        // final Time closeTime1 = Time.valueOf("16:45:00");
+        // final BusinessHourDto businessHourDto1 = new BusinessHourDto(
+        // new BusinessHour(0, day1, openTime1, closeTime1));
+        // ResponseEntity<BusinessHourDto> response1 =
+        // client.postForEntity("/businessHour", businessHourDto1,
+        // BusinessHourDto.class);
 
-        //         // Create another one with the same Date to test for conflicting Date
-        //         final Date day3 = response1.getBody().getDay();
-        //         final Time openTime3 = response1.getBody().getOpenTime();
-        //         final Time closeTime3 = response1.getBody().getCloseTime();
-        //         final BusinessHourDto businessHourDto3 = new BusinessHourDto(
-        //                         new BusinessHour(0, day3, openTime3, closeTime3));
+        // // Create another one with the same Date to test for conflicting Date
+        // final Date day3 = response1.getBody().getDay();
+        // final Time openTime3 = response1.getBody().getOpenTime();
+        // final Time closeTime3 = response1.getBody().getCloseTime();
+        // final BusinessHourDto businessHourDto3 = new BusinessHourDto(
+        // new BusinessHour(0, day3, openTime3, closeTime3));
 
-        //         ResponseEntity<String> response3 = client.postForEntity("/businessHour", businessHourDto3,
-        //                         String.class);
+        // ResponseEntity<String> response3 = client.postForEntity("/businessHour",
+        // businessHourDto3,
+        // String.class);
 
-        //         assertNotNull(response3);
-        //         assertEquals(HttpStatus.CONFLICT, response3.getStatusCode());
-        //         assertEquals("A BusinessHour with the given date already exists", response3.getBody());
+        // assertNotNull(response3);
+        // assertEquals(HttpStatus.CONFLICT, response3.getStatusCode());
+        // assertEquals("A BusinessHour with the given date already exists",
+        // response3.getBody());
         // }
 
         @Test
