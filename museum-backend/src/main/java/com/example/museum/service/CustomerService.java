@@ -1,6 +1,7 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.*;
 import com.example.museum.repository.*;
 import com.example.museum.service.utils.ServiceUtils;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -30,6 +32,29 @@ public class CustomerService {
         }
 
         return customer;
+    }
+
+    public void loginCustomer(Customer customerRequest) {
+        Iterator<Customer> customers = customerRepository.findAll().iterator();
+
+        while (customers.hasNext()) {
+            Customer customer = customers.next();
+            if (customer.getUsername().equals(customerRequest.getUsername())) {
+                if (customer.getPassword().equals(customerRequest.getPassword())) {
+                    return;
+                } else {
+                    throw new RequestException(HttpStatus.BAD_REQUEST, "Wrong password");
+                }
+            }
+        }
+
+        throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer does not exist");
+    }
+
+    @Transactional
+    public Iterator<Customer> getAllCustomers() {
+        Iterator<Customer> customers = customerRepository.findAll().iterator();
+        return customers;
     }
 
     @Transactional

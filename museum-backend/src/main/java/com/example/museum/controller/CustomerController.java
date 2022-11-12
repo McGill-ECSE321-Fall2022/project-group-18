@@ -25,6 +25,13 @@ public class CustomerController {
         return new ResponseEntity<CustomerDto>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/customer/login")
+    public ResponseEntity<String> loginCustomer(@RequestBody CustomerDto request) {
+        Customer customerToLogin = request.toModel();
+        customerService.loginCustomer(customerToLogin);
+        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+    }
+
     @GetMapping("/customer/{id}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable int id, @RequestBody CustomerDto request) {
         Customer customer = customerService.getCustomerByID(id);
