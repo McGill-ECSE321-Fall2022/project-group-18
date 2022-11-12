@@ -1,6 +1,7 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.BusinessHourRepository;
@@ -23,14 +24,15 @@ public class BusinessHourService {
 
     @Transactional
     public BusinessHour createBusinessHour(BusinessHour businessHour) {
-        if (businessHourRepository.findBusinessHourByBusinessHourID(businessHour.getBusinessHourID()) != null) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "A business hour with the given id already exists.");
+        if (businessHour.getBusinessHourID() > 0) {
+            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
         }
-//        List<BusinessHour> bhours = (List<BusinessHour>) businessHourRepository.findAll().iterator();
+        // List<BusinessHour> bhours = (List<BusinessHour>)
+        // businessHourRepository.findAll().iterator();
         Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
-        while(bHours.hasNext()){
+        while (bHours.hasNext()) {
             BusinessHour bh = bHours.next();
-            if(bh.getDay().toString().equals(businessHour.getDay().toString())){
+            if (bh.getDay().toString().equals(businessHour.getDay().toString())) {
                 throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
             }
         }
@@ -40,20 +42,21 @@ public class BusinessHourService {
     }
 
     @Transactional
-    public BusinessHour getBusinessHourById(int id){
+    public BusinessHour getBusinessHourById(int id) {
         BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
-        if(businessHour == null){
+        if (businessHour == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "BusinessHour not found");
         }
         return businessHour;
     }
 
-//    TODO: do we need to save the business before returning it (to update the database)?
-    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime){
+    // TODO: do we need to save the business before returning it (to update the
+    // database)?
+    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime) {
         Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
-        while(bHours.hasNext()){
+        while (bHours.hasNext()) {
             BusinessHour bh = bHours.next();
-            if(bh.getDay().toString().equals(day.toString())){
+            if (bh.getDay().toString().equals(day.toString())) {
                 throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
             }
         }
@@ -61,7 +64,7 @@ public class BusinessHourService {
         businessHour.setDay(day);
         businessHour.setOpenTime(openTime);
         businessHour.setCloseTime(closeTime);
-        //I assume we need to save the new one to the database
+        // I assume we need to save the new one to the database
         BusinessHour updatedBusinessHour = businessHourRepository.save(businessHour);
         return updatedBusinessHour;
     }
