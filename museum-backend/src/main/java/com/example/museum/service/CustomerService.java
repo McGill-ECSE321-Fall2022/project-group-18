@@ -34,6 +34,7 @@ public class CustomerService {
         return customer;
     }
 
+    @Transactional
     public void loginCustomer(Customer customerRequest) {
         Iterator<Customer> customers = customerRepository.findAll().iterator();
 

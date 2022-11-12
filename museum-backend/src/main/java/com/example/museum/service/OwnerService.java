@@ -2,6 +2,7 @@ package com.example.museum.service;
 
 import com.example.museum.dto.OwnerDto;
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.*;
 import com.example.museum.repository.*;
 import com.example.museum.service.utils.ServiceUtils;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -31,6 +33,24 @@ public class OwnerService {
         }
 
         return owner;
+    }
+
+    @Transactional
+    public void loginOwner(Owner ownerRequest) {
+        Iterator<Owner> owners = ownerRepository.findAll().iterator();
+
+        while (owners.hasNext()) {
+            Owner owner = owners.next();
+            if (owner.getUsername().equals(ownerRequest.getUsername())) {
+                if (owner.getPassword().equals(ownerRequest.getPassword())) {
+                    return;
+                } else {
+                    throw new RequestException(HttpStatus.BAD_REQUEST, "Wrong password");
+                }
+            }
+        }
+
+        throw new DatabaseException(HttpStatus.NOT_FOUND, "Owner does not exist");
     }
 
     @Transactional

@@ -21,6 +21,13 @@ public class OwnerController {
         return new ResponseEntity<OwnerDto>(response, HttpStatus.CREATED);
     }
 
+    @PostMapping("/owner/login")
+    public ResponseEntity<String> loginOwner(@RequestBody OwnerDto request) {
+        Owner ownerToLogin = request.toModel();
+        ownerService.loginOwner(ownerToLogin);
+        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+    }
+
     @GetMapping("/owner/{id}")
     public ResponseEntity<OwnerDto> getOwnerByBusinessID(@PathVariable int id) {
         Owner owner = ownerService.getOwnerByID(id);
