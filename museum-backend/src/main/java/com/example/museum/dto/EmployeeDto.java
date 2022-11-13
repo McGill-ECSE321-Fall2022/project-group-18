@@ -1,5 +1,6 @@
 package com.example.museum.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.museum.model.Employee;
@@ -19,6 +20,8 @@ public class EmployeeDto {
         this.password = employee.getPassword();
         this.firstName = employee.getFirstName();
         this.lastName = employee.getLastName();
+
+        this.employeeHours = new ArrayList<>();
         for (EmployeeHour eh : employee.getEmployeeHours()) {
             this.employeeHours.add(new EmployeeHourDto(eh));
         }
