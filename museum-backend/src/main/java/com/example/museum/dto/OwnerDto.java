@@ -48,9 +48,11 @@ public class OwnerDto {
 
     public Owner toModel() {
         Owner owner = new Owner();
-        owner.setAccountID(this.accountID);
-        owner.setUsername(this.username);
-        owner.setPassword(this.password);
+        owner.setAccountID(this.getAccountID());
+        owner.setUsername(this.getUsername());
+        owner.setPassword(this.getPassword());
+        owner.setFirstName(this.getFirstName());
+        owner.setLastName(this.getLastName());
         owner.setBusiness(this.business.toModel());
 
         return owner;

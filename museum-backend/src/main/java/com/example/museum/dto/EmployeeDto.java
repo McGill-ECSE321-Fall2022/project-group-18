@@ -53,9 +53,11 @@ public class EmployeeDto {
 
     public Employee toModel() {
         Employee employee = new Employee();
-        employee.setAccountID(this.accountID);
-        employee.setUsername(this.username);
-        employee.setPassword(this.password);
+        employee.setAccountID(this.getAccountID());
+        employee.setUsername(this.getUsername());
+        employee.setPassword(this.getPassword());
+        employee.setFirstName(this.getFirstName());
+        employee.setLastName(this.getLastName());
         for (EmployeeHourDto eh : this.getEmployeeHours()) {
             employee.addEmployeeHour(eh.toModel());
         }

@@ -23,20 +23,18 @@ public class CustomerDto {
         this.password = customer.getPassword();
         this.firstName = customer.getFirstName();
         this.lastName = customer.getLastName();
-        this.customerDonatedArtifacts = new ArrayList<>();
 
+        this.customerDonatedArtifacts = new ArrayList<>();
         for (Donation don : customer.getCustomerDonatedArtifacts()) {
             this.customerDonatedArtifacts.add(new DonationDto(don));
         }
 
         this.loans = new ArrayList<>();
-
         for (Loan lo : customer.getLoans()) {
             this.loans.add(new LoanDto(lo));
         }
 
         this.customerTickets = new ArrayList<>();
-
         for (Ticket ti : customer.getCustomerTickets()) {
             this.customerTickets.add(new TicketDto(ti));
         }
@@ -79,9 +77,12 @@ public class CustomerDto {
 
     public Customer toModel() {
         Customer customer = new Customer();
-        customer.setAccountID(this.accountID);
-        customer.setUsername(this.username);
-        customer.setPassword(this.password);
+        customer.setAccountID(this.getAccountID());
+        customer.setUsername(this.getUsername());
+        customer.setPassword(this.getPassword());
+        customer.setFirstName(this.getFirstName());
+        customer.setLastName(this.getLastName());
+
         for (DonationDto don : this.getCustomerDonatedArtifact()) {
             customer.addCustomerDonatedArtifact(don.toModel());
         }
