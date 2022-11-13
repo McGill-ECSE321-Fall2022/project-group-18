@@ -41,6 +41,9 @@ public class CustomerDto {
     }
 
     public CustomerDto() {
+        customerDonatedArtifacts = new ArrayList<DonationDto>();
+        loans = new ArrayList<LoanDto>();
+        customerTickets = new ArrayList<TicketDto>();
     }
 
     public int getAccountID() {
