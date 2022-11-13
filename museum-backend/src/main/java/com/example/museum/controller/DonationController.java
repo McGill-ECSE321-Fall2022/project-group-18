@@ -1,12 +1,16 @@
 package com.example.museum.controller;
 
+import com.example.museum.dto.ArtifactDto;
 import com.example.museum.dto.DonationDto;
+import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
 import com.example.museum.service.DonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class DonationController {
@@ -21,11 +25,11 @@ public class DonationController {
     }
 
     @PostMapping("/donation")
-    public ResponseEntity<DonationDto> createDonation(@RequestBody DonationDto request){
-        Donation donationToCreate = request.toModel();
-        Donation createdDonation = donationService.createDonation(donationToCreate);
-        DonationDto response = new DonationDto(createdDonation);
-        return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
+    public ResponseEntity<DonationDto> createDonation(@RequestParam List<Integer> artifactIDList){
+            Donation createdDonation = donationService.createDonation(artifactIDList);
+            DonationDto response = new DonationDto(createdDonation);
+            return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
+        }
 
     }
-}
+

@@ -8,13 +8,13 @@ import java.util.List;
 
 public class DonationDto {
     private int donationID;
-    private List<ArtifactDto> artifacts;
+    private List<Integer> artifactIDList;
 
     public DonationDto(Donation donation){
         this.donationID = donation.getDonationID();
-        artifacts = new ArrayList<>();
+        artifactIDList = new ArrayList<>();
         for(Artifact a : donation.getDonatedArtifacts()){
-            this.artifacts.add(new ArtifactDto(a));
+            this.artifactIDList.add(a.getArtID());
         }
     }
     //
@@ -25,17 +25,14 @@ public class DonationDto {
         return donationID;
     }
 
-    public List<ArtifactDto> getArtifacts(){
-        return artifacts;
+    public List<Integer> getArtifactList(){
+        return this.artifactIDList;
     }
 
     public Donation toModel(){
         Donation donation = new Donation();
         donation.setDonationID(this.getDonationID());
-        for(ArtifactDto a : this.getArtifacts()){
-            Artifact art = a.toModel();
-            donation.addDonatedArtifact(art);
-        }
+        donation.setNewDonationArtifactsList();
         return donation;
     }
 }
