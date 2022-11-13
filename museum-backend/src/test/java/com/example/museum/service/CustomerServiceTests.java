@@ -55,16 +55,18 @@ public class CustomerServiceTests {
         final int art1ID = 1;
         final boolean loaned1 = true;
         final boolean loanable1 = true;
+        final int loanFee1 = 10;
         final String name1 = "Mona Lisa";
         final Artifact.ArtType artType1 = Artifact.ArtType.Painting;
-        final Artifact testArtifact1 = new Artifact(art1ID, name1, artType1, loanable1, loaned1);
+        final Artifact testArtifact1 = new Artifact(art1ID, name1, artType1, loanable1, loaned1, loanFee1);
 
         final int art2ID = 2;
         final boolean loaned2 = true;
         final boolean loanable2 = true;
+        final int loanFee2 = 15;
         final String name2 = "Portrait of Dr. Gachet";
         final Artifact.ArtType artType2 = Artifact.ArtType.Painting;
-        final Artifact testArtifact2 = new Artifact(art2ID, name2, artType2, loanable2, loaned2);
+        final Artifact testArtifact2 = new Artifact(art2ID, name2, artType2, loanable2, loaned2, loanFee2);
 
         // Donation
         final int donationId = 3;

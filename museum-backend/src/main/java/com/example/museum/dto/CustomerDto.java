@@ -3,6 +3,7 @@ package com.example.museum.dto;
 import com.example.museum.model.Customer;
 import com.example.museum.model.Donation;
 import com.example.museum.model.Loan;
+import com.example.museum.model.Ticket;
 
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class CustomerDto {
         this.customerTickets = new ArrayList<>();
 
         for (Ticket ti : customer.getCustomerTickets()) {
-            this.loans.add(new TicketDto(ti));
+            this.customerTickets.add(new TicketDto(ti));
         }
     }
 
