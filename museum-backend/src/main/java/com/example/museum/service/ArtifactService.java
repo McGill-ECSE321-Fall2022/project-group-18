@@ -37,7 +37,7 @@ public class ArtifactService {
     }
 
     @Transactional
-    public Artifact modifyLoanFee(int artID, boolean loanable, boolean loaned, int loanFee){
+    public Artifact updateArtifact(int artID, boolean loanable, boolean loaned, int loanFee){
         Artifact artifact = artifactRepo.findByArtID(artID);
         artifact.setLoanable(loanable);
         artifact.setLoaned(loaned);

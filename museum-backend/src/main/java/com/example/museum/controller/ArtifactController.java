@@ -32,7 +32,7 @@ public class ArtifactController {
     // TODO Test
     @PostMapping("/artifact/update/{artID}")
     public ResponseEntity<ArtifactDto> updateArtifact(@PathVariable int artID, @RequestBody ArtifactDto request){
-        Artifact updateArtifact = artifactService.modifyLoanFee(artID, request.getLoanable(), request.getLoaned(), request.getLoanFee());
+        Artifact updateArtifact = artifactService.updateArtifact(artID, request.getLoanable(), request.getLoaned(), request.getLoanFee());
         ArtifactDto response = new ArtifactDto(updateArtifact);
         return new ResponseEntity<ArtifactDto>(response, HttpStatus.OK);
     }
