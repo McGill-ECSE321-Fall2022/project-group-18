@@ -2,6 +2,7 @@ package com.example.museum.controller;
 
 import com.example.museum.dto.CustomerDto;
 import com.example.museum.dto.DonationDto;
+import com.example.museum.dto.LoanDto;
 import com.example.museum.model.Customer;
 import com.example.museum.service.*;
 
