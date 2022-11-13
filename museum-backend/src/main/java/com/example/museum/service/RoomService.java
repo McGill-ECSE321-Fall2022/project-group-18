@@ -125,6 +125,20 @@ public class RoomService {
     }
 
     @Transactional
+    public List<Room> removeArtifactsFromRooms(List<Artifact> removedArtifactList) {
+        // get all artifacts rooms
+        List<Room> roomList = new ArrayList<>();
+        for (Artifact artifact: removedArtifactList) {
+            int roomID = this.getAllRoomsAndArtifacts().get(artifact.getArtID());
+            Room room = roomRepo.findRoomByRoomID(roomID);
+            room.removeRoomArtifact(artifact);
+            room = roomRepo.save(room);
+            roomList.add(room);
+        }
+        return roomList;
+    }
+
+    @Transactional
     public Room createRoom(String roomName, int roomCapacity) {
 //        if (roomCapacity > 0 && artifactIDList.size() > roomCapacity) {
 //            throw new RuntimeException("Each loan can only contain maximum of 5 artifacts");
