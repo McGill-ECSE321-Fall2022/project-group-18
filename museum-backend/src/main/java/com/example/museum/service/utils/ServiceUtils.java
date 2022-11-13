@@ -9,15 +9,15 @@ public class ServiceUtils {
     public static boolean conflictingUsername(String username, CustomerRepository customerRepository,
             EmployeeRepository employeeRepository, OwnerRepository ownerRepository) {
         for (Customer c : customerRepository.findAll()) {
-            if (c.getPassword().equals(username))
+            if (c.getUsername().equals(username))
                 return true;
         }
         for (Employee e : employeeRepository.findAll()) {
-            if (e.getPassword().equals(username))
+            if (e.getUsername().equals(username))
                 return true;
         }
         for (Owner o : ownerRepository.findAll()) {
-            if (o.getPassword().equals(username))
+            if (o.getUsername().equals(username))
                 return true;
         }
         return false;
