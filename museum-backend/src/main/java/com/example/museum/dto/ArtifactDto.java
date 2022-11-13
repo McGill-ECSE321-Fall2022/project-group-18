@@ -10,6 +10,8 @@ public class ArtifactDto {
         private boolean loanable;
         private boolean loaned;
 
+        private int loanFee;
+
 
         public ArtifactDto(Artifact artifact){
             this.artID = artifact.getArtID();
@@ -17,6 +19,7 @@ public class ArtifactDto {
             this.type = artifact.getType();
             this.loanable = artifact.getLoanable();
             this.loaned = artifact.getLoaned();
+            this.loanFee = artifact.getLoanFee();
         }
 
         public ArtifactDto(){}
@@ -39,6 +42,10 @@ public class ArtifactDto {
             return loaned;
         }
 
+        public int getLoanFee() {
+            return this.loanFee;
+        }
+
         public Artifact toModel(){
             Artifact artifact = new Artifact();
             artifact.setArtID(this.getArtID());
@@ -46,6 +53,7 @@ public class ArtifactDto {
             artifact.setType(this.getType());
             artifact.setLoanable(this.getLoanable());
             artifact.setLoaned(this.getLoaned());
+            artifact.setLoanFee(this.getLoanFee());
             return artifact;
         }
 }

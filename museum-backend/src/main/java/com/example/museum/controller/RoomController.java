@@ -6,11 +6,11 @@ import com.example.museum.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@RestController
 public class RoomController {
 
     @Autowired
@@ -23,9 +23,8 @@ public class RoomController {
     }
 
     @PostMapping("/room")
-    public ResponseEntity<RoomDto> createRoom(@RequestBody RoomDto roomDto) {
-        Room room = roomDto.toModel();
-        room = roomService.createRoom(room);
+    public ResponseEntity<RoomDto> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
+        Room room = roomService.createRoom(roomName, roomCapacity);
         RoomDto response = new RoomDto(room);
         return new ResponseEntity<RoomDto>(response, HttpStatus.OK);
     }

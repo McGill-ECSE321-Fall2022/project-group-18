@@ -11,15 +11,16 @@ public class RoomDto {
     private int roomID;
     private String roomName;
     private int roomCapacity;
-    private List<ArtifactDto> artifactDtoList;
+    //private List<ArtifactDto> artifactDtoList;
+    private List<Integer> artifactIDList;
 
     public RoomDto (Room room) {
         this.roomID = room.getRoomID();
         this.roomName = room.getName();
         this.roomCapacity = room.getCapacity();
-        artifactDtoList = new ArrayList<>();
+        this.artifactIDList = new ArrayList<>();
         for (Artifact artifact: room.getRoomArtifacts()) {
-            this.artifactDtoList.add(new ArtifactDto(artifact));
+            this.artifactIDList.add(artifact.getArtID());
         }
     }
 
@@ -37,8 +38,8 @@ public class RoomDto {
         return this.roomCapacity;
     }
 
-    public List<ArtifactDto> getArtifactDtoList() {
-        return this.artifactDtoList;
+    public List<Integer> getArtifactIDList() {
+        return this.artifactIDList;
     }
 
     public Room toModel() {
@@ -47,10 +48,10 @@ public class RoomDto {
         room.setCapacity(this.roomCapacity);
         room.setName(this.roomName);
         room.setNewRoomArtifactsList();
-        for (ArtifactDto artifactDto: this.artifactDtoList) {
-            Artifact artifact = artifactDto.toModel();
-            room.addRoomArtifact(artifact);
-        }
+//        for (ArtifactDto artifactDto: this.artifactIDList) {
+//            Artifact artifact = artifactDto.toModel();
+//            room.addRoomArtifact(artifact);
+//        }
         return room;
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,25 +22,22 @@ public class LoanController {
     @Autowired
     ArtifactService artifactService;
 
-    @GetMapping("/loan/{loanID}")
+    @GetMapping(value = {"/loan/{loanID}", "/loan/{loanID}/" })
     public ResponseEntity<LoanDto> getLoanByLoanID(@PathVariable int loanID) {
         Loan loan = loanService.getLoanByID(loanID);
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PostMapping("/loan")
+    @PostMapping(value = {"/loan", "/loan/"})
     public ResponseEntity<LoanDto> createLoan(@RequestParam List<Integer> artifactIDList) {
-//        Loan loan = loanDto.toModel();
-//        for (int artifactID: artifactIDList) {
-//            loan.addRequestedArtifact(artifactService.getArtifactByArtID(artifactID));
-//        }
 
         Loan loan = loanService.createLoan(artifactIDList);
         LoanDto response = new LoanDto(loan);
         return new ResponseEntity<LoanDto>(response, HttpStatus.OK);
     }
 
-    public ResponseEntity<LoanDto> updateLoanApproval(int loanID) {
+    @PostMapping("/loan/update")
+    public ResponseEntity<LoanDto> updateLoanApproval(@RequestParam int loanID) {
         loanService.setLoanApprovalToTrue(loanID);
         Loan loan = loanService.getLoanByID(loanID);
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);

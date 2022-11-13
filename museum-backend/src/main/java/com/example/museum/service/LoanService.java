@@ -61,6 +61,8 @@ public class LoanService {
         return loan;
     }
 
+    // set loan to true
+    // move the loan out of the room
     @Transactional
     public boolean setLoanApprovalToTrue(int loanID) {
         if (!loanRepo.existsById(loanID)) {
