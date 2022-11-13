@@ -50,6 +50,17 @@ public class BusinessHourService {
         return businessHour;
     }
 
+    @Transactional
+    public List<BusinessHour> getAllBusinessHours() {
+        List<BusinessHour> businessHours = new ArrayList<>();
+        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
+        while (bHours.hasNext()) {
+            BusinessHour bh = bHours.next();
+            businessHours.add(bh);
+        }
+        return businessHours;
+    }
+
     // TODO: do we need to save the business before returning it (to update the
     // database)?
     public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime) {

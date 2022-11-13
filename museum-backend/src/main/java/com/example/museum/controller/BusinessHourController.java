@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 // @RequestMapping("/businessHour")
 public class BusinessHourController {
@@ -40,6 +43,17 @@ public class BusinessHourController {
     public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
+    }
+
+    @GetMapping("businessHour/all")
+    public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours(){
+        List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();
+        List<BusinessHourDto> businessHourDtoList = new ArrayList<>();
+        for(BusinessHour bh : businessHours){
+            BusinessHourDto bhDto = new BusinessHourDto(bh);
+            businessHourDtoList.add(bhDto);
+        }
+        return new ResponseEntity<List<BusinessHourDto>>(businessHourDtoList, HttpStatus.OK);
     }
 
     /*
