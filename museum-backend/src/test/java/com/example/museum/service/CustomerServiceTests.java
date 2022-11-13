@@ -98,6 +98,13 @@ public class CustomerServiceTests {
         final String lastName = "Last";
         final int credit = 5;
         final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        testCustomer.setCustomerTicketsList();
+        testCustomer.setCustomerDonatedArtifactsList();
+        testCustomer.setLoansList();
+
+        testCustomer.addCustomerDonatedArtifact(testDonation);
+        testCustomer.addCustomerTicket(testTicket);
+        testCustomer.addLoan(testLoan);
 
         when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> testCustomer);
 
