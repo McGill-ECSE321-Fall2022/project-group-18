@@ -28,6 +28,7 @@ public class EmployeeDto {
     }
 
     public EmployeeDto() {
+        this.employeeHours = new ArrayList<EmployeeHourDto>();
     }
 
     public int getAccountID() {

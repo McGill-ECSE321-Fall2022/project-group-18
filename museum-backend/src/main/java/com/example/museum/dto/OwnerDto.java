@@ -20,6 +20,7 @@ public class OwnerDto {
     }
 
     public OwnerDto() {
+        this.business = new BusinessDto();
     }
 
     public int getAccountID() {
