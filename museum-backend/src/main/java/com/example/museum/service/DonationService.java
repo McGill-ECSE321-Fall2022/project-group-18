@@ -31,17 +31,15 @@ public class DonationService {
     }
 
     @Transactional
-    public Donation createDonation(List<Integer> artifactIDList) {
+    public Donation createDonation(List<Artifact> artifactList) {
 
         Donation donation = new Donation();
         donation.setNewDonationArtifactsList();
-        for(int artifactID: artifactIDList){
-            if (!artifactRepo.existsById(artifactID)) {
-                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Donation is not in database");
+        for(Artifact artifact: artifactList){
+            if (artifactRepo.existsById(artifact.getArtID())) {
+                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Donation is already in database");
             }
-            Artifact artifact = new Artifact();
-            artifact.setArtID(artifactID);
-            
+            artifact = artifactRepo.save(artifact);
             donation.addDonatedArtifact(artifact);
         }
         donation = donationRepo.save(donation);

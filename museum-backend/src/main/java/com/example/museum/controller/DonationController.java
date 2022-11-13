@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,10 +26,14 @@ public class DonationController {
     }
 
     @PostMapping("/donation")
-    public ResponseEntity<DonationDto> createDonation(@RequestParam List<Integer> artifactIDList){
-            Donation createdDonation = donationService.createDonation(artifactIDList);
-            DonationDto response = new DonationDto(createdDonation);
-            return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
+    public ResponseEntity<DonationDto> createDonation(@RequestParam List<ArtifactDto> artifactDtoList){
+        List<Artifact> artifactList = new ArrayList<>();
+        for (ArtifactDto artifactDto: artifactDtoList) {
+            artifactList.add(artifactDto.toModel());
+        }
+        Donation createdDonation = donationService.createDonation(artifactList);
+        DonationDto response = new DonationDto(createdDonation);
+        return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
         }
 
     }
