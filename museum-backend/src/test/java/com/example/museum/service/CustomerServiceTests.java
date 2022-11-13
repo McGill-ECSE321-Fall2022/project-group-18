@@ -71,7 +71,7 @@ public class CustomerServiceTests {
         // Donation
         final int donationId = 3;
         final Donation testDonation = new Donation(art2ID);
-        testDonation.addDonatedArtifact(testArtifact2);
+        testDonation.addDonatedArtifact(testArtifact1);
 
         // Loan
         final int loanId = 4;
