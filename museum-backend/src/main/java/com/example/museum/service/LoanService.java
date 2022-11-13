@@ -80,6 +80,20 @@ public class LoanService {
         return true;
     }
 
+    @Transactional
+    public boolean setArtifactsInLoanToLoaned(int loanID) {
+        if (!loanRepo.existsById(loanID)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+        }
+        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
+        for (Artifact artifact: loan.getRequestedArtifacts()) {
+            artifact.setLoaned(true);
+            artifact = artifactRepo.save(artifact);
+        }
+        loan = loanRepo.save(loan);
+        return true;
+    }
+
 //    @Transactional
 //    public boolean setLoanFee(int loanID, int newLoanFee) {
 //        if (!loanRepo.existsById(loanID)) {

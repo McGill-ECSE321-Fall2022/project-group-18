@@ -45,6 +45,7 @@ public class LoanController {
     @PostMapping("/loan/update")
     public ResponseEntity<LoanDto> updateLoanApproval(@RequestParam int loanID) {
         loanService.setLoanApprovalToTrue(loanID);
+        loanService.setArtifactsInLoanToLoaned(loanID);
         List<Artifact> artifactList = loanService.getLoanByID(loanID).getRequestedArtifacts();
         List<Room> roomList = roomService.removeArtifactsFromRooms(artifactList);
         Loan loan = loanService.getLoanByID(loanID);
