@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 public class ArtifactController {
@@ -36,6 +38,7 @@ public class ArtifactController {
         ArtifactDto response = new ArtifactDto(updateArtifact);
         return new ResponseEntity<ArtifactDto>(response, HttpStatus.OK);
     }
+
 
 
 }

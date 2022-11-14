@@ -42,5 +42,17 @@ public class DonationController {
         return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
         }
 
-    }
 
+
+
+    @GetMapping("/donation/artifacts/{id}")
+    public ResponseEntity<List<ArtifactDto>> getAllArtifactsDonation(@PathVariable int id) {
+        List<Artifact> artifacts = donationService.getArtifactsInDonation(id);
+        List<ArtifactDto> artifactDtoList = new ArrayList<>();
+        for (Artifact a : artifacts) {
+            ArtifactDto aDto = new ArtifactDto(a);
+            artifactDtoList.add(aDto);
+        }
+        return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
+    }
+}

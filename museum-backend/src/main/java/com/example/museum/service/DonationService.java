@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -46,4 +48,16 @@ public class DonationService {
         return donation;
 
     }
+
+    @Transactional
+    public List<Artifact> getArtifactsInDonation(int id){
+        List<Artifact> artifacts = new ArrayList<>();
+        Donation donation = getDonationByDonationID(id);
+        List<Artifact> arts = donation.getDonatedArtifacts();
+        for (Artifact a : arts){
+            artifacts.add(a);
+        }
+        return artifacts;
+    }
+
 }
