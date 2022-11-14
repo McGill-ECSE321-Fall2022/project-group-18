@@ -45,7 +45,7 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
 
-    @GetMapping("businessHour/all")
+    @GetMapping("/businessHour/all")
     public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours(){
         List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();
         List<BusinessHourDto> businessHourDtoList = new ArrayList<>();
