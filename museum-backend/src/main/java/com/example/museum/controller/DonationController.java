@@ -1,9 +1,11 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.ArtifactDto;
+import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.DonationDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
+import com.example.museum.service.ArtifactService;
 import com.example.museum.service.DonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class DonationController {
     @Autowired
     DonationService donationService;
 
+    @Autowired
+    ArtifactService artifactService;
+
     @GetMapping("/donation/{donationID}")
     public ResponseEntity<DonationDto> getDonationByDonationID(@PathVariable int donationID){
         Donation donation = donationService.getDonationByDonationID(donationID);
@@ -26,10 +31,11 @@ public class DonationController {
     }
 
     @PostMapping("/donation")
-    public ResponseEntity<DonationDto> createDonation(@RequestParam List<ArtifactDto> artifactDtoList){
+    public ResponseEntity<DonationDto> createDonation(@RequestBody List<ArtifactDto> artifactDtoList){
         List<Artifact> artifactList = new ArrayList<>();
         for (ArtifactDto artifactDto: artifactDtoList) {
-            artifactList.add(artifactDto.toModel());
+            Artifact art = artifactService.createArtifact(artifactDto.toModel());
+            artifactList.add(art);
         }
         Donation createdDonation = donationService.createDonation(artifactList);
         DonationDto response = new DonationDto(createdDonation);

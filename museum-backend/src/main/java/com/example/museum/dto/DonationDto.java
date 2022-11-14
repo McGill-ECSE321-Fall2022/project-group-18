@@ -1,6 +1,7 @@
 package com.example.museum.dto;
 
 import com.example.museum.model.Artifact;
+import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Donation;
 
 import java.util.ArrayList;
@@ -8,13 +9,13 @@ import java.util.List;
 
 public class DonationDto {
     private int donationID;
-    private List<Integer> artifactIDList;
+    private List<ArtifactDto> artifactList;
 
     public DonationDto(Donation donation){
         this.donationID = donation.getDonationID();
-        artifactIDList = new ArrayList<>();
+        artifactList = new ArrayList<>();
         for(Artifact a : donation.getDonatedArtifacts()){
-            this.artifactIDList.add(a.getArtID());
+            this.artifactList.add(new ArtifactDto(a));
         }
     }
     //
@@ -25,14 +26,16 @@ public class DonationDto {
         return donationID;
     }
 
-    public List<Integer> getArtifactList(){
-        return this.artifactIDList;
+    public List<ArtifactDto> getArtifactList(){
+        return this.artifactList;
     }
 
     public Donation toModel(){
         Donation donation = new Donation();
         donation.setDonationID(this.getDonationID());
-        donation.setNewDonationArtifactsList();
+        for(ArtifactDto art : this.getArtifactList()){
+            donation.addDonatedArtifact(art.toModel());
+        }
         return donation;
     }
 }
