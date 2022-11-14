@@ -116,4 +116,21 @@ public class BusinessHourServiceTests {
 
         verify(businessHourRepository, times(1)).save(testBusinessHour1);
     }
+
+    @Test
+    void testGetAllBusinessHours(){
+        final BusinessHour hour1 = new BusinessHour(1,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        final BusinessHour hour2 = new BusinessHour(2,Date.valueOf("2022-10-11"), Time.valueOf("08:05:00"), Time.valueOf("15:05:00"));
+        List<BusinessHour> bHours = new ArrayList<>();
+        bHours.add(hour1);
+        bHours.add(hour2);
+
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bHours);
+
+        List<BusinessHour> returnedBusinessHours= businessHourService.getAllBusinessHours();
+
+        assertNotNull(returnedBusinessHours);
+        assertEquals(hour1.getBusinessHourID(), returnedBusinessHours.get(0).getBusinessHourID());
+        assertEquals(hour2.getBusinessHourID(), returnedBusinessHours.get(1).getBusinessHourID());
+    }
 }

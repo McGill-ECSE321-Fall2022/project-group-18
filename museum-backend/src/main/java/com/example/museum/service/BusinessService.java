@@ -34,9 +34,9 @@ public class BusinessService {
 
     @Transactional
     public Business createBusiness(Business businessRequest) {
-        if (businessRequest.getBusinessID() > 0) {
-            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
-        }
+//        if (businessRequest.getBusinessID() > 0) {
+//            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
+//        }
         if (businessRequest.getTicketFee() < 0) {
             throw new RequestException(HttpStatus.BAD_REQUEST, "Ticket fee should be positive");
         }
@@ -46,18 +46,18 @@ public class BusinessService {
 
     // sets business hours from businessDto to business.
     // returns true if the list is non empty, false if it's empty
-    public boolean setBusinessHours(Business business, BusinessDto businessDto) {
-        if (businessDto.getBusinessHours().isEmpty()) {
-            return false;
-        }
-        List<BusinessHourDto> businessHours = businessDto.getBusinessHours();
-        for (BusinessHourDto bh : businessHours) {
-            int id = bh.getBusinessHourID();
-            Date day = bh.getDay();
-            Time openTime = bh.getOpenTime();
-            Time closeTime = bh.getCloseTime();
-            business.addBusinessHour(new BusinessHour(id, day, openTime, closeTime));
-        }
-        return true;
-    }
+//    public boolean setBusinessHours(Business business, BusinessDto businessDto) {
+//        if (businessDto.getBusinessHours().isEmpty()) {
+//            return false;
+//        }
+//        List<BusinessHourDto> businessHours = businessDto.getBusinessHours();
+//        for (BusinessHourDto bh : businessHours) {
+//            int id = bh.getBusinessHourID();
+//            Date day = bh.getDay();
+//            Time openTime = bh.getOpenTime();
+//            Time closeTime = bh.getCloseTime();
+//            business.addBusinessHour(new BusinessHour(id, day, openTime, closeTime));
+//        }
+//        return true;
+//    }
 }
