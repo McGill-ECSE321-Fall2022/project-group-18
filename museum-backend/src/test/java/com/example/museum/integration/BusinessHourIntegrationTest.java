@@ -1,5 +1,6 @@
 package com.example.museum.integration;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 
 import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.model.BusinessHour;
@@ -40,6 +45,7 @@ public class BusinessHourIntegrationTest {
                 int id = testCreateBusinessHour();
                 testGetBusinessHour(id);
                 testUpdateBusinessHour(id);
+                testGetAllBusinessHours(id);
         }
 
         private int testCreateBusinessHour() {
@@ -77,6 +83,24 @@ public class BusinessHourIntegrationTest {
                 // assertEquals(day, response.getBody().getDay());
                 assertEquals(openTime, response.getBody().getOpenTime());
                 assertEquals(closeTime, response.getBody().getCloseTime());
+        }
+
+        private void testGetAllBusinessHours(int id){
+                final Date day = Date.valueOf("2022-11-08");
+                final Time openTime = Time.valueOf("08:29:00");
+                final Time closeTime = Time.valueOf("16:45:00");
+//                restTemplate.postForObject("/businessHour/all", new BusinessHourList)
+                ResponseEntity<Stream> responseDto = client.getForEntity("/businessHour/",
+                        Stream.class);
+//                Object[] forNow = template.getForObject("URL", Object[].class);
+//                searchList = Arrays.asList(forNow);
+
+                List<BusinessHourDto> response = (List<BusinessHourDto>) responseDto;
+                assertNotNull(response);
+                assertEquals(day, response.get(0).getDay());
+                assertEquals(id, response.get(0).getBusinessHourID());
+                assertEquals(openTime, response.get(0).getOpenTime());
+                assertEquals(closeTime, response.get(0).getCloseTime());
         }
 
         // Testing for update, does not seem to be very simple, might not be needed
@@ -126,6 +150,13 @@ public class BusinessHourIntegrationTest {
         // assertEquals("A BusinessHour with the given date already exists",
         // response3.getBody());
         // }
+
+        @Test
+        public void testGetAllBusinessHoursEmpty(){
+                ResponseEntity<List> response = client.getForEntity("/businessHour/all", List.class);
+                assertNotNull(response);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
 
         @Test
         public void testGetInvalidBusinessHour() {
