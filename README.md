@@ -35,4 +35,6 @@ No payments will be handled by the museum website.
 
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
-[Project Report 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-1)
+[Deliverable 2](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-2) <br/>
+[Project Report 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-1) <br/>
+[Project Report 2](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-2) <br/> 
