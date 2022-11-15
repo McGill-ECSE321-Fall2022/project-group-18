@@ -36,12 +36,12 @@ No payments will be handled by the museum website.
 
 | Team Member | GitHub | Major | Member Role | 
 | --- | --- | --- | --- |
-| Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager |
-| Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer |
-| Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master |
-| Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |
-| Zachary Godden | ZachGodden | U3 Computer Engineer | Software Developer |
-| Mohammad Shaheer Bilal | mohammadShaheerb | U3 Computer Engineer | Software Developer |
+| Andrei Sandor | [andrei-sandor](https://github.com/andrei-sandor) | U2 Software Engineer | Project Manager |
+| Feihong Chu | [8d5b9b](https://github.com/8d5b9b) | U3 Computer Engineering | Senior Developer |
+| Matthew Litwiller | [mattlitwiller](https://github.com/mattlitwiller) | U3 Software Engineer | Scrum Master |
+| Aymen Ouali | [amnbot](https://github.com/amnbot) | U2 Software Engineer | Testing Lead |
+| Zachary Godden | [ZachGodden](https://github.com/ZachGodden) | U3 Computer Engineer | Software Developer |
+| Mohammad Shaheer Bilal | [mohammadShaheerb](https://github.com/mohammadShaheerb) | U3 Computer Engineer | Software Developer |
 
 ## Deliverable 1
 
