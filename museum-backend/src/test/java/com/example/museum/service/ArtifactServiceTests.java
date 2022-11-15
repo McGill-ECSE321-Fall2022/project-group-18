@@ -3,7 +3,6 @@ package com.example.museum.service;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Artifact;
 import com.example.museum.repository.ArtifactRepository;
-import com.example.museum.repository.ArtifactRepositoryTests;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

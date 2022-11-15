@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,10 +126,60 @@ public class BusinessHourServiceTests {
 
         when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bHours);
 
-        List<BusinessHour> returnedBusinessHours= businessHourService.getAllBusinessHours();
+        List<BusinessHour> returnedBusinessHours = businessHourService.getAllBusinessHours();
 
         assertNotNull(returnedBusinessHours);
         assertEquals(hour1.getBusinessHourID(), returnedBusinessHours.get(0).getBusinessHourID());
         assertEquals(hour2.getBusinessHourID(), returnedBusinessHours.get(1).getBusinessHourID());
+    }
+
+    @Test
+    void testUpdateBusinessHour(){
+        final int id = 1;
+        final BusinessHour hour1 = new BusinessHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<BusinessHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(businessHourRepository.findBusinessHourByBusinessHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(businessHourRepository.save(any(BusinessHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-10-10");
+        final Time openTime = Time.valueOf("07:00:00");
+        final Time closeTime = Time.valueOf("14:00:00");
+
+        BusinessHour returnedBusinessHour = businessHourService.modifyBusinessHourById(id, day, openTime, closeTime);
+
+        assertNotNull(returnedBusinessHour);
+        assertEquals(day, returnedBusinessHour.getDay());
+        assertEquals(openTime, returnedBusinessHour.getOpenTime());
+        assertEquals(closeTime, returnedBusinessHour.getCloseTime());
+
+        verify(businessHourRepository, times(1)).save(any(BusinessHour.class));
+    }
+
+    @Test
+    void testUpdateWithSameDateBusinessHour(){
+        final int id = 1;
+        final BusinessHour hour1 = new BusinessHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<BusinessHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(businessHourRepository.findBusinessHourByBusinessHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(businessHourRepository.save(any(BusinessHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-09-11");
+        final Time openTime = Time.valueOf("07:00:00");
+        final Time closeTime = Time.valueOf("14:00:00");
+
+        BusinessHour returnedBusinessHour = businessHourService.modifyBusinessHourById(id, day, openTime, closeTime);
+
+        assertNotNull(returnedBusinessHour);
+        assertEquals(day, returnedBusinessHour.getDay());
+        assertEquals(openTime, returnedBusinessHour.getOpenTime());
+        assertEquals(closeTime, returnedBusinessHour.getCloseTime());
+
+        verify(businessHourRepository, times(1)).save(any(BusinessHour.class));
     }
 }

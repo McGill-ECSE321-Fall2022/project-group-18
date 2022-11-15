@@ -1,20 +1,14 @@
 package com.example.museum.service;
 
-import com.example.museum.dto.BusinessDto;
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.Business;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
 
 @Service
 public class BusinessService {
