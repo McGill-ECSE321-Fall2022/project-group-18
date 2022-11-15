@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 public class ArtifactController {
@@ -28,5 +30,16 @@ public class ArtifactController {
         ArtifactDto response = new ArtifactDto(createdArtifact);
         return new ResponseEntity<ArtifactDto>(response, HttpStatus.CREATED);
     }
+    //Set loan price
+    // TODO Test
+    @PostMapping("/artifact/update/{artID}")
+    public ResponseEntity<ArtifactDto> updateArtifact(@PathVariable int artID, @RequestBody ArtifactDto request){
+        Artifact updateArtifact = artifactService.updateArtifact(artID, request.getLoanable(), request.getLoaned(), request.getLoanFee());
+        ArtifactDto response = new ArtifactDto(updateArtifact);
+        return new ResponseEntity<ArtifactDto>(response, HttpStatus.OK);
+    }
+
+
+
 }
 
