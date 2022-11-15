@@ -1,6 +1,8 @@
 package com.example.museum.service;
 
+import com.example.museum.dto.TicketDto;
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.model.BusinessHour;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,9 @@ import com.example.museum.repository.TicketRepository;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class TicketService {
@@ -30,7 +34,7 @@ public class TicketService {
         Iterator<Ticket> t = ticketRepository.findAll().iterator();
         while(t.hasNext()){
             Ticket curT = t.next();
-            if(curT.getDay().toString().equals(curT.getDay().toString())){
+            if(curT.getDay().toString().equals(day.toString())){
                 throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
             }
         }
@@ -66,4 +70,13 @@ public class TicketService {
     }
 
 
+    public List<Ticket> getAllTickets() {
+        List<Ticket> ticketsList = new ArrayList<>();
+        Iterator<Ticket> tickets = ticketRepository.findAll().iterator();
+        while (tickets.hasNext()) {
+            Ticket t = tickets.next();
+            ticketsList.add(t);
+        }
+        return ticketsList;
+    }
 }

@@ -39,7 +39,7 @@ public class BusinessHourController {
 
     // tested
     @GetMapping("/businessHour/{id}")
-    public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
+    public ResponseEntity<BusinessHourDto> getBusinessHourByBusinessHourID(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
