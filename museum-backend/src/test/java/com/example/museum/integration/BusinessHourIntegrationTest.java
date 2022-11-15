@@ -1,5 +1,9 @@
 package com.example.museum.integration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.internal.filter.ValueNodes;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,6 +27,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.example.museum.dto.BusinessHourDto;
@@ -80,27 +87,9 @@ public class BusinessHourIntegrationTest {
                 assertEquals(HttpStatus.OK, response.getStatusCode());
                 assertNotNull(response.getBody());
                 assertEquals(id, response.getBody().getBusinessHourID());
-                // assertEquals(day, response.getBody().getDay());
+                assertEquals(day, response.getBody().getDay());
                 assertEquals(openTime, response.getBody().getOpenTime());
                 assertEquals(closeTime, response.getBody().getCloseTime());
-        }
-
-        private void testGetAllBusinessHours(int id){
-                final Date day = Date.valueOf("2022-11-08");
-                final Time openTime = Time.valueOf("08:29:00");
-                final Time closeTime = Time.valueOf("16:45:00");
-//                restTemplate.postForObject("/businessHour/all", new BusinessHourList)
-                ResponseEntity<Stream> responseDto = client.getForEntity("/businessHour/",
-                        Stream.class);
-//                Object[] forNow = template.getForObject("URL", Object[].class);
-//                searchList = Arrays.asList(forNow);
-
-                List<BusinessHourDto> response = (List<BusinessHourDto>) responseDto;
-                assertNotNull(response);
-                assertEquals(day, response.get(0).getDay());
-                assertEquals(id, response.get(0).getBusinessHourID());
-                assertEquals(openTime, response.get(0).getOpenTime());
-                assertEquals(closeTime, response.get(0).getCloseTime());
         }
 
         // Testing for update, does not seem to be very simple, might not be needed
@@ -120,6 +109,30 @@ public class BusinessHourIntegrationTest {
                 assertEquals(id, response2.getBody().getBusinessHourID());
                 // assertEquals(day, response2.getBody().getDay());
                 assertNotEquals(prevOpenTime, response2.getBody().getOpenTime());
+        }
+
+        private void testGetAllBusinessHours(int id){
+                final Date day = Date.valueOf("2022-11-08");
+                final Time openTime = Time.valueOf("09:29:00");
+                final Time closeTime = Time.valueOf("16:45:00");
+//                restTemplate.postForObject("/businessHour/all", new BusinessHourList)
+
+
+                ResponseEntity<List<BusinessHourDto>> responseEntity =
+                        client.exchange(
+                                "/businessHour/all",
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<BusinessHourDto>>() {}
+                        );
+                List<BusinessHourDto> response = responseEntity.getBody();
+
+                assertNotNull(response);
+                assertEquals(1, response.size());
+                assertEquals(day, response.get(0).getDay());
+                assertEquals(id, response.get(0).getBusinessHourID());
+                assertEquals(openTime, response.get(0).getOpenTime());
+                assertEquals(closeTime, response.get(0).getCloseTime());
         }
 
         // @Test
