@@ -66,7 +66,7 @@ public class CustomerDto {
         return this.lastName;
     }
 
-    public List<DonationDto> getCustomerDonatedArtifact() {
+    public List<DonationDto> getCustomerDonatedArtifacts() {
         return this.customerDonatedArtifacts;
     }
 
@@ -86,7 +86,7 @@ public class CustomerDto {
         customer.setFirstName(this.getFirstName());
         customer.setLastName(this.getLastName());
 
-        for (DonationDto don : this.getCustomerDonatedArtifact()) {
+        for (DonationDto don : this.getCustomerDonatedArtifacts()) {
             customer.addCustomerDonatedArtifact(don.toModel());
         }
         for (LoanDto lo : this.getLoans()) {

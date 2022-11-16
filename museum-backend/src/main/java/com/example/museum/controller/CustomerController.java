@@ -45,7 +45,7 @@ public class CustomerController {
         Customer customer = customerService.getCustomerByID(id);
         CustomerDto customerDto = new CustomerDto(customer);
 
-        List<DonationDto> donationDtos = customerDto.getCustomerDonatedArtifact();
+        List<DonationDto> donationDtos = customerDto.getCustomerDonatedArtifacts();
 
         return new ResponseEntity<List<DonationDto>>(donationDtos, HttpStatus.OK);
     }
