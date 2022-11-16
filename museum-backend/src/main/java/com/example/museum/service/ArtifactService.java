@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 
 
 @Service
@@ -28,9 +29,6 @@ public class ArtifactService {
     @Transactional
     public Artifact createArtifact(Artifact artifact){
 
-        if(artifactRepo.findByArtID(artifact.getArtID()) != null){
-            throw new DatabaseException(HttpStatus.CONFLICT, "An artifact with the given id already exists.");
-        }
 
         artifact = artifactRepo.save(artifact);
         return artifact;
@@ -38,6 +36,7 @@ public class ArtifactService {
 
     @Transactional
     public Artifact updateArtifact(int artID, boolean loanable, boolean loaned, int loanFee){
+
         Artifact artifact = artifactRepo.findByArtID(artID);
         artifact.setLoanable(loanable);
         artifact.setLoaned(loaned);
@@ -45,6 +44,7 @@ public class ArtifactService {
         Artifact updatedArtifact = artifactRepo.save(artifact);
         return  updatedArtifact;
     }
+
 
 }
 
