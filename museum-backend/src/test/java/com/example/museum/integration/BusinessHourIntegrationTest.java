@@ -61,7 +61,7 @@ public class BusinessHourIntegrationTest {
                 assertEquals(HttpStatus.CREATED, response.getStatusCode());
                 assertNotNull(response.getBody());
                 assertTrue(response.getBody().getBusinessHourID() > 0);
-                // assertEquals(day, response.getBody().getDay());
+                assertEquals(day, response.getBody().getDay());
                 assertEquals(openTime, response.getBody().getOpenTime());
                 assertEquals(closeTime, response.getBody().getCloseTime());
 
@@ -112,14 +112,14 @@ public class BusinessHourIntegrationTest {
                 final Time updatedOpenTime = Time.valueOf("09:29:00");
                 final BusinessHourDto businessHourDto = new BusinessHourDto(new BusinessHour(0,
                                 response.getBody().getDay(), updatedOpenTime, response.getBody().getCloseTime()));
-                ResponseEntity<BusinessHourDto> response2 = client.postForEntity("/businessHour/" + id, businessHourDto,
+                ResponseEntity<BusinessHourDto> response2 = client.postForEntity("/businessHour/update/" + id, businessHourDto,
                                 BusinessHourDto.class);
 
                 assertNotNull(response2);
                 assertEquals(HttpStatus.OK, response2.getStatusCode());
                 assertNotNull(response2.getBody());
                 assertEquals(id, response2.getBody().getBusinessHourID());
-                // assertEquals(day, response2.getBody().getDay());
+                assertEquals(response.getBody().getDay(), response2.getBody().getDay());
                 assertNotEquals(prevOpenTime, response2.getBody().getOpenTime());
         }
 
