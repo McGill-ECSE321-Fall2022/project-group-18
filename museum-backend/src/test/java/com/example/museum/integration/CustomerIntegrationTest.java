@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,6 +23,7 @@ import com.example.museum.model.Ticket;
 import com.example.museum.repository.CustomerRepository;
 
 import java.sql.Date;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CustomerIntegrationTest {
@@ -40,7 +43,7 @@ public class CustomerIntegrationTest {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
         testGetCustomer(id);
-        // testGetCustomerTickets(id);
+        testGetCustomerTickets(id);
         testLoginCustomer();
         testInvalidLoginCustomer();
         testCreateInvalidCustomer();
@@ -78,6 +81,7 @@ public class CustomerIntegrationTest {
         assertEquals(firstName, response.getBody().getFirstName());
         assertEquals(lastName, response.getBody().getLastName());
         assertEquals(credit, response.getBody().getCredit());
+        assertEquals(1, response.getBody().getCustomerTickets().size());
         assertEquals(ticket.getTicketID(), response.getBody().getCustomerTickets().get(0).getTicketID());
         assertEquals(ticket.getDay(), response.getBody().getCustomerTickets().get(0).getDay());
         assertEquals(ticket.getPrice(), response.getBody().getCustomerTickets().get(0).getPrice());
@@ -139,13 +143,19 @@ public class CustomerIntegrationTest {
         final Date day = Date.valueOf("2022-11-08");
         final int price = 25;
 
-        ResponseEntity<CustomerDto> response = client.getForEntity("/customer/" + id + "/tickets", CustomerDto.class);
+        ResponseEntity<List<TicketDto>> response = client.exchange(
+                "/customer/" + id + "/ticket",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<TicketDto>>() {
+                });
+
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().getCustomerTickets().size());
-        assertEquals(day, response.getBody().getCustomerTickets().get(0).getDay());
-        assertEquals(price, response.getBody().getCustomerTickets().get(0).getPrice());
+        assertEquals(1, response.getBody().size());
+        assertEquals(day, response.getBody().get(0).getDay());
+        assertEquals(price, response.getBody().get(0).getPrice());
     }
 
     private void testCreateInvalidCustomer() {
