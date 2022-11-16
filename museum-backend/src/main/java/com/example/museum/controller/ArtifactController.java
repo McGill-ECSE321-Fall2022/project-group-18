@@ -39,7 +39,28 @@ public class ArtifactController {
         return new ResponseEntity<ArtifactDto>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/artifact/all")
+    public ResponseEntity<List<ArtifactDto>> getAllArtifacts(){
+        List<Artifact> artifacts = artifactService.getAllArtifacts();
+        List<ArtifactDto> artifactDtoList = new ArrayList<>();
+        for(Artifact a : artifacts){
+            ArtifactDto aDto = new ArtifactDto(a);
+            artifactDtoList.add(aDto);
+        }
+        return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
+    }
 
+    @GetMapping("/artifact/all")
+    public ResponseEntity<List<ArtifactDto>> getAllArtifacts(){
+        List<Artifact> artifacts = artifactService.getAllArtifacts();
+        List<ArtifactDto> artifactDtoList = new ArrayList<>();
+        for(Artifact a : artifacts){
+            if()
+            ArtifactDto aDto = new ArtifactDto(a);
+            artifactDtoList.add(aDto);
+        }
+        return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
+    }
 
 }
 
