@@ -1,6 +1,7 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Room;
 import com.example.museum.repository.ArtifactRepository;
@@ -77,7 +78,35 @@ public class RoomService {
         // check if the size of the adding artifacts exceed the capacity
         int totalRoomArtifactsNum = room.getRoomArtifacts().size() + artifactIDList.size();
         if ( room.getCapacity() > 0 && totalRoomArtifactsNum > room.getCapacity()) {
-            throw new RuntimeException("Display room's artifacts cannot exceed its capacity");
+            throw new RequestException(HttpStatus.BAD_REQUEST, "Display room's artifacts cannot exceed its capacity");
+        }
+        // add artifacts to room
+        for (int artifactID: artifactIDList) {
+            if (!artifactRepo.existsById(artifactID)) {
+                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Room is not in database");
+            }
+            HashMap<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
+            if (allArtifactsAndRooms.containsKey(artifactID)) { // if this art id is already in a room
+                throw new DatabaseException(HttpStatus.CONFLICT, "This artifact already exists in rooms");
+            }
+            Artifact artifact = artifactRepo.findByArtID(artifactID);
+            room.addRoomArtifact(artifact);
+        }
+        room = roomRepo.save(room);
+        return room;
+    }
+
+    @Transactional
+    public Room addArtifactsToRoom(String roomName, List<Integer> artifactIDList) {
+        // check if the room pass in exists
+        if (!roomRepo.existsByName(roomName)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "This room does not exist");
+        }
+        Room room = roomRepo.findRoomByName(roomName);
+        // check if the size of the adding artifacts exceed the capacity
+        int totalRoomArtifactsNum = room.getRoomArtifacts().size() + artifactIDList.size();
+        if ( room.getCapacity() > 0 && totalRoomArtifactsNum > room.getCapacity()) {
+            throw new RequestException(HttpStatus.BAD_REQUEST, "Display room's artifacts cannot exceed its capacity");
         }
         // add artifacts to room
         for (int artifactID: artifactIDList) {
@@ -105,7 +134,7 @@ public class RoomService {
         // check size of new room
         int destRoomNum = destRoom.getRoomArtifacts().size() + 1;
         if (destRoom.getCapacity() > 0 && destRoomNum > destRoom.getCapacity()) {
-            throw new RuntimeException("Display room's artifacts cannot exceed its capacity");
+            throw new RequestException(HttpStatus.BAD_REQUEST, "Display room's artifacts cannot exceed its capacity");
         }
         if (!artifactRepo.existsById(artifactID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "The artifact does not exist");

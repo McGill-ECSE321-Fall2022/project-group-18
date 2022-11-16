@@ -112,5 +112,38 @@ public class RoomRepositoryTests {
         assertEquals(loaned2, artifact2.getLoaned());
         assertEquals(artType2, artifact2.getType());
         assertEquals(loanFee2, artifact2.getLoanFee());
+
+        // now test if findRoomByName work
+        room = roomRepository.findRoomByName(roomName);
+        // Assert that Room has correct attributes
+        // Test if the return is an object
+        assertEquals(true, roomRepository.existsByName(roomName));
+        assertNotNull(room);
+        // Test if the attributes are correct
+        assertEquals(roomID, room.getRoomID());
+        assertEquals(roomName, room.getName());
+        assertEquals(roomCapacity, room.getCapacity());
+        // Test if the room has correct associations
+        artifactArrayList = room.getRoomArtifacts();
+        assertEquals(artifactArrayList.size(), 2);
+        artifact1 = artifactArrayList.get(0);
+        artifact2 = artifactArrayList.get(1);
+        // Test if association exists
+        assertNotNull(artifact1);
+        // Test if the attribtues of associated objects are correct
+        assertEquals(artID1, artifact1.getArtID());
+        assertEquals(artName1, artifact1.getName());
+        assertEquals(loanable1, artifact1.getLoanable());
+        assertEquals(loaned1, artifact1.getLoaned());
+        assertEquals(artType1, artifact1.getType());
+        assertEquals(loanFee1, artifact1.getLoanFee());
+        // Repeat for artifact 2
+        assertNotNull(artifact2);
+        assertEquals(artID2, artifact2.getArtID());
+        assertEquals(artName2, artifact2.getName());
+        assertEquals(loanable2, artifact2.getLoanable());
+        assertEquals(loaned2, artifact2.getLoaned());
+        assertEquals(artType2, artifact2.getType());
+        assertEquals(loanFee2, artifact2.getLoanFee());
     }
 }
