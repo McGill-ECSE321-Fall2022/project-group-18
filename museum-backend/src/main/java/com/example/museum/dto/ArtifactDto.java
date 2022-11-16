@@ -45,7 +45,7 @@ public class ArtifactDto {
     }
 
     public int getLoanFee() {
-        return this.loanFee;
+        return loanFee;
     }
 
     public Artifact toModel() {

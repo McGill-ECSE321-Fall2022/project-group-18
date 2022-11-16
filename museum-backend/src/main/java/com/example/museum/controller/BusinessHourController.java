@@ -1,7 +1,6 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.BusinessHourDto;
-import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.service.BusinessHourService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +39,12 @@ public class BusinessHourController {
 
     // tested
     @GetMapping("/businessHour/{id}")
-    public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
+    public ResponseEntity<BusinessHourDto> getBusinessHourByBusinessHourID(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
 
-    @GetMapping("businessHour/all")
+    @GetMapping("/businessHour/all")
     public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours(){
         List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();
         List<BusinessHourDto> businessHourDtoList = new ArrayList<>();
@@ -55,10 +54,4 @@ public class BusinessHourController {
         }
         return new ResponseEntity<List<BusinessHourDto>>(businessHourDtoList, HttpStatus.OK);
     }
-
-    /*
-     * TODO: More functionality:
-     * - delete business hour?
-     */
-
 }
