@@ -15,8 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.example.museum.dto.CustomerDto;
+import com.example.museum.dto.TicketDto;
 import com.example.museum.model.Customer;
+import com.example.museum.model.Ticket;
 import com.example.museum.repository.CustomerRepository;
+
+import java.sql.Date;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CustomerIntegrationTest {
@@ -33,18 +37,34 @@ public class CustomerIntegrationTest {
 
     @Test
     public void testCreateGetUpdateCustomer() {
-        int id = testCreateCustomer();
-        testCreateInvalidCustomer();
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
         testGetCustomer(id);
+        // testGetCustomerTickets(id);
+        testLoginCustomer();
+        testInvalidLoginCustomer();
+        testCreateInvalidCustomer();
     }
 
-    private int testCreateCustomer() {
+    private Ticket createTicket() {
+        final Date day = Date.valueOf("2022-11-08");
+        final int price = 25;
+        final Ticket ticket = new Ticket(0, day, price);
+        final TicketDto ticketDto = new TicketDto(ticket);
+
+        ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto, TicketDto.class);
+
+        return response.getBody().toModel();
+    }
+
+    private int testCreateCustomer(Ticket ticket) {
         final String username = "customer1";
         final String password = "password";
         final String firstName = "Customer";
         final String lastName = "Account";
         final int credit = 10;
         final Customer customer = new Customer(0, username, password, firstName, lastName, credit);
+        customer.addCustomerTicket(ticket);
         final CustomerDto customerDto = new CustomerDto(customer);
 
         ResponseEntity<CustomerDto> response = client.postForEntity("/customer", customerDto, CustomerDto.class);
@@ -58,8 +78,43 @@ public class CustomerIntegrationTest {
         assertEquals(firstName, response.getBody().getFirstName());
         assertEquals(lastName, response.getBody().getLastName());
         assertEquals(credit, response.getBody().getCredit());
+        assertEquals(ticket.getTicketID(), response.getBody().getCustomerTickets().get(0).getTicketID());
+        assertEquals(ticket.getDay(), response.getBody().getCustomerTickets().get(0).getDay());
+        assertEquals(ticket.getPrice(), response.getBody().getCustomerTickets().get(0).getPrice());
 
         return response.getBody().getAccountID();
+    }
+
+    private void testLoginCustomer() {
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "Customer";
+        final String lastName = "Account";
+        final int credit = 10;
+        final CustomerDto customerDto = new CustomerDto(
+                new Customer(0, username, password, firstName, lastName, credit));
+
+        ResponseEntity<String> response = client.postForEntity("/customer/login", customerDto, String.class);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Successful login", response.getBody());
+    }
+
+    private void testInvalidLoginCustomer() {
+        final String username = "customer1";
+        final String password = "wrongPassword";
+        final String firstName = "Customer";
+        final String lastName = "Account";
+        final int credit = 10;
+        final CustomerDto customerDto = new CustomerDto(
+                new Customer(0, username, password, firstName, lastName, credit));
+
+        ResponseEntity<String> response = client.postForEntity("/customer/login", customerDto, String.class);
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Wrong password", response.getBody());
     }
 
     private void testGetCustomer(int id) {
@@ -69,7 +124,6 @@ public class CustomerIntegrationTest {
         final String lastName = "Account";
         final int credit = 10;
         ResponseEntity<CustomerDto> response = client.getForEntity("/customer/" + id, CustomerDto.class);
-
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -81,8 +135,20 @@ public class CustomerIntegrationTest {
         assertEquals(credit, response.getBody().getCredit());
     }
 
-    @Test
-    public void testCreateInvalidCustomer() {
+    private void testGetCustomerTickets(int id) {
+        final Date day = Date.valueOf("2022-11-08");
+        final int price = 25;
+
+        ResponseEntity<CustomerDto> response = client.getForEntity("/customer/" + id + "/tickets", CustomerDto.class);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().getCustomerTickets().size());
+        assertEquals(day, response.getBody().getCustomerTickets().get(0).getDay());
+        assertEquals(price, response.getBody().getCustomerTickets().get(0).getPrice());
+    }
+
+    private void testCreateInvalidCustomer() {
         // Create user with existing username
         final String username = "customer1";
         final String password = "password";
