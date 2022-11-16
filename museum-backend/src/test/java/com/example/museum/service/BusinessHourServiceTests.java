@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -88,17 +90,6 @@ public class BusinessHourServiceTests {
     @Test
     //test that only one business hour can exist for a given date (checked manually with an exception - and not in the database)
     void testDateUniqueBusinessHourField(){
-        //this test does not work because idk how to represent an iterable here and to make it into a mock... or whatever
-    /*
-        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
-        while(bHours.hasNext()){
-            BusinessHour bh = bHours.next();
-            if(bh.getDay().toString().equals(businessHour.getDay().toString())){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
-            }
-        }
-     */
-//      when(businessHourRepository.findAll(any(Object))).thenAnswer((InvocationOnMock invocation) -> testBusinessHour);
         final Date day1 = Date.valueOf("2022-11-08");
         final Time startTime1 = Time.valueOf("08:29:00");
         final Time endTime1 = Time.valueOf("16:45:00");
@@ -116,13 +107,79 @@ public class BusinessHourServiceTests {
         testBusinessHour2.setDay(day2);
         testBusinessHour2.setOpenTime(startTime2);
         testBusinessHour2.setCloseTime(endTime2);
-        //this is definitely cheating - but I see no way to represent iterables and do this legitimately
-        when(businessHourRepository.save(testBusinessHour2)).thenAnswer((InvocationOnMock invocation) -> null);
-//        Iterable<BusinessHour> resultBHour = new Iterable<BusinessHour>();
-//        when(businessHourRepository.findAll()).thenAnswer(() -> new Iterable<BusinessHour>)
-        BusinessHour returnedBusinessHour2 = businessHourService.createBusinessHour(testBusinessHour2);
-        assertNull(returnedBusinessHour2);
+
+        List<BusinessHour> bh = new ArrayList<>();
+        bh.add(returnedBusinessHour1);
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        Exception ex = assertThrows(DatabaseException.class, () -> businessHourService.createBusinessHour(testBusinessHour2));
 
         verify(businessHourRepository, times(1)).save(testBusinessHour1);
+    }
+
+    @Test
+    void testGetAllBusinessHours(){
+        final BusinessHour hour1 = new BusinessHour(1,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        final BusinessHour hour2 = new BusinessHour(2,Date.valueOf("2022-10-11"), Time.valueOf("08:05:00"), Time.valueOf("15:05:00"));
+        List<BusinessHour> bHours = new ArrayList<>();
+        bHours.add(hour1);
+        bHours.add(hour2);
+
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bHours);
+
+        List<BusinessHour> returnedBusinessHours = businessHourService.getAllBusinessHours();
+
+        assertNotNull(returnedBusinessHours);
+        assertEquals(hour1.getBusinessHourID(), returnedBusinessHours.get(0).getBusinessHourID());
+        assertEquals(hour2.getBusinessHourID(), returnedBusinessHours.get(1).getBusinessHourID());
+    }
+
+    @Test
+    void testUpdateBusinessHour(){
+        final int id = 1;
+        final BusinessHour hour1 = new BusinessHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<BusinessHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(businessHourRepository.findBusinessHourByBusinessHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(businessHourRepository.save(any(BusinessHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-10-10");
+        final Time openTime = Time.valueOf("07:00:00");
+        final Time closeTime = Time.valueOf("14:00:00");
+
+        BusinessHour returnedBusinessHour = businessHourService.modifyBusinessHourById(id, day, openTime, closeTime);
+
+        assertNotNull(returnedBusinessHour);
+        assertEquals(day, returnedBusinessHour.getDay());
+        assertEquals(openTime, returnedBusinessHour.getOpenTime());
+        assertEquals(closeTime, returnedBusinessHour.getCloseTime());
+
+        verify(businessHourRepository, times(1)).save(any(BusinessHour.class));
+    }
+
+    @Test
+    void testUpdateWithSameDateBusinessHour(){
+        final int id = 1;
+        final BusinessHour hour1 = new BusinessHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<BusinessHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(businessHourRepository.findBusinessHourByBusinessHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(businessHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(businessHourRepository.save(any(BusinessHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-09-11");
+        final Time openTime = Time.valueOf("07:00:00");
+        final Time closeTime = Time.valueOf("14:00:00");
+
+        BusinessHour returnedBusinessHour = businessHourService.modifyBusinessHourById(id, day, openTime, closeTime);
+
+        assertNotNull(returnedBusinessHour);
+        assertEquals(day, returnedBusinessHour.getDay());
+        assertEquals(openTime, returnedBusinessHour.getOpenTime());
+        assertEquals(closeTime, returnedBusinessHour.getCloseTime());
+
+        verify(businessHourRepository, times(1)).save(any(BusinessHour.class));
     }
 }

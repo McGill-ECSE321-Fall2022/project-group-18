@@ -35,5 +35,16 @@ public class ArtifactService {
         artifact = artifactRepo.save(artifact);
         return artifact;
     }
+
+    @Transactional
+    public Artifact updateArtifact(int artID, boolean loanable, boolean loaned, int loanFee){
+        Artifact artifact = artifactRepo.findByArtID(artID);
+        artifact.setLoanable(loanable);
+        artifact.setLoaned(loaned);
+        artifact.setLoanFee(loanFee);
+        Artifact updatedArtifact = artifactRepo.save(artifact);
+        return  updatedArtifact;
+    }
+
 }
 

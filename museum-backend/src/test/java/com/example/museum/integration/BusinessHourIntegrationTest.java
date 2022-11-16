@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
 
-import com.example.museum.controller.BusinessHourController;
 import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.BusinessHourRepository;
@@ -41,8 +41,10 @@ public class BusinessHourIntegrationTest {
         @Test
         public void testCreateGetUpdateBusinessHour() {
                 int id = testCreateBusinessHour();
+                testCreateInvalidBusinessHour();
                 testGetBusinessHour(id);
                 testUpdateBusinessHour(id);
+                testGetAllBusinessHours(id);
         }
 
         private int testCreateBusinessHour() {
@@ -59,11 +61,31 @@ public class BusinessHourIntegrationTest {
                 assertEquals(HttpStatus.CREATED, response.getStatusCode());
                 assertNotNull(response.getBody());
                 assertTrue(response.getBody().getBusinessHourID() > 0);
-                // assertEquals(day, response.getBody().getDay());
+                assertEquals(day, response.getBody().getDay());
                 assertEquals(openTime, response.getBody().getOpenTime());
                 assertEquals(closeTime, response.getBody().getCloseTime());
 
                 return response.getBody().getBusinessHourID();
+        }
+
+        public void testCreateInvalidBusinessHour(){
+                final Date day = Date.valueOf("2022-11-08");
+                final Time openTime = Time.valueOf("08:45:00");
+                final Time closeTime = Time.valueOf("16:55:00");
+                final BusinessHourDto businessHourDto = new BusinessHourDto(
+                        new BusinessHour(0, day, openTime, closeTime));
+
+                try{
+                        ResponseEntity<BusinessHourDto> response = client.postForEntity("/businessHour", businessHourDto, BusinessHourDto.class);
+                        //we should not hit this line - an exception should be called before this
+                        assertEquals(1,2);
+                }catch(Exception e){
+                        ResponseEntity<String> response = client.postForEntity("/businessHour", businessHourDto, String.class);
+                        assertNotNull(response);
+                        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+                }
+
+
         }
 
         private void testGetBusinessHour(int id) {
@@ -77,7 +99,7 @@ public class BusinessHourIntegrationTest {
                 assertEquals(HttpStatus.OK, response.getStatusCode());
                 assertNotNull(response.getBody());
                 assertEquals(id, response.getBody().getBusinessHourID());
-                // assertEquals(day, response.getBody().getDay());
+                assertEquals(day, response.getBody().getDay());
                 assertEquals(openTime, response.getBody().getOpenTime());
                 assertEquals(closeTime, response.getBody().getCloseTime());
         }
@@ -90,16 +112,42 @@ public class BusinessHourIntegrationTest {
                 final Time updatedOpenTime = Time.valueOf("09:29:00");
                 final BusinessHourDto businessHourDto = new BusinessHourDto(new BusinessHour(0,
                                 response.getBody().getDay(), updatedOpenTime, response.getBody().getCloseTime()));
-                ResponseEntity<BusinessHourDto> response2 = client.postForEntity("/businessHour/" + id, businessHourDto,
+                ResponseEntity<BusinessHourDto> response2 = client.postForEntity("/businessHour/update/" + id, businessHourDto,
                                 BusinessHourDto.class);
 
                 assertNotNull(response2);
                 assertEquals(HttpStatus.OK, response2.getStatusCode());
                 assertNotNull(response2.getBody());
                 assertEquals(id, response2.getBody().getBusinessHourID());
-                // assertEquals(day, response2.getBody().getDay());
+                assertEquals(response.getBody().getDay(), response2.getBody().getDay());
                 assertNotEquals(prevOpenTime, response2.getBody().getOpenTime());
         }
+
+        private void testGetAllBusinessHours(int id){
+                final Date day = Date.valueOf("2022-11-08");
+                final Time openTime = Time.valueOf("09:29:00");
+                final Time closeTime = Time.valueOf("16:45:00");
+//                restTemplate.postForObject("/businessHour/all", new BusinessHourList)
+
+
+                ResponseEntity<List<BusinessHourDto>> responseEntity =
+                        client.exchange(
+                                "/businessHour/all",
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<BusinessHourDto>>() {}
+                        );
+                List<BusinessHourDto> response = responseEntity.getBody();
+
+                assertNotNull(response);
+                assertEquals(1, response.size());
+                assertEquals(day, response.get(0).getDay());
+                assertEquals(id, response.get(0).getBusinessHourID());
+                assertEquals(openTime, response.get(0).getOpenTime());
+                assertEquals(closeTime, response.get(0).getCloseTime());
+        }
+
+
 
         // @Test
         // public void testCreateInvalidBusinessHour() {
@@ -129,6 +177,13 @@ public class BusinessHourIntegrationTest {
         // assertEquals("A BusinessHour with the given date already exists",
         // response3.getBody());
         // }
+
+        @Test
+        public void testGetAllBusinessHoursEmpty(){
+                ResponseEntity<List> response = client.getForEntity("/businessHour/all", List.class);
+                assertNotNull(response);
+                assertEquals(HttpStatus.OK, response.getStatusCode());
+        }
 
         @Test
         public void testGetInvalidBusinessHour() {

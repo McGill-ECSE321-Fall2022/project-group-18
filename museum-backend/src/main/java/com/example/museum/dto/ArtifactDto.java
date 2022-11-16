@@ -42,9 +42,9 @@ public class ArtifactDto {
             return loaned;
         }
 
-        public int getLoanFee() {
-            return this.loanFee;
-        }
+
+        public int getLoanFee() {return loanFee;}
+
 
         public Artifact toModel(){
             Artifact artifact = new Artifact();

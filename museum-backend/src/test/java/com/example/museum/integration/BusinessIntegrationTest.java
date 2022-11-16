@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.sql.Date;
-import java.sql.Time;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.example.museum.dto.BusinessDto;
 import com.example.museum.model.Business;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.BusinessRepository;
-import com.example.museum.repository.BusinessHourRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class BusinessIntegrationTest {

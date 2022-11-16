@@ -1,8 +1,6 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.exceptions.RequestException;
-import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.BusinessHourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +22,10 @@ public class BusinessHourService {
 
     @Transactional
     public BusinessHour createBusinessHour(BusinessHour businessHour) {
-        if (businessHour.getBusinessHourID() > 0) {
-            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
-        }
-        // List<BusinessHour> bhours = (List<BusinessHour>)
-        // businessHourRepository.findAll().iterator();
-        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
-        while (bHours.hasNext()) {
-            BusinessHour bh = bHours.next();
-            if (bh.getDay().toString().equals(businessHour.getDay().toString())) {
-                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
-            }
-        }
-
+//        if (businessHour.getBusinessHourID() > 0) {
+//            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
+//        }
+        checkDateConflict(businessHour.getBusinessHourID(), businessHour.getDay());
         businessHour = businessHourRepository.save(businessHour);
         return businessHour;
     }
@@ -50,22 +39,40 @@ public class BusinessHourService {
         return businessHour;
     }
 
-    // TODO: do we need to save the business before returning it (to update the
-    // database)?
-    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime) {
+    @Transactional
+    public List<BusinessHour> getAllBusinessHours() {
+        List<BusinessHour> businessHours = new ArrayList<>();
         Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
         while (bHours.hasNext()) {
             BusinessHour bh = bHours.next();
-            if (bh.getDay().toString().equals(day.toString())) {
-                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
-            }
+            businessHours.add(bh);
         }
+        return businessHours;
+    }
+
+    // TODO: do we need to save the business before returning it (to update the
+    // database)?
+    public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime) {
+        checkDateConflict(id, day);
         BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
         businessHour.setDay(day);
         businessHour.setOpenTime(openTime);
         businessHour.setCloseTime(closeTime);
-        // I assume we need to save the new one to the database
+
         BusinessHour updatedBusinessHour = businessHourRepository.save(businessHour);
         return updatedBusinessHour;
+    }
+
+    //check that the date does not already exist
+    //for update, we check that the desired new date does not already exist in another BusinessHour
+    //for creation, we check that the desired new date does not already exist
+    private void checkDateConflict(int id, Date day) throws DatabaseException{
+        Iterator<BusinessHour> bHours = businessHourRepository.findAll().iterator();
+        while (bHours.hasNext()) {
+            BusinessHour bh = bHours.next();
+            if (bh.getDay().toString().equals(day.toString()) && (bh.getBusinessHourID() != id || id == 0)) {
+                throw new DatabaseException(HttpStatus.CONFLICT, "A BusinessHour with the given date already exists");
+            }
+        }
     }
 }

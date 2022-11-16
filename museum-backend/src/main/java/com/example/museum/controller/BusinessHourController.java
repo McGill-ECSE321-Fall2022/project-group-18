@@ -1,13 +1,15 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.BusinessHourDto;
-import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.service.BusinessHourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 // @RequestMapping("/businessHour")
@@ -26,7 +28,7 @@ public class BusinessHourController {
     }
 
     // tested
-    @PostMapping("/businessHour/{id}")
+    @PostMapping("/businessHour/update/{id}")
     public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id,
             @RequestBody BusinessHourDto request) {
         BusinessHour updatedBusinessHour = businessHourService.modifyBusinessHourById(id, request.getDay(),
@@ -37,14 +39,19 @@ public class BusinessHourController {
 
     // tested
     @GetMapping("/businessHour/{id}")
-    public ResponseEntity<BusinessHourDto> getEventByName(@PathVariable int id) {
+    public ResponseEntity<BusinessHourDto> getBusinessHourByBusinessHourID(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
 
-    /*
-     * TODO: More functionality:
-     * - delete business hour?
-     */
-
+    @GetMapping("/businessHour/all")
+    public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours(){
+        List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();
+        List<BusinessHourDto> businessHourDtoList = new ArrayList<>();
+        for(BusinessHour bh : businessHours){
+            BusinessHourDto bhDto = new BusinessHourDto(bh);
+            businessHourDtoList.add(bhDto);
+        }
+        return new ResponseEntity<List<BusinessHourDto>>(businessHourDtoList, HttpStatus.OK);
+    }
 }
