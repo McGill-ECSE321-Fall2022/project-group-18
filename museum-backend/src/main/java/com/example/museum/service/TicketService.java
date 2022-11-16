@@ -75,6 +75,7 @@ public class TicketService {
     }
 
 
+    //TODO: test once aymen updates customer stuff
     public List<Ticket> getAllAvailableTickets() {
         List<Ticket> ticketsList = new ArrayList<>();
         Iterator<Ticket> tickets = ticketRepository.findAll().iterator();
