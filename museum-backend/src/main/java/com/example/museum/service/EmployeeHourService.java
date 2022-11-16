@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,6 +38,18 @@ public class EmployeeHourService {
         employeeHour = employeeHourRepository.save(employeeHour);
         return employeeHour;
     }
+
+    @Transactional
+    public List<EmployeeHour> getAllEmployeeHours() {
+        List<EmployeeHour> employeeHours = new ArrayList<>();
+        Iterator<EmployeeHour> eHours = employeeHourRepository.findAll().iterator();
+        while (eHours.hasNext()) {
+            EmployeeHour eh = eHours.next();
+            employeeHours.add(eh);
+        }
+        return employeeHours;
+    }
+
 
     @Transactional
     public EmployeeHour getEmployeeHourById(int id){

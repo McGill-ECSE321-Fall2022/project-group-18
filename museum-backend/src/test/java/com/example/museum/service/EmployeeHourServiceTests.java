@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -111,6 +113,23 @@ public class EmployeeHourServiceTests {
         assertNull(returnedEmployeeHour2);
 
         verify(employeeHourRepository, times(1)).save(testEmployeeHour1);
+    }
+
+    @Test
+    void testGetAllEmployeeHours(){
+        final EmployeeHour hour1 = new EmployeeHour(1,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        final EmployeeHour hour2 = new EmployeeHour(2,Date.valueOf("2022-10-11"), Time.valueOf("08:05:00"), Time.valueOf("15:05:00"));
+        List<EmployeeHour> eHours = new ArrayList<>();
+        eHours.add(hour1);
+        eHours.add(hour2);
+
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> eHours);
+
+        List<EmployeeHour> returnedEmployeeHours = employeeHourService.getAllEmployeeHours();
+
+        assertNotNull(returnedEmployeeHours);
+        assertEquals(hour1.getEmployeeHourID(), returnedEmployeeHours.get(0).getEmployeeHourID());
+        assertEquals(hour2.getEmployeeHourID(), returnedEmployeeHours.get(1).getEmployeeHourID());
     }
 }
 
