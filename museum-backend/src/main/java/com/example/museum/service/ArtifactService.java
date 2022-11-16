@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 @Service
@@ -48,15 +51,14 @@ public class ArtifactService {
 
     @Transactional
     public List<Artifact> getAllArtifacts() {
-        List<Artifact> Artifacts = new ArrayList<>();
-        Iterator<Artifact> Art = ArtifactRepository.findAll().iterator();
-        while (Art.hasNext()) {
-            Artifact a = Art.next();
-            Artifacts.add(a);
+        List<Artifact> artifacts = new ArrayList<>();
+        Iterator<Artifact> art = ArtifactRepository.findAll().iterator();
+        while (art.hasNext()) {
+            Artifact a = art.next();
+            artifacts.add(a);
         }
-        return Artifacts;
+        return artifacts;
     }
-
 
 }
 

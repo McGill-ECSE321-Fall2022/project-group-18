@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,13 +52,14 @@ public class ArtifactController {
     }
 
     @GetMapping("/artifact/all")
-    public ResponseEntity<List<ArtifactDto>> getAllArtifacts(){
+    public ResponseEntity<List<ArtifactDto>> getAllLoanableArtifacts(){
         List<Artifact> artifacts = artifactService.getAllArtifacts();
         List<ArtifactDto> artifactDtoList = new ArrayList<>();
         for(Artifact a : artifacts){
-            if()
-            ArtifactDto aDto = new ArtifactDto(a);
-            artifactDtoList.add(aDto);
+            if(a.getLoanable()){
+                ArtifactDto aDto = new ArtifactDto(a);
+                artifactDtoList.add(aDto);
+            }
         }
         return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
     }
