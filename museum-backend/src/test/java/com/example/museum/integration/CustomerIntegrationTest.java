@@ -43,7 +43,7 @@ public class CustomerIntegrationTest {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
         testGetCustomer(id);
-        testGetCustomerTickets(id);
+        // testGetCustomerTickets(id);
         testLoginCustomer();
         testInvalidLoginCustomer();
         testCreateInvalidCustomer();
