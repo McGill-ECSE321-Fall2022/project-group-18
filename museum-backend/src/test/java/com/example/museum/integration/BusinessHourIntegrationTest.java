@@ -41,6 +41,7 @@ public class BusinessHourIntegrationTest {
         @Test
         public void testCreateGetUpdateBusinessHour() {
                 int id = testCreateBusinessHour();
+                testCreateInvalidBusinessHour();
                 testGetBusinessHour(id);
                 testUpdateBusinessHour(id);
                 testGetAllBusinessHours(id);
@@ -65,6 +66,26 @@ public class BusinessHourIntegrationTest {
                 assertEquals(closeTime, response.getBody().getCloseTime());
 
                 return response.getBody().getBusinessHourID();
+        }
+
+        public void testCreateInvalidBusinessHour(){
+                final Date day = Date.valueOf("2022-11-08");
+                final Time openTime = Time.valueOf("08:45:00");
+                final Time closeTime = Time.valueOf("16:55:00");
+                final BusinessHourDto businessHourDto = new BusinessHourDto(
+                        new BusinessHour(0, day, openTime, closeTime));
+
+                try{
+                        ResponseEntity<BusinessHourDto> response = client.postForEntity("/businessHour", businessHourDto, BusinessHourDto.class);
+                        //we should not hit this line - an exception should be called before this
+                        assertEquals(1,2);
+                }catch(Exception e){
+                        ResponseEntity<String> response = client.postForEntity("/businessHour", businessHourDto, String.class);
+                        assertNotNull(response);
+                        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+                }
+
+
         }
 
         private void testGetBusinessHour(int id) {
@@ -125,6 +146,8 @@ public class BusinessHourIntegrationTest {
                 assertEquals(openTime, response.get(0).getOpenTime());
                 assertEquals(closeTime, response.get(0).getCloseTime());
         }
+
+
 
         // @Test
         // public void testCreateInvalidBusinessHour() {
