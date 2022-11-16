@@ -11,6 +11,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -91,35 +94,48 @@ public class ArtifactServiceTests {
 
     }
 
+    @Test
+    public void testUpdateArtifact(){
+
+        final int artID = 1;
+        final Artifact artifact1 = new Artifact(artID,"Mona Lisa",Artifact.ArtType.Painting, false, false, 1000);
+        List<Artifact> arts = new ArrayList<>();
+        arts.add(artifact1);
+
+        when(artifactRepository.findByArtID(artID)).thenAnswer((InvocationOnMock invocation) -> artifact1);
+        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final boolean loanable = true;
+        final boolean loaned = true;
+        final int loanFee = 1001;
+
+        Artifact returnedArtifact = artifactService.updateArtifact(artID,loanable,loaned, loanFee);
+
+        assertNotNull(returnedArtifact);
+        assertEquals(loanable, returnedArtifact.getLoanable());
+        assertEquals(loaned,returnedArtifact.getLoaned());
+        assertEquals(loanFee, returnedArtifact.getLoanFee());
+
+        verify(artifactRepository, times(1)).save(any(Artifact.class));
+
+    }
+
 //    @Test
-//    public void testUpdateArtifact(){
-////        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+//    void testGetAllArtifacts(){
+//        final Artifact art1 = new Artifact(1,"Mona",Artifact.ArtType.Painting,false,false,1);
+//        final Artifact art2 = new Artifact(2,"Lisa",Artifact.ArtType.Sculpture, true,true,2);
+//        List<Artifact> artifacts = new ArrayList<>();
+//        artifacts.add(art1);
+//        artifacts.add(art2);
 //
-//        final int artID = 1;
-//        final String name = "Mona Lisa";
-//        final Artifact.ArtType type = Artifact.ArtType.Painting;
-//        final boolean loanable = false;
-//        final boolean loaned = false;
-//        final int loanFee = 1000;
+//        when(artifactRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> artifacts);
 //
-//        Artifact artifact = new Artifact();
-//        artifact.setArtID(artID);
-//        artifact.setName(name);
-//        artifact.setType(type);
-//        artifact.setLoanable(loanable);
-//        artifact.setLoaned(loaned);
-//        artifact.setLoanFee(loanFee);
+//        List<Artifact> returnedArtifacts = artifactService.getAllArtifacts(); /////NAME TO CHANGE IN FUNCTION OF ZACH
 //
-//        when(artifactRepository.findByArtID(artID)).thenAnswer((InvocationOnMock invocation) -> artifact);
-//
-//        Artifact returnedArtfact = artifactService.updateArtifact(artID,true,true,1);
-//
-//        assertNotNull(returnedArtfact);
-//        assertEquals(true, returnedArtfact.getLoanable());
-//        assertEquals(true, returnedArtfact.getLoaned());
-//        assertEquals(1,returnedArtfact.getLoanFee() );
-//
-//        verify(artifactRepository, times(1)).save(artifact);
-//
+//        assertNotNull(returnedArtifacts);
+//        assertEquals(art1.getArtID(), returnedArtifacts.get(0).getArtID());
+//        assertEquals(art2.getArtID(), returnedArtifacts.get(1).getArtID());
 //    }
+
+
 }
