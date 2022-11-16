@@ -41,9 +41,9 @@ public class CustomerDto {
     }
 
     public CustomerDto() {
-        customerDonatedArtifacts = new ArrayList<DonationDto>();
-        loans = new ArrayList<LoanDto>();
-        customerTickets = new ArrayList<TicketDto>();
+        this.customerDonatedArtifacts = new ArrayList<DonationDto>();
+        this.loans = new ArrayList<LoanDto>();
+        this.customerTickets = new ArrayList<TicketDto>();
     }
 
     public int getAccountID() {
