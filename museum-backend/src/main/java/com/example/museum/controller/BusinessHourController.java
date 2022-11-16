@@ -28,7 +28,7 @@ public class BusinessHourController {
     }
 
     // tested
-    @PostMapping("/businessHour/{id}")
+    @PostMapping("/businessHour/update/{id}")
     public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id,
             @RequestBody BusinessHourDto request) {
         BusinessHour updatedBusinessHour = businessHourService.modifyBusinessHourById(id, request.getDay(),
