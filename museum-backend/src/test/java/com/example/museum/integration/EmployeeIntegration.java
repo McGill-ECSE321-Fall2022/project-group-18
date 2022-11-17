@@ -143,7 +143,7 @@ public class EmployeeIntegration {
         final String firstName = "SecondEmployee";
         final String lastName = "Account";
         final EmployeeDto employeeDto = new EmployeeDto(
-                new Employee(0, username, password, firstName, lastName);
+                new Employee(0, username, password, firstName, lastName));
 
         try {
             ResponseEntity<EmployeeDto> response = client.postForEntity("/employee", employeeDto, EmployeeDto.class);
