@@ -52,17 +52,11 @@ public class DonationIntegrationTest {
         final boolean loaned = false;
         final int loanFee = 87;
 
-        Artifact art = new Artifact(1, name, type, loanable, loaned, loanFee);
-        art = artifactRepository.save(art);
+        Artifact art = new Artifact(0, name, type, loanable, loaned, loanFee);
         List<Artifact> arts = new ArrayList<>();
         arts.add(art);
 
-        Donation donation = new Donation(0);
-        donation.addDonatedArtifact(art);
-
-        final DonationDto donationDto = new DonationDto(donation);
-
-        ResponseEntity<DonationDto> response = client.postForEntity("/donation", donationDto, DonationDto.class);
+        ResponseEntity<DonationDto> response = client.postForEntity("/donation", arts, DonationDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
