@@ -11,16 +11,18 @@ public class BusinessDto {
     private int ticketFee;
     private List<BusinessHourDto> businessHours;
 
-    public BusinessDto(Business business){
+    public BusinessDto(Business business) {
         this.businessID = business.getBusinessID();
         this.ticketFee = business.getTicketFee();
         businessHours = new ArrayList<>();
-        for(BusinessHour bh : business.getBusinessHours()){
+        for (BusinessHour bh : business.getBusinessHours()) {
             this.businessHours.add(new BusinessHourDto(bh));
         }
     }
 
-    public BusinessDto(){}
+    public BusinessDto() {
+        businessHours = new ArrayList<>();
+    }
 
     public int getBusinessID() {
         return businessID;
@@ -34,11 +36,11 @@ public class BusinessDto {
         return businessHours;
     }
 
-    public Business toModel(){
+    public Business toModel() {
         Business business = new Business();
         business.setBusinessID(this.getBusinessID());
         business.setTicketFee(this.getTicketFee());
-        for(BusinessHourDto bh : this.getBusinessHours()){
+        for (BusinessHourDto bh : this.getBusinessHours()) {
             business.addBusinessHour(bh.toModel());
         }
         return business;
