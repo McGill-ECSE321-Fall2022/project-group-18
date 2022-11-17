@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -89,6 +92,24 @@ public class ArtifactServiceTests {
         verify(artifactRepository, times(1)).save(artifact);
 
     }
+
+    @Test
+    void testGetAllArtifacts(){
+        final Artifact artifact1 = new Artifact(1, "Piece of garbage, 1865", Artifact.ArtType.valueOf("Painting"), true, false, 40);
+        final Artifact artifact2 = new Artifact(1, "Piece of crab, 1528", Artifact.ArtType.valueOf("Painting"), true, false, 40);
+        List<Artifact> artifacts = new ArrayList<>();
+        artifacts.add(artifact1);
+        artifacts.add(artifact2);
+
+        when(artifactRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> artifacts);
+
+        List<Artifact> returnedArtifacts = artifactService.getAllArtifacts();
+
+        assertNotNull(returnedArtifacts);
+        assertEquals(artifact1.getArtID(), returnedArtifacts.get(0).getArtID());
+        assertEquals(artifact2.getArtID(), returnedArtifacts.get(1).getArtID());
+    }
+
 
 //    @Test
 //    public void testUpdateArtifact(){

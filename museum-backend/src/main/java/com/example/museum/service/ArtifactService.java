@@ -52,7 +52,7 @@ public class ArtifactService {
     @Transactional
     public List<Artifact> getAllArtifacts() {
         List<Artifact> artifacts = new ArrayList<>();
-        Iterator<Artifact> art = ArtifactRepository.findAll().iterator();
+        Iterator<Artifact> art = artifactRepo.findAll().iterator();
         while (art.hasNext()) {
             Artifact a = art.next();
             artifacts.add(a);
