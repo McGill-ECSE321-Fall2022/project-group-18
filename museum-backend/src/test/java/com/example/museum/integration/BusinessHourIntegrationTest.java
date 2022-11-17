@@ -109,6 +109,8 @@ public class BusinessHourIntegrationTest {
         private void testUpdateBusinessHour(int id) {
                 ResponseEntity<BusinessHourDto> response = client.getForEntity("/businessHour/" + id,
                                 BusinessHourDto.class);
+                assertNotNull(response);
+
                 final Time prevOpenTime = response.getBody().getOpenTime();
                 final Time updatedOpenTime = Time.valueOf("09:29:00");
                 final BusinessHourDto businessHourDto = new BusinessHourDto(new BusinessHour(0,
@@ -138,6 +140,9 @@ public class BusinessHourIntegrationTest {
                                 null,
                                 new ParameterizedTypeReference<List<BusinessHourDto>>() {}
                         );
+                assertNotNull(responseEntity);
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
                 List<BusinessHourDto> response = responseEntity.getBody();
 
                 assertNotNull(response);
