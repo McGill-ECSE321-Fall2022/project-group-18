@@ -22,17 +22,51 @@ No payments will be handled by the museum website.
 * Create postgreSQL database
 * Test persistence for each model class
 
+### Deliverable 2
+
+* Translate use cases into one or more database manipulations (deemed actions for further reference)
+* Implement the DTOs required for carrying out the actions
+* Implement the Service methods required for carrying out the actions
+* Implement the Controller method endpoints for carrying out the actions
+* Test Service methods with a mock database (using Mockito)
+* Test Controller methods (using SpringBootTest)
+* Report on test coverage 
+
 # Team Members
 
-| Team Member | GitHub | Major | Member Role | Deliverable 1 hours | Deliverable 1 Individual Efforts | 
-| --- | --- | --- | --- | --- | ---------- |
-| Andrei Sandor | andrei-sandor | U2 Software Engineer | Project Manager | 20 | Creating requirements, creating use case with MSS and alternatives, helped for the domain model, created the folder structure (setting everything), did persistence layer and persistence testing for artifacts, donations and loan artifacts, created and edited the wiki  |
-| Feihong Chu | 8d5b9b | U3 Computer Engineering | Senior Developer | 17 | Updating domain model, testing persistence of Room and Loans, editing the wiki, updating the testing files |
-| Matthew Litwiller | mattlitwiller | U3 Software Engineer | Scrum Master | 18 | Domain modeling with Umple, creating issues and managing the project tab, testing persistence of Business and BusinessHour classes, documentation of the wiki and readme |
-| Aymen Ouali | amnbot | U2 Software Engineer | Testing Lead |10 | Testing persistence of Owner and Customer classes, which extend the abstract class Person. |
-| Zachary Godden | ZachGodden | U3 Computer Engineer | Software Developer | 10 | Testing Ticket persistence layer |
-| Mohammad Shaheer Bilal | mohammadShaheerb | U3 Computer Engineer | Software Developer | 12 | Testing persistence of Employee and EmployeeHour classes, creating use case with MSS and alternative scenarios and helped with domain model. |
+| Team Member | GitHub | Major | Member Role | 
+| --- | --- | --- | --- |
+| Andrei Sandor | [andrei-sandor](https://github.com/andrei-sandor) | U2 Software Engineer | Project Manager |
+| Feihong Chu | [8d5b9b](https://github.com/8d5b9b) | U3 Computer Engineering | Senior Developer |
+| Matthew Litwiller | [mattlitwiller](https://github.com/mattlitwiller) | U3 Software Engineer | Scrum Master |
+| Aymen Ouali | [amnbot](https://github.com/amnbot) | U2 Software Engineer | Testing Lead |
+| Zachary Godden | [ZachGodden](https://github.com/ZachGodden) | U3 Computer Engineer | Software Developer |
+| Mohammad Shaheer Bilal | [mohammadShaheerb](https://github.com/mohammadShaheerb) | U3 Computer Engineer | Software Developer |
+
+## Deliverable 1
+
+| Team Member | Deliverable 1 hours | Deliverable 1 Individual Efforts | 
+| --- | --- | ---------- |
+| Andrei Sandor | 20 | Creating requirements, creating use case with MSS and alternatives, helped for the domain model, created the folder structure (setting everything), did persistence layer and persistence testing for artifacts, donations and loan artifacts, created and edited the wiki  |
+| Feihong Chu | 17 | Updating domain model, testing persistence of Room and Loans, editing the wiki, updating the testing files |
+| Matthew Litwiller | 18 | Domain modeling with Umple, creating issues and managing the project tab, testing persistence of Business and BusinessHour classes, documentation of the wiki and readme |
+| Aymen Ouali | 10 | Testing persistence of Owner and Customer classes, which extend the abstract class Person. |
+| Zachary Godden | 10 | Testing Ticket persistence layer |
+| Mohammad Shaheer Bilal | 12 | Testing persistence of Employee and EmployeeHour classes, creating use case with MSS and alternative scenarios and helped with domain model. |
+
+## Deliverable 2
+
+| Team Member | Deliverable 2 hours | Deliverable 2 Individual Efforts | 
+| --- | --- | ---------- |
+| Andrei Sandor | - | - |
+| Feihong Chu | - | - |
+| Matthew Litwiller | - | - |
+| Aymen Ouali | - | - |
+| Zachary Godden | - | - |
+| Mohammad Shaheer Bilal | - | - |
 
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
-[Project Report 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-1)
+[Deliverable 2](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-2) <br/>
+[Project Report 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-1) <br/>
+[Project Report 2](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Project-Report-2) <br/> 
