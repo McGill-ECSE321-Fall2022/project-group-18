@@ -1,38 +1,44 @@
 package com.example.museum.controller;
 
+import com.example.museum.dto.EmployeeDto;
 import com.example.museum.model.Employee;
 import com.example.museum.service.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/employee")
 public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity createEmployee(@RequestBody String body) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            Employee employee = mapper.readValue(body, Employee.class);
-            Employee persistedEmployee = employeeService.createEmployee(employee);
-            return new ResponseEntity<>(persistedEmployee, HttpStatus.CREATED);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping("/employee")
+    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto request) {
+        Employee employeeToCreate = request.toModel();
+        Employee createdEmployee = employeeService.createEmployee(employeeToCreate);
+        EmployeeDto response = new EmployeeDto(createdEmployee);
+        return new ResponseEntity<EmployeeDto>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity getEmployee(@PathVariable(name = "id") int id) {
-        return employeeService.retrieveEmployee(id)
-                .map(employee -> new ResponseEntity<>(employee, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    @PostMapping("/employee/login")
+    public ResponseEntity<String> loginEmployee(@RequestBody EmployeeDto request) {
+        Employee employeeToLogin = request.toModel();
+        employeeService.loginEmployee(employeeToLogin);
+        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+    }
+
+    @GetMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeByBusinessID(@PathVariable int id) {
+        Employee employee = employeeService.getEmployeeByID(id);
+        return new ResponseEntity<EmployeeDto>(new EmployeeDto(employee), HttpStatus.OK);
+    }
+
+    @PostMapping("/employee/{id}")
+    public ResponseEntity<EmployeeDto> updatedEmployee(@PathVariable int id, @RequestBody EmployeeDto request) {
+        Employee updatedEmployee = employeeService.modifyEmployeeByID(id, request.getUsername(), request.getPassword(),
+                request.getFirstName(), request.getLastName());
+        EmployeeDto response = new EmployeeDto(updatedEmployee);
+        return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 }

@@ -38,10 +38,6 @@ public class DonationService {
         Donation donation = new Donation();
         donation.setNewDonationArtifactsList();
         for(Artifact artifact: artifactList){
-//            if (artifactRepo.existsById(artifact.getArtID())) {
-//                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Donation is already in database");
-//            }
-//            artifact = artifactRepo.save(artifact);
             donation.addDonatedArtifact(artifact);
         }
         donation = donationRepo.save(donation);
