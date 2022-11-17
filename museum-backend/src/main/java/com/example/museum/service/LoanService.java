@@ -26,21 +26,21 @@ public class LoanService {
 
     @Transactional
     public Loan getLoanByID(int id) {
-        Loan loan = loanRepo.findLoanRequestByRequestID(id);
-        if (loan == null) {
+        if (!loanRepo.existsById(id)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
         }
+        Loan loan = loanRepo.findLoanRequestByRequestID(id);
         return loan;
     }
 
-    @Transactional
-    public List<Artifact> getArtifactsByLoanID(int loanID) {
-        if (!loanRepo.existsById(loanID)) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
-        }
-        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
-        return loan.getRequestedArtifacts();
-    }
+//    @Transactional
+//    public List<Artifact> getArtifactsByLoanID(int loanID) {
+//        if (!loanRepo.existsById(loanID)) {
+//            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+//        }
+//        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
+//        return loan.getRequestedArtifacts();
+//    }
 
     @Transactional
     public List<Integer> getArtifactsIDByLoanID(int loanID) {
@@ -55,14 +55,14 @@ public class LoanService {
         return artifactsIDList;
     }
 
-    @Transactional
-    public Loan createLoan(Loan loan) {
-        if (loanRepo.findLoanRequestByRequestID((loan.getRequestID())) != null) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "This loan already exists");
-        }
-        loan = loanRepo.save(loan);
-        return loan;
-    }
+//    @Transactional
+//    public Loan createLoan(Loan loan) {
+//        if (loanRepo.findLoanRequestByRequestID((loan.getRequestID())) != null) {
+//            throw new DatabaseException(HttpStatus.CONFLICT, "This loan already exists");
+//        }
+//        loan = loanRepo.save(loan);
+//        return loan;
+//    }
 
     @Transactional
     public Loan createLoan(List<Integer> artifactIDList) {
@@ -78,8 +78,11 @@ public class LoanService {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Loan is not in database");
             }
             Artifact artifact = artifactRepo.findByArtID(artifactID);
-            if (!artifact.getLoanable()) {
-                throw new RequestException(HttpStatus.BAD_REQUEST, "Artifact for Loan must be loanable");
+            if (!artifact.getLoanable() || artifact.getLoanFee() < 0) {
+                throw new RequestException(HttpStatus.BAD_REQUEST, "Artifact for Loan must be loanable with a valid fee");
+            }
+            if (artifact.getLoaned()) {
+                throw new RequestException(HttpStatus.BAD_REQUEST, "Artifact for Loan must not be loaned");
             }
             loan.addRequestedArtifact(artifact);
             loanFee += artifact.getLoanFee();
@@ -92,23 +95,18 @@ public class LoanService {
     // set loan to true
     // move the loan out of the room
     @Transactional
-    public boolean setLoanApprovalToTrue(int loanID) {
+    public Loan setLoanApprovalToTrue(int loanID) {
         if (!loanRepo.existsById(loanID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
         }
         Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
-        boolean currentLoanStatus = loan.getApproved();
-        // if the loan status is already true, this operation should not be allowed
-        if (currentLoanStatus) {
-            return false;
-        }
         loan.setApproved(true);
-        loanRepo.save(loan);
-        return true;
+        loan = loanRepo.save(loan);
+        return loan;
     }
 
     @Transactional
-    public boolean setArtifactsInLoanToLoaned(int loanID) {
+    public Loan setArtifactsInLoanToLoaned(int loanID) {
         if (!loanRepo.existsById(loanID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
         }
@@ -118,11 +116,11 @@ public class LoanService {
             artifact = artifactRepo.save(artifact);
         }
         loan = loanRepo.save(loan);
-        return true;
+        return loan;
     }
 
     @Transactional
-    public void setArtifactsInLoanToUnloaned(int loanID) {
+    public Loan setArtifactsInLoanToUnloaned(int loanID) {
         if (!loanRepo.existsById(loanID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
         }
@@ -131,7 +129,8 @@ public class LoanService {
             artifact.setLoaned(false);
             artifact = artifactRepo.save(artifact);
         }
-        loanRepo.save(loan);
+        loan = loanRepo.save(loan);
+        return loan;
     }
 
     @Transactional
