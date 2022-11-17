@@ -41,10 +41,12 @@ public class BusinessService {
         return business;
     }
 
-    //TODO: TEST
     //adds the businessHours to the current list of business hours (never removes old business hours)
     public Business modifyBusinessById(int id, int ticketFee, List<BusinessHourDto> businessHours){
         Business business = businessRepository.findBusinessByBusinessID(id);
+        if (business == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Business not found");
+        }
         business.setTicketFee(ticketFee);
         for(BusinessHourDto bh: businessHours){
             business.addBusinessHour(bh.toModel());

@@ -1,5 +1,6 @@
 package com.example.museum.integration;
 
+import com.example.museum.dto.BusinessDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -193,5 +194,20 @@ public class BusinessHourIntegrationTest {
                 assertNotNull(response);
                 assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
                 assertEquals("BusinessHour not found", response.getBody());
+        }
+
+        @Test
+        public void testUpdateInvalidBusinessHour(){
+                int id = Integer.MAX_VALUE;
+                BusinessHourDto businessHourDto = new BusinessHourDto();
+                try{
+                        ResponseEntity<BusinessHourDto> response = client.postForEntity("/businessHour/update/" + id, businessHourDto, BusinessHourDto.class);
+                        //we should not hit this line - an exception should be called before this
+                        assertEquals(1,2);
+                }catch(Exception e){
+                        ResponseEntity<String> response = client.postForEntity("/businessHour/update/" + id, businessHourDto, String.class);
+                        assertNotNull(response);
+                        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+                }
         }
 }

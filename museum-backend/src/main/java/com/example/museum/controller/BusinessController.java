@@ -31,7 +31,7 @@ public class BusinessController {
     }
 
     //TODO: TEST
-    @GetMapping("/business/update/{id}")
+    @PostMapping("/business/update/{id}")
     public ResponseEntity<BusinessDto> updateBusiness(@PathVariable int id, @RequestBody BusinessDto request){
         Business updatedBusiness = businessService.modifyBusinessById(id, request.getTicketFee(), request.getBusinessHours());
         BusinessDto response = new BusinessDto(updatedBusiness);
