@@ -119,7 +119,7 @@ public class TicketServiceTests {
         final Date day = Date.valueOf("2022-11-12");
         final int price = 51;
 
-        Ticket returnedTicket = ticketService.modifyTicketById(id, day, ticket1.getDay(), price, ticket1.getPrice());
+        Ticket returnedTicket = ticketService.modifyTicketById(id, day, price);
 
         assertNotNull(returnedTicket);
         assertEquals(day, returnedTicket.getDay());
@@ -142,7 +142,7 @@ public class TicketServiceTests {
         final Date day = Date.valueOf("2022-12-12");
         final int price = 51;
 
-        Ticket returnedTicket = ticketService.modifyTicketById(id, day, ticket1.getDay(), price, ticket1.getPrice());
+        Ticket returnedTicket = ticketService.modifyTicketById(id, day, price);
 
         assertNotNull(returnedTicket);
         assertEquals(day, returnedTicket.getDay());
@@ -165,7 +165,7 @@ public class TicketServiceTests {
         final Date day = Date.valueOf("2022-12-10");
         final int price = 50;
 
-        Ticket returnedTicket = ticketService.modifyTicketById(id, day, ticket1.getDay(), price, ticket1.getPrice());
+        Ticket returnedTicket = ticketService.modifyTicketById(id, day, price);
 
         assertNotNull(returnedTicket);
         assertEquals(day, returnedTicket.getDay());

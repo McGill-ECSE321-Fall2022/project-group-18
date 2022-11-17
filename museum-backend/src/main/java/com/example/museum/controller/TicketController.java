@@ -27,10 +27,9 @@ public class TicketController {
         return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
     }
 
-    //tested
-    @PutMapping("/Ticket/update/{id}")
+    @PostMapping("/Ticket/update/{id}")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request){
-        Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(),null , request.getPrice(), -1);
+        Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(),request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.OK);
     }
