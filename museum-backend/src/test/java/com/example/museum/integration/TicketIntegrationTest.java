@@ -50,14 +50,17 @@ public class TicketIntegrationTest {
     private int testCreateTicket() {
         final Date day = Date.valueOf("2022-12-13");
         final int price = 92;
+        Ticket tiki = new Ticket();
+        tiki.setPrice(price);
+        tiki.setDay(day);
         final TicketDto ticketDto = new TicketDto(
-                new Ticket(0, day, price));
+                tiki);
 
         ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto,
                 TicketDto.class);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Response has correct status");
         assertNotNull(response.getBody());
         assertTrue(response.getBody().getTicketID() > 0);
         assertEquals(day, response.getBody().getDay());
