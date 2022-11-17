@@ -39,4 +39,15 @@ public class EmployeeHourController {
         return new ResponseEntity<EmployeeHourDto>(new EmployeeHourDto(employeeHour), HttpStatus.OK);
     }
 
+    @GetMapping("/employeeHour/all")
+    public ResponseEntity<List<EmployeeHourDto>> getAllEmployeeHours(){
+        List<EmployeeHour> employeeHours = employeeHourService.getAllEmployeeHours();
+        List<EmployeeHourDto> employeeHourDtoList = new ArrayList<>();
+        for(EmployeeHour eh : employeeHours){
+            EmployeeHourDto ehDto = new EmployeeHourDto(eh);
+            employeeHourDtoList.add(ehDto);
+        }
+        return new ResponseEntity<List<EmployeeHourDto>>(employeeHourDtoList, HttpStatus.OK);
+    }
+
 }
