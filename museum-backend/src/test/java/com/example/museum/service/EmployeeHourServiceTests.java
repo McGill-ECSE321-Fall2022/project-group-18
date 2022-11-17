@@ -108,9 +108,10 @@ public class EmployeeHourServiceTests {
         testEmployeeHour2.setStartTime(startTime2);
         testEmployeeHour2.setEndTime(endTime2);
  
-        when(employeeHourRepository.save(testEmployeeHour2)).thenAnswer((InvocationOnMock invocation) -> null);
-        EmployeeHour returnedEmployeeHour2 = employeeHourService.createEmployeeHour(testEmployeeHour2);
-        assertNull(returnedEmployeeHour2);
+        List<EmployeeHour> eh = new ArrayList<>();
+        eh.add(returnedEmployeeHour1);
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> eh);
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeHourService.createEmployeeHour(testEmployeeHour2));
 
         verify(employeeHourRepository, times(1)).save(testEmployeeHour1);
     }
@@ -131,5 +132,58 @@ public class EmployeeHourServiceTests {
         assertEquals(hour1.getEmployeeHourID(), returnedEmployeeHours.get(0).getEmployeeHourID());
         assertEquals(hour2.getEmployeeHourID(), returnedEmployeeHours.get(1).getEmployeeHourID());
     }
+
+
+    @Test
+    void testUpdateEmployeeHour(){
+        final int id = 1;
+        final EmployeeHour hour1 = new EmployeeHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<EmployeeHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(employeeHourRepository.findEmployeeHourByEmployeeHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-10-10");
+        final Time startTime = Time.valueOf("07:00:00");
+        final Time endTime = Time.valueOf("14:00:00");
+
+        EmployeeHour returnedEmployeeHour = employeeHourService.modifyEmployeeHourById(id, day, startTime, endTime);
+
+        assertNotNull(returnedEmployeeHour);
+        assertEquals(day, returnedEmployeeHour.getDay());
+        assertEquals(startTime, returnedEmployeeHour.getStartTime());
+        assertEquals(endTime, returnedEmployeeHour.getEndTime());
+
+        verify(employeeHourRepository, times(1)).save(any(EmployeeHour.class));
+    }
+
+    @Test
+    void testUpdateWithSameDateEmployeeHour(){
+        final int id = 1;
+        final EmployeeHour hour1 = new EmployeeHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
+        List<EmployeeHour> bh = new ArrayList<>();
+        bh.add(hour1);
+
+        when(employeeHourRepository.findEmployeeHourByEmployeeHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-09-11");
+        final Time startTime = Time.valueOf("07:00:00");
+        final Time endTime = Time.valueOf("14:00:00");
+
+        EmployeeHour returnedEmployeeHour = employeeHourService.modifyEmployeeHourById(id, day, startTime, endTime);
+
+        assertNotNull(returnedEmployeeHour);
+        assertEquals(day, returnedEmployeeHour.getDay());
+        assertEquals(startTime, returnedEmployeeHour.getStartTime());
+        assertEquals(endTime, returnedEmployeeHour.getEndTime());
+
+        verify(employeeHourRepository, times(1)).save(any(EmployeeHour.class));
+    }
+
+
 }
 
