@@ -51,7 +51,7 @@ public class ArtifactController {
         return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/artifact/all")
+    @GetMapping("/loanableArtifact/all")
     public ResponseEntity<List<ArtifactDto>> getAllLoanableArtifacts(){
         List<Artifact> artifacts = artifactService.getAllArtifacts();
         List<ArtifactDto> artifactDtoList = new ArrayList<>();

@@ -58,11 +58,11 @@ public class TicketService {
     }
 
 
-    public Ticket modifyTicketById(int id, Date day, int price){
+    public Ticket modifyTicketById(int id, Date day, Date oldDate, int price, int oldPrice){
         Iterator<Ticket> t = ticketRepository.findAll().iterator();
         while(t.hasNext()){
             Ticket curT = t.next();
-            if(curT.getDay().toString().equals(day.toString())){
+            if(curT.getDay().toString().equals(day.toString()) && (day.toString()).compareTo(oldDate.toString()) != 0){
                 throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
             }
         }
