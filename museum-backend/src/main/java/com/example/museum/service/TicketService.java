@@ -30,6 +30,17 @@ public class TicketService {
     @Transactional
     public Ticket createTicket(Ticket ticket) {
 //        checkDateConflict(ticket.getTicketID(), ticket.getDay());
+        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
+            throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
+        }
+
+        Iterator<Ticket> t = ticketRepository.findAll().iterator();
+        while(t.hasNext()){
+            Ticket curT = t.next();
+            if(curT.getDay().toString().equals(ticket.getDay().toString())){
+                throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
+            }
+        }
         ticket = ticketRepository.save(ticket);
         return ticket;
     }

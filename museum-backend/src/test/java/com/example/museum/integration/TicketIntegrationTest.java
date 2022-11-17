@@ -41,10 +41,10 @@ public class TicketIntegrationTest {
     @Test
     public void testCreateGetUpdateTicket() {
         int id = testCreateTicket();
-//        testCreateInvalidTicket();
-////        testGetTicket(id);
-////        testUpdateTicket(id);
-////        testGetAllTickets(id);
+        testCreateInvalidTicket();
+        testGetTicket(id);
+        testUpdateTicket(id);
+        testGetAllTickets(id);
     }
 
     private int testCreateTicket() {
@@ -66,8 +66,9 @@ public class TicketIntegrationTest {
         return response.getBody().getTicketID();
     }
 
+    //Not sure what invalid ticket would be
     public void testCreateInvalidTicket(){
-        final Date day = Date.valueOf("2022-12-14");
+        final Date day = Date.valueOf("2022-12-13");
         final int price = 45;
         final TicketDto ticketDto = new TicketDto(
                 new Ticket(0, day, price));
@@ -86,8 +87,8 @@ public class TicketIntegrationTest {
     }
 
     private void testGetTicket(int id) {
-        final Date day = Date.valueOf("2022-12-14");
-        final int price = 46;
+        final Date day = Date.valueOf("2022-12-13");
+        final int price = 92;
         ResponseEntity<TicketDto> response = client.getForEntity("/ticket/" + id,
                 TicketDto.class);
 
@@ -118,8 +119,8 @@ public class TicketIntegrationTest {
     }
 
     private void testGetAllTickets(int id){
-        final Date day = Date.valueOf("2022-11-08");
-        final int price = 47;
+        final Date day = Date.valueOf("2022-12-13");
+        final int price = 102;
 
         ResponseEntity<List<TicketDto>> responseEntity =
                 client.exchange(
