@@ -13,6 +13,7 @@ public class ArtifactDto {
         private int loanFee;
 
 
+<<<<<<< Updated upstream
         public ArtifactDto(Artifact artifact){
             this.artID = artifact.getArtID();
             this.name = artifact.getName();
@@ -21,6 +22,15 @@ public class ArtifactDto {
             this.loaned = artifact.getLoaned();
             this.loanFee = artifact.getLoanFee();
         }
+=======
+    public boolean getLoaned() {
+        return loaned;
+    }
+
+    public int getLoanFee() {
+        return loanFee;
+    }
+>>>>>>> Stashed changes
 
         public ArtifactDto(){}
 

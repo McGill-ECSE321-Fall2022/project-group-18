@@ -98,7 +98,7 @@ public class RoomService {
         Room room = roomRepo.findRoomByName(roomName);
         // check if the size of the adding artifacts exceed the capacity
         int totalRoomArtifactsNum = room.getRoomArtifacts().size() + artifactIDList.size();
-        if ( room.getCapacity() > 0 && totalRoomArtifactsNum > room.getCapacity()) {
+        if ( room.getCapacity() >= 0 && totalRoomArtifactsNum > room.getCapacity()) {
             throw new RequestException(HttpStatus.BAD_REQUEST, "Display room's artifacts cannot exceed its capacity");
         }
         // add artifacts to room
@@ -126,15 +126,16 @@ public class RoomService {
         Room destRoom = roomRepo.findRoomByRoomID(destRoomID);
         // check size of new room
         int destRoomNum = destRoom.getRoomArtifacts().size() + 1;
-        if (destRoom.getCapacity() > 0 && destRoomNum > destRoom.getCapacity()) {
+        if (destRoom.getCapacity() >= 0 && destRoomNum > destRoom.getCapacity()) {
             throw new RequestException(HttpStatus.BAD_REQUEST, "Display room's artifacts cannot exceed its capacity");
         }
         if (!artifactRepo.existsById(artifactID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "The artifact does not exist");
         }
         Artifact artifact = artifactRepo.findByArtID(artifactID);
-        if (!srcRoom.getRoomArtifacts().contains(artifact) || destRoom.getRoomArtifacts().contains(artifact)) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "The artifact conflicts with this movement");
+        Map<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
+        if ( allArtifactsAndRooms.get(artifactID) == destRoomID || allArtifactsAndRooms.get(artifactID) != srcRoomID) {
+            throw new DatabaseException(HttpStatus.CONFLICT, "The artifact conflicts with this transfer");
         }
         srcRoom.removeRoomArtifact(artifact);
         destRoom.addRoomArtifact(artifact);
@@ -151,6 +152,9 @@ public class RoomService {
         // get all artifacts rooms
         List<Room> roomList = new ArrayList<>();
         for (Artifact artifact: removedArtifactList) {
+            if (!this.getAllRoomsAndArtifacts().containsKey(artifact.getArtID())) {
+                throw new DatabaseException(HttpStatus.NOT_FOUND, "The artifact to remove is not found in any room");
+            }
             int roomID = this.getAllRoomsAndArtifacts().get(artifact.getArtID());
             Room room = roomRepo.findRoomByRoomID(roomID);
             room.removeRoomArtifact(artifact);
@@ -162,22 +166,10 @@ public class RoomService {
 
     @Transactional
     public Room createRoom(String roomName, int roomCapacity) {
-//        if (roomCapacity > 0 && artifactIDList.size() > roomCapacity) {
-//            throw new RuntimeException("Each loan can only contain maximum of 5 artifacts");
-//        }
         Room room = new Room();
         room.setName(roomName);
         room.setCapacity(roomCapacity);
         room.setNewRoomArtifactsList();
-//        for (int artifactID: artifactIDList) {
-//            if (!artifactRepo.existsById(artifactID)) {
-//                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Room is not in database");
-//            }
-//            HashMap<Integer, Integer> allRoomsAndArtifacts = this.getAllRoomsAndArtifacts();
-//
-//            Artifact artifact = artifactRepo.findByArtID(artifactID);
-//            room.addRoomArtifact(artifact);
-//        }
         room = roomRepo.save(room);
         return room;
     }
