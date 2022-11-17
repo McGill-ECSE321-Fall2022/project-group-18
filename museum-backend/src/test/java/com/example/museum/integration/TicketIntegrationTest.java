@@ -42,19 +42,16 @@ public class TicketIntegrationTest {
     public void testCreateGetUpdateTicket() {
         int id = testCreateTicket();
 //        testCreateInvalidTicket();
-//        testGetTicket(id);
-//        testUpdateTicket(id);
-//        testGetAllTickets(id);
+////        testGetTicket(id);
+////        testUpdateTicket(id);
+////        testGetAllTickets(id);
     }
 
     private int testCreateTicket() {
         final Date day = Date.valueOf("2022-12-13");
         final int price = 92;
-        Ticket tiki = new Ticket();
-        tiki.setPrice(price);
-        tiki.setDay(day);
         final TicketDto ticketDto = new TicketDto(
-                tiki);
+                new Ticket(0, day, price));
 
         ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto,
                 TicketDto.class);

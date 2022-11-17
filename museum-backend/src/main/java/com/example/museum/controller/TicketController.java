@@ -20,27 +20,29 @@ public class TicketController {
     @Autowired
     TicketService TicketService;
 
-    @PostMapping("/Ticket")
+    @PostMapping("/ticket")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
-        Ticket createdTicket = TicketService.createTicket(ticket.getDay(), ticket.getPrice());
+        Ticket ticketToCreate = ticket.toModel();
+        Ticket createdTicket = TicketService.createTicket(ticketToCreate);
         TicketDto response = new TicketDto(createdTicket);
-        return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
+        ResponseEntity<TicketDto> r = new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
+        return r;
     }
 
-    @PostMapping("/Ticket/update/{id}")
+    @PostMapping("/ticket/update/{id}")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request){
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(),request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/Ticket/{id}")
+    @GetMapping("/ticket/{id}")
     public ResponseEntity<TicketDto> getTicketByTicketID(@PathVariable int id) {
-        Ticket Ticket = TicketService.getTicketById(id);
-        return new ResponseEntity<TicketDto>(new TicketDto(Ticket), HttpStatus.OK);
+        Ticket ticket = TicketService.getTicketById(id);
+        return new ResponseEntity<TicketDto>(new TicketDto(ticket), HttpStatus.OK);
     }
 
-    @GetMapping("Ticket/all")
+    @GetMapping("ticket/all")
     public ResponseEntity<List<TicketDto>> getAllTickets(){
         List<Ticket> tickets = TicketService.getAllAvailableTickets();
         List<TicketDto> ticketDtoList = new ArrayList<>();

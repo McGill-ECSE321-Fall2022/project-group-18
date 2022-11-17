@@ -28,6 +28,13 @@ public class TicketService {
     CustomerRepository customerRepository;
 
     @Transactional
+    public Ticket createTicket(Ticket ticket) {
+//        checkDateConflict(ticket.getTicketID(), ticket.getDay());
+        ticket = ticketRepository.save(ticket);
+        return ticket;
+    }
+
+    @Transactional
     public Ticket createTicket(Date day, int price){
         Ticket ticket = new Ticket();
         ticket.setDay(day);
