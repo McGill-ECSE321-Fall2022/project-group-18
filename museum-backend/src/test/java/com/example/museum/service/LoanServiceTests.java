@@ -37,11 +37,6 @@ public class LoanServiceTests {
     @InjectMocks
     LoanService loanService;
 
-    @AfterEach
-    public void clearDatabase() {
-        loanRepository.deleteAll();
-        artifactRepository.deleteAll();
-    }
 
     @Test
     public void testGetLoanByID() {

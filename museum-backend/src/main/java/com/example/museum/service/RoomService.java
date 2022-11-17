@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -36,18 +33,14 @@ public class RoomService {
 
     @Transactional
     public List<Room> getAllRooms() {
-        Iterator<Room> allRoomIterator = roomRepo.findAll().iterator();
-        List<Room> roomList = new ArrayList<>();
-        while (allRoomIterator.hasNext()) {
-            roomList.add(allRoomIterator.next());
-        }
+        List<Room> roomList = (ArrayList<Room>) roomRepo.findAll();
         return roomList;
     }
 
     @Transactional
-    public HashMap<Integer, Integer> getAllRoomsAndArtifacts() { // key is art id, value is room id
+    public Map<Integer, Integer> getAllRoomsAndArtifacts() { // key is art id, value is room id
         List<Room> roomList = this.getAllRooms();
-        HashMap<Integer, Integer> allRoomsAndArtifacts = new HashMap<>();
+        Map<Integer, Integer> allRoomsAndArtifacts = new HashMap<>();
 
         for (Room room: roomList) {
             List<Artifact> artifactsInRoom = room.getRoomArtifacts();
@@ -58,14 +51,14 @@ public class RoomService {
         return allRoomsAndArtifacts;
     }
 
-    @Transactional
-    public Room createRoom(Room room) {
-        if (roomRepo.existsById(room.getRoomID())) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "This room already exists");
-        }
-        room = roomRepo.save(room);
-        return room;
-    }
+//    @Transactional
+//    public Room createRoom(Room room) {
+//        if (roomRepo.existsById(room.getRoomID())) {
+//            throw new DatabaseException(HttpStatus.CONFLICT, "This room already exists");
+//        }
+//        room = roomRepo.save(room);
+//        return room;
+//    }
 
     // add an artifact from empty (i.e. from Loan or Donation)
     @Transactional
@@ -85,7 +78,7 @@ public class RoomService {
             if (!artifactRepo.existsById(artifactID)) {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Room is not in database");
             }
-            HashMap<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
+            Map<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
             if (allArtifactsAndRooms.containsKey(artifactID)) { // if this art id is already in a room
                 throw new DatabaseException(HttpStatus.CONFLICT, "This artifact already exists in rooms");
             }
@@ -113,7 +106,7 @@ public class RoomService {
             if (!artifactRepo.existsById(artifactID)) {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Room is not in database");
             }
-            HashMap<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
+            Map<Integer, Integer> allArtifactsAndRooms = this.getAllRoomsAndArtifacts();
             if (allArtifactsAndRooms.containsKey(artifactID)) { // if this art id is already in a room
                 throw new DatabaseException(HttpStatus.CONFLICT, "This artifact already exists in rooms");
             }
