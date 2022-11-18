@@ -31,7 +31,7 @@ public class ArtifactService {
     @Transactional
     public Artifact createArtifact(Artifact artifact){
 
-
+//        checkNameConflict(artifact.getArtID(), artifact.getName());
         artifact = artifactRepo.save(artifact);
         return artifact;
     }
@@ -40,6 +40,11 @@ public class ArtifactService {
     public Artifact updateArtifact(int artID, boolean loanable, boolean loaned, int loanFee){
 
         Artifact artifact = artifactRepo.findByArtID(artID);
+        if(artifact == null) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact not found");
+        }
+
+
         artifact.setLoanable(loanable);
         artifact.setLoaned(loaned);
         artifact.setLoanFee(loanFee);
@@ -57,6 +62,17 @@ public class ArtifactService {
         }
         return artifacts;
     }
+
+
+//    private void checkNameConflict(int id, String name) throws DatabaseException{
+//        Iterator<Artifact> arts = artifactRepo.findAll().iterator();
+//        while (arts.hasNext()){
+//            Artifact a = arts.next();
+//            if(a.getName() == name && a.getArtID() != id || id == 0){
+//                throw new DatabaseException(HttpStatus.CONFLICT, "An artifact with the same name already exists");
+//            }
+//        }
+//    }
 
 
 }

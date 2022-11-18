@@ -176,5 +176,20 @@ public class ArtifactIntegrationTest {
         assertEquals("Artifact not found", response.getBody(), "Response has correct error message");
     }
 
+    @Test
+    public void testUpdateInvalidArtifact(){
+        int id = Integer.MAX_VALUE;
+        ArtifactDto artifactDto = new ArtifactDto();
+        try{
+            ResponseEntity<ArtifactDto> response = client.postForEntity("/artifact/update/" + id, artifactDto, ArtifactDto.class);
+            //we should not hit this line - an exception should be called before this
+            assertEquals(1,2);
+        }catch (Exception e){
+            ResponseEntity<String> response = client.postForEntity("/artifact/update/" + id, artifactDto, String.class);
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
+    }
+
 
 }
