@@ -40,7 +40,7 @@ public class ArtifactDto {
         return loanable;
     }
 
-    
+
     public boolean getLoaned() {
         return loaned;
     }
