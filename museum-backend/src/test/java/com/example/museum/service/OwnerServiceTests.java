@@ -1,5 +1,6 @@
 package com.example.museum.service;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import org.hibernate.boot.model.relational.Database;
@@ -18,12 +19,18 @@ import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Business;
 import com.example.museum.model.Owner;
 import com.example.museum.repository.BusinessRepository;
+import com.example.museum.repository.CustomerRepository;
+import com.example.museum.repository.EmployeeRepository;
 import com.example.museum.repository.OwnerRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class OwnerServiceTests {
     @Mock
     OwnerRepository ownerRepository;
+    @Mock
+    CustomerRepository customerRepository;
+    @Mock
+    EmployeeRepository employeeRepository;
     @Mock
     BusinessRepository businessRepository;
 
@@ -71,5 +78,49 @@ public class OwnerServiceTests {
 
         assertEquals("Owner not found", ex.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    void testCreateOwner() {
+        when(ownerRepository.save(any(Owner.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int ticketFee = 10;
+        final Business testBusiness = new Business();
+        testBusiness.setTicketFee(ticketFee);
+
+        final String username = "owner1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Owner testOwner = new Owner(0, username, password, testBusiness, firstName, lastName);
+
+        Owner returnedOwner = ownerService.createOwner(testOwner);
+
+        // Testing owner
+        assertNotNull(returnedOwner);
+        assertEquals(username, returnedOwner.getUsername());
+        assertEquals(password, returnedOwner.getPassword());
+        assertEquals(firstName, returnedOwner.getFirstName());
+        assertEquals(lastName, returnedOwner.getLastName());
+        // Testing associations
+        assertEquals(testOwner.getBusiness().getBusinessID(), testOwner.getBusiness().getBusinessID());
+        assertEquals(testOwner.getBusiness().getTicketFee(), testOwner.getBusiness().getTicketFee());
+    }
+
+    @Test
+    void testInvalidLoginOwner() {
+        final int businessID = 1;
+        final int ticketFee = 10;
+        final Business testBusiness = new Business(businessID, ticketFee);
+
+        final int ownerID = 1;
+        final String username = "owner1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Owner testOwner = new Owner(credit, username, password, testBusiness, firstName, lastName);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> ownerService.loginOwner(testOwner));
     }
 }
