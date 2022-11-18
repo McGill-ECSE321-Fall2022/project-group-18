@@ -59,7 +59,7 @@ public class CustomerIntegrationTest {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
         testGetCustomer(id);
-        // testGetCustomerTickets(id);
+        testGetCustomerTickets(id);
         testLoginCustomer();
         testInvalidLoginCustomer();
         testCreateInvalidCustomer();
@@ -160,7 +160,7 @@ public class CustomerIntegrationTest {
         final int price = 25;
 
         ResponseEntity<List<TicketDto>> response = client.exchange(
-                "/customer/" + id + "/ticket",
+                "/customer/" + id + "/tickets",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<TicketDto>>() {
