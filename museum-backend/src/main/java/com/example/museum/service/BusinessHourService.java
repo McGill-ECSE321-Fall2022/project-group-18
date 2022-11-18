@@ -55,6 +55,9 @@ public class BusinessHourService {
     public BusinessHour modifyBusinessHourById(int id, Date day, Time openTime, Time closeTime) {
         checkDateConflict(id, day);
         BusinessHour businessHour = businessHourRepository.findBusinessHourByBusinessHourID(id);
+        if(businessHour == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "BusinessHour not found");
+        }
         businessHour.setDay(day);
         businessHour.setOpenTime(openTime);
         businessHour.setCloseTime(closeTime);
