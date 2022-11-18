@@ -69,13 +69,11 @@ public class TicketIntegrationTest {
     //Not sure what invalid ticket would be
     public void testCreateInvalidTicket(){
         final Date day = Date.valueOf("2022-12-13");
-        final int price = 45;
+        final int price = -1;
         final TicketDto ticketDto = new TicketDto(
                 new Ticket(0, day, price));
-
         try{
             ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto, TicketDto.class);
-            //we should not hit this line - an exception should be called before this
             assertEquals(1,2);
         }catch(Exception e){
             ResponseEntity<String> response = client.postForEntity("/ticket", ticketDto, String.class);

@@ -29,17 +29,11 @@ public class TicketService {
 
     @Transactional
     public Ticket createTicket(Ticket ticket) {
-//        checkDateConflict(ticket.getTicketID(), ticket.getDay());
         if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
             throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
         }
-
-        Iterator<Ticket> t = ticketRepository.findAll().iterator();
-        while(t.hasNext()){
-            Ticket curT = t.next();
-            if(curT.getDay().toString().equals(ticket.getDay().toString())){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
-            }
+        if(ticket.getPrice() < 0){
+            throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
         ticket = ticketRepository.save(ticket);
         return ticket;
@@ -53,14 +47,10 @@ public class TicketService {
         if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
             throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
         }
-
-        Iterator<Ticket> t = ticketRepository.findAll().iterator();
-        while(t.hasNext()){
-            Ticket curT = t.next();
-            if(curT.getDay().toString().equals(day.toString())){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
-            }
+        if(ticketRepository.findByTicketID(ticket.getTicketID()).getPrice() < 0){
+            throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
+        Iterator<Ticket> t = ticketRepository.findAll().iterator();
 
         ticket = ticketRepository.save(ticket);
         return ticket;
@@ -78,18 +68,14 @@ public class TicketService {
 
     public Ticket modifyTicketById(int id, Date day, int price){
         Iterator<Ticket> t = ticketRepository.findAll().iterator();
-        Ticket oldTicket = ticketRepository.findByTicketID(id);
-        while(t.hasNext()){
-            Ticket curT = t.next();
-            if(curT.getDay().toString().equals(day.toString()) && (day.toString()).compareTo(oldTicket.getDay().toString()) != 0){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A Ticket with the given date already exists");
-            }
+        Ticket ticket = ticketRepository.findByTicketID(id);
+        ticket.setDay(day);
+        ticket.setPrice(price);
+        if(ticketRepository.findByTicketID(ticket.getTicketID()).getPrice() < 0){
+            throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
-        Ticket Ticket = ticketRepository.findByTicketID(id);
-        Ticket.setDay(day);
-        Ticket.setPrice(price);
         //I assume we need to save the new one to the database
-        Ticket updatedTicket = ticketRepository.save(Ticket);
+        Ticket updatedTicket = ticketRepository.save(ticket);
         return updatedTicket;
     }
 
