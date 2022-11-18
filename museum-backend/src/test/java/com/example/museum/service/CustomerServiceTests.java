@@ -5,6 +5,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -173,19 +177,20 @@ public class CustomerServiceTests {
         assertEquals(lastName, returnedCustomer.getLastName());
     }
 
-    // @Test
+    @Test
     void testCreateConflictingUsername() {
-        when(customerRepository.save(any(Customer.class)))
-        .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
         final int customerID = 1;
         final String username = "customer1";
         final String password = "password";
         final String firstName = "First";
-        final String lastName = "Last";
+        final String lastName = "User";
         final int credit = 5;
         final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(testCustomer);
 
-        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findAll())
+                .thenAnswer((InvocationOnMock invocation) -> customers);
 
         final int customerID2 = 2;
         final String username2 = "customer1";
@@ -194,7 +199,7 @@ public class CustomerServiceTests {
         final String lastName2 = "User";
         final int credit2 = 10;
         final Customer testCustomer2 = new Customer(customerID2, username2, password2, firstName2, lastName2, credit2);
-        
+
         Exception ex = assertThrows(DatabaseException.class, () -> customerService.createCustomer(testCustomer2));
         verify(customerRepository, times(0)).save(testCustomer2);
     }

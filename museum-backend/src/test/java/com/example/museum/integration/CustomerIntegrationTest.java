@@ -88,7 +88,7 @@ public class CustomerIntegrationTest {
                 CustomerDto.class);
 
         ResponseEntity<List<LoanDto>> response = client.exchange(
-                "/customer/" + customerResponse.getBody().getAccountID() + "/tickets",
+                "/customer/" + customerResponse.getBody().getAccountID() + "/loans",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<LoanDto>>() {
@@ -151,9 +151,7 @@ public class CustomerIntegrationTest {
 
     private Loan createLoan(List<Artifact> artifactList) {
         List<Integer> artifactIDList = new ArrayList<>();
-
         int artifactFeeSum = 0;
-
         for (Artifact artifact : artifactList) {
             artifactIDList.add(artifact.getArtID());
             artifactFeeSum += artifact.getLoanFee();
@@ -162,13 +160,14 @@ public class CustomerIntegrationTest {
         for (int i = 0; i < artifactIDList.size(); i++) {
             artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
             if (i == artifactIDList.size() - 1) {
-                break;
+                continue;
             }
             artifactIDStr = artifactIDStr + ",";
         }
-        System.out.println("ID LIST:" + artifactIDStr);
-        ResponseEntity<LoanDto> response = client.postForEntity("/loan" + artifactIDStr, null, LoanDto.class);
-        return response.getBody().toModel();
+        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
+        assertNotNull(response.getBody());
+        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
+        return loan;
     }
 
     private int testCreateCustomer(Ticket ticket) {
