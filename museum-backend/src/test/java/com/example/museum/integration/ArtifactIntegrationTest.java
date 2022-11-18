@@ -39,14 +39,15 @@ public class ArtifactIntegrationTest {
         int id = testCreateArtifact();
         testGetArtifact(id);
         testUpdateArtifact(id);
-//        testGetAllArtifacts(id);
+        testGetAllArtifacts(id);
+        testGetLoanableArtifacts(id);
     }
 
     private int testCreateArtifact(){
         final String name = "David";
         final Artifact.ArtType type = Artifact.ArtType.Painting;
-        final boolean loanable = true;
-        final boolean loaned = false;
+        final boolean loanable = false;
+        final boolean loaned = true;
         final int loanFee = 87;
         final ArtifactDto artifactDto = new ArtifactDto( new Artifact(0,name,type,loanable,loaned,loanFee));
 
@@ -69,8 +70,8 @@ public class ArtifactIntegrationTest {
     private void testGetArtifact(int id){
         final String name = "David";
         final Artifact.ArtType type = Artifact.ArtType.Painting;
-        final boolean loanable = true;
-        final boolean loaned = false;
+        final boolean loanable = false;
+        final boolean loaned = true;
         final int loanFee = 87;
 
         ResponseEntity<ArtifactDto> response = client.getForEntity("/artifact/" + id, ArtifactDto.class);
@@ -81,17 +82,17 @@ public class ArtifactIntegrationTest {
         assertTrue(response.getBody().getArtID() == id, "Response has correct ID");
         assertEquals("David", response.getBody().getName(), "Response has correct name");
         assertEquals(Artifact.ArtType.Painting, response.getBody().getType(), "Response has correct type");
-        assertEquals(true, response.getBody().getLoanable(), "Response has correct loanable");
-        assertEquals(false, response.getBody().getLoaned(), "Response has correct loaned");
+        assertEquals(false, response.getBody().getLoanable(), "Response has correct loanable");
+        assertEquals(true, response.getBody().getLoaned(), "Response has correct loaned");
         assertEquals(87, response.getBody().getLoanFee(), "Response has correct loanFee");
     }
 
     private void testUpdateArtifact(int id){
         ResponseEntity<ArtifactDto> response = client.getForEntity("/artifact/" + id, ArtifactDto.class);
         final boolean prevLoanable = response.getBody().getLoanable();
-        final boolean updatedLoanable = false;
+        final boolean updatedLoanable = true;
         final boolean prevLoaned = response.getBody().getLoaned();
-        final boolean updatedLoaned = true;
+        final boolean updatedLoaned = false;
         final int prevLoanFee = response.getBody().getLoanFee();
         final int updatedLoanFee = 100;
 
@@ -109,25 +110,45 @@ public class ArtifactIntegrationTest {
 
     }
 
-//    public void testGetAllArtifacts(int id){
-//        final String name = "David";
-//        final Artifact.ArtType type = Artifact.ArtType.Painting;
-//        final boolean loanable = true;
-//        final boolean loaned = false;
-//        final int loanFee = 87;
-//
-//        ResponseEntity<List<ArtifactDto>> responseEntity = client.exchange("/artifact/all", HttpMethod.GET, null, new ParameterizedTypeReference<List<ArtifactDto>>() {});
-//
-//        List<ArtifactDto> response = responseEntity.getBody();
-//
-//        assertNotNull(response);
-//        assertEquals(1,response.size());
-//        assertEquals(name, response.get(0).getName());
-//        assertEquals(type, response.get(0).getType());
-//        assertEquals(loanable, response.get(0).getLoanable());
-//        assertEquals(loaned, response.get(0).getLoaned());
-//        assertEquals(loanFee, response.get(0).getLoanFee());
-//    }
+    public void testGetAllArtifacts(int id){
+        final String name = "David";
+        final Artifact.ArtType type = Artifact.ArtType.Painting;
+        final boolean loanable = true;
+        final boolean loaned = false;
+        final int loanFee = 100;
+
+        ResponseEntity<List<ArtifactDto>> responseEntity = client.exchange("/artifact/all", HttpMethod.GET, null, new ParameterizedTypeReference<List<ArtifactDto>>() {});
+
+        List<ArtifactDto> response = responseEntity.getBody();
+
+        assertNotNull(response);
+        assertEquals(1,response.size());
+        assertEquals(name, response.get(0).getName());
+        assertEquals(type, response.get(0).getType());
+        assertEquals(loanable, response.get(0).getLoanable());
+        assertEquals(loaned, response.get(0).getLoaned());
+        assertEquals(loanFee, response.get(0).getLoanFee());
+    }
+
+    public void testGetLoanableArtifacts(int id){
+        final String name = "David";
+        final Artifact.ArtType type = Artifact.ArtType.Painting;
+        final boolean loanable = true;
+        final boolean loaned = false;
+        final int loanFee = 100;
+
+        ResponseEntity<List<ArtifactDto>> responseEntity = client.exchange("/loanableArtifact/all", HttpMethod.GET, null, new ParameterizedTypeReference<List<ArtifactDto>>() {});
+
+        List<ArtifactDto> response = responseEntity.getBody();
+
+        assertNotNull(response);
+        assertEquals(1,response.size());
+        assertEquals(name, response.get(0).getName());
+        assertEquals(type, response.get(0).getType());
+        assertEquals(loanable, response.get(0).getLoanable());
+        assertEquals(loaned, response.get(0).getLoaned());
+        assertEquals(loanFee, response.get(0).getLoanFee());
+    }
 
 
 
