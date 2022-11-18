@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.repository.BusinessHourRepository;
 import org.junit.jupiter.api.AfterEach;

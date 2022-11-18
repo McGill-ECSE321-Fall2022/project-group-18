@@ -1,6 +1,5 @@
 package com.example.museum.integration;
 
-import com.example.museum.dto.BusinessDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
