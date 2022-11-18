@@ -37,12 +37,20 @@ public class LoanController {
         return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loan", "/loan/"})
-    public ResponseEntity<LoanDto> createLoan(@RequestParam List<Integer> artifactIDList) {
+    @GetMapping(value = {"/loan", "/loan/"})
+    public ResponseEntity<Integer> createLoan(@RequestParam List<Integer> artifactIDList) {
 
         Loan loan = loanService.createLoan(artifactIDList);
-        LoanDto response = new LoanDto(loan);
-        return new ResponseEntity<LoanDto>(response, HttpStatus.OK);
+//        LoanDto response = new LoanDto();
+//        response.setLoanFee(loan.getLoanFee());
+//        response.setLoanApproval(loan.getApproved());
+//        response.setLoanID(loan.getRequestID());
+//        List<Integer> receivedArtifactIDList = new ArrayList<>();
+//        for (Artifact artifact: loan.getRequestedArtifacts()) {
+//            receivedArtifactIDList.add(artifact.getArtID());
+//        }
+//        response.setArtifactDtoList(receivedArtifactIDList);
+        return new ResponseEntity<Integer>(loan.getRequestID(), HttpStatus.OK);
     }
 
     @PostMapping(value = {"/loan/update/approve", "/loan/update/approve/"})

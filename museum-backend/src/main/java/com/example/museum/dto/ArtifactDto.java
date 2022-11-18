@@ -44,7 +44,7 @@ public class ArtifactDto {
     public boolean getLoaned() {
         return loaned;
     }
-    
+
     public int getLoanFee() {
         return loanFee;
     }
