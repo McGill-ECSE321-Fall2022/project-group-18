@@ -4,6 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.example.museum.dto.BusinessHourDto;
+import com.example.museum.dto.DonationDto;
+import com.example.museum.model.Artifact;
+import com.example.museum.model.Donation;
+import com.example.museum.repository.DonationRepository;
+import com.example.museum.repository.LoanRepository;
+import com.example.museum.repository.TicketRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,14 +30,23 @@ import com.example.museum.model.Ticket;
 import com.example.museum.repository.CustomerRepository;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CustomerIntegrationTest {
+
     @Autowired
     private TestRestTemplate client;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private DonationRepository donationRepository;
+    @Autowired
+    private LoanRepository loanRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+
 
     @BeforeEach
     @AfterEach
@@ -176,5 +192,48 @@ public class CustomerIntegrationTest {
             assertNotNull(response);
             assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         }
+    }
+
+    @Test
+    void testGetCustomerEmptyDonationLists(){
+        Donation donation1 = new Donation();
+        Donation returnedDonation1 = donationRepository.save(donation1);
+        Donation donation2 = new Donation();
+        Donation returnedDonation2 = donationRepository.save(donation2);
+
+        final String username = "customer11";
+        final String password = "password1";
+        final String firstName = "SecondCustomer1";
+        final String lastName = "Account1";
+        final int credit = 21;
+        Customer customer = new Customer();
+        customer.setUsername(username);
+        customer.setPassword(password);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setCredit(credit);
+        customer.addCustomerDonatedArtifact(returnedDonation1);
+        customer.addCustomerDonatedArtifact(returnedDonation2);
+        Customer returnedCustomer = customerRepository.save(customer);
+
+        CustomerDto customerDto = new CustomerDto(returnedCustomer);
+
+        ResponseEntity<List<DonationDto>> responseEntity =
+                client.exchange(
+                        "/customer/" + returnedCustomer.getAccountID() + "/donations",
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<DonationDto>>() {}
+                );
+        assertNotNull(responseEntity);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+        List<DonationDto> response = responseEntity.getBody();
+        assertNotNull(response);
+        assertEquals(returnedDonation1.getDonationID(), response.get(0).getDonationID());
+        assertEquals(returnedDonation1.getDonatedArtifacts().size(), response.get(0).getArtifactList().size());
+        assertEquals(returnedDonation2.getDonationID(), response.get(1).getDonationID());
+        assertEquals(returnedDonation2.getDonatedArtifacts().size(), response.get(1).getArtifactList().size());
+
     }
 }
