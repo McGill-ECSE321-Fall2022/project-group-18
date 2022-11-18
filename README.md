@@ -58,7 +58,7 @@ No payments will be handled by the museum website.
 
 | Team Member | Deliverable 2 hours | Deliverable 2 Individual Efforts | 
 | --- | --- | ---------- |
-| Andrei Sandor | - | - |
+| Andrei Sandor | - | Worked on the service and controller for Artifacts and Donation. Also, completed service and integration test for Aftifact and Donation. I helped teammates to do their part |
 | Feihong Chu | - | - |
 | Matthew Litwiller | - | - |
 | Aymen Ouali | - | - |
