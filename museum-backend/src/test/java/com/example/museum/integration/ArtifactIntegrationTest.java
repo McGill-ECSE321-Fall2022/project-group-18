@@ -129,7 +129,7 @@ public class ArtifactIntegrationTest {
         assertEquals(loaned, response.get(0).getLoaned());
         assertEquals(loanFee, response.get(0).getLoanFee());
     }
-
+//
     public void testGetLoanableArtifacts(int id){
         final String name = "David";
         final Artifact.ArtType type = Artifact.ArtType.Painting;
