@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class LoanController {
@@ -32,9 +34,18 @@ public class LoanController {
 
     // return a loan dto containing loan ID, loan fee, approval status, list of artifact
     @GetMapping(value = {"/loan/{loanID}", "/loan/{loanID}/" })
-    public ResponseEntity<LoanDto> getLoanByLoanID(@PathVariable int loanID) {
+    public ResponseEntity<Map<String, Object>> getLoanByLoanID(@PathVariable int loanID) {
         Loan loan = loanService.getLoanByID(loanID);
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("loanID", loan.getRequestID());
+        response.put("loanFee", loan.getLoanFee());
+        response.put("loanStatus", loan.getApproved());
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: loan.getRequestedArtifacts()) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        response.put("loanArtifactIDList", artifactIDList);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/loan", "/loan/"})
@@ -53,15 +64,30 @@ public class LoanController {
         return new ResponseEntity<Integer>(loan.getRequestID(), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loan/update/approve", "/loan/update/approve/"})
-    public ResponseEntity<LoanDto> updateLoanApproval(@RequestParam int loanID) {
+    @GetMapping(value = {"/loan/update/approve", "/loan/update/approve/"})
+    public ResponseEntity<Map<String, Object>> updateLoanApproval(@RequestParam int loanID) {
         loanService.setLoanApprovalToTrue(loanID); // set loan status to true, referring to an active loan
         loanService.setArtifactsInLoanToLoaned(loanID); // set status of all artifacts belonged to true
         List<Artifact> artifactList = loanService.getLoanByID(loanID).getRequestedArtifacts();
         // remove all artifacts from rooms
         List<Room> roomList = roomService.removeArtifactsFromRooms(artifactList);
+        List<Integer> roomIDList = new ArrayList<>();
+        for (Room room: roomList) {
+            roomIDList.add(room.getRoomID());
+        }
+
         Loan loan = loanService.getLoanByID(loanID);
-        return new ResponseEntity<LoanDto>(new LoanDto(loan), HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("loanID", loan.getRequestID());
+        response.put("loanFee", loan.getLoanFee());
+        response.put("loanStatus", loan.getApproved());
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: loan.getRequestedArtifacts()) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        response.put("loanArtifactIDList", artifactIDList);
+        response.put("loanArtifactRoomIDList", roomIDList);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
     // remove a loan when 1. employee reject the loan

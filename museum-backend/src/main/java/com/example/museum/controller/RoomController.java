@@ -30,11 +30,11 @@ public class RoomController {
         return new ResponseEntity<Integer>(room.getRoomID(), HttpStatus.OK);
     }
 
-    @PostMapping("/room/artifacts/add")
-    public ResponseEntity<RoomDto> addArtifacts(@RequestParam int roomID, @RequestParam List<Integer> artifactIDList) {
+    @GetMapping("/room/artifacts/add")
+    public ResponseEntity<Integer> addArtifacts(@RequestParam int roomID, @RequestParam List<Integer> artifactIDList) {
         Room room = roomService.addArtifactsToRoom(roomID, artifactIDList);
-        RoomDto response = new RoomDto(room);
-        return new ResponseEntity<RoomDto>(response, HttpStatus.OK);
+        //RoomDto response = new RoomDto(room);
+        return new ResponseEntity<Integer>(room.getRoomID(), HttpStatus.OK);
     }
 
     @PostMapping("/room/artifacts/move")

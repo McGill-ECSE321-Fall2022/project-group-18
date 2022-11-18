@@ -2,8 +2,6 @@ package com.example.museum.integration;
 
 
 import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.LoanDto;
-import com.example.museum.dto.RoomDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;
@@ -20,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,7 +49,9 @@ public class LoanIntegrationTest {
     public void testCreateAndApproveLoan() {
         List<Artifact> createArtifactList = createArtifact();
         Room room = createRoom();
-        int id = testCreateLoan(createArtifactList);
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        testApproveLoan(id, room.getRoomID());
     }
 
     private List<Artifact> createArtifact() {
@@ -101,7 +102,28 @@ public class LoanIntegrationTest {
         return room;
     }
 
-    private int testCreateLoan(List<Artifact> artifactList) {
+    private Room addArtifactToRoom(int roomID, List<Artifact> artifactList) {
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: artifactList) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        String getParam = "/room/artifacts/add";
+        getParam += "?roomID=";
+        getParam += roomID;
+        getParam += "&artifactIDList=";
+        for (int i = 0; i < artifactIDList.size(); i++) {
+            getParam = getParam + artifactIDList.get(i).toString();
+            if (i == artifactIDList.size()-1) {
+                continue;
+            }
+            getParam = getParam + ",";
+        }
+        ResponseEntity<Integer> response = client.getForEntity(getParam, Integer.class);
+        Room room = roomRepository.findRoomByRoomID(response.getBody());
+        return room;
+    }
+
+    private int testCreateAndGetLoan(List<Artifact> artifactList) {
         List<Integer> artifactIDList = new ArrayList<>();
         int artifactFeeSum = 0;
         for (Artifact artifact: artifactList) {
@@ -122,6 +144,45 @@ public class LoanIntegrationTest {
         assertEquals(artifactFeeSum, loan.getLoanFee());
         assertFalse(loan.getApproved());
         assertEquals(artifactList.size(), loan.getRequestedArtifacts().size());
+
+        String loanGetParam = "/loan/";
+        loanGetParam += response.getBody().toString();
+        ResponseEntity<Map> responseGet = client.getForEntity(loanGetParam, Map.class);
+        //System.out.println(responseGet.getBody().toString());
+
+        assertNotNull(responseGet.getBody());
+        assertEquals(loan.getLoanFee(), responseGet.getBody().get("loanFee"));
+        assertEquals(loan.getRequestID(), responseGet.getBody().get("loanID"));
+        assertEquals(loan.getApproved(), responseGet.getBody().get("loanStatus"));
+        List<Integer> getArtifactIDList = (List<Integer>) responseGet.getBody().get("loanArtifactIDList");
+        assertEquals(loan.getRequestedArtifacts().size(), getArtifactIDList.size());
+        for (int id: getArtifactIDList) {
+            assertTrue(artifactIDList.contains(id));
+        }
+
         return loan.getRequestID();
+    }
+
+    public void testApproveLoan(int loanID, int roomID) {
+        // test if the approval loan can 1. change the loan approval status
+        //                               2. change the loaned status of artifacts
+        //                               3. move artifacts out of their room
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        String loanGetParam = "/loan/update/approve?loanID=";
+        loanGetParam += loanID;
+        ResponseEntity<Map> response = client.getForEntity(loanGetParam, Map.class);
+        assertNotNull(response.getBody());
+        assertEquals(loan.getRequestID(), response.getBody().get("loanID"));
+        assertEquals(true, response.getBody().get("loanStatus"));
+        assertEquals(loan.getLoanFee(), response.getBody().get("loanFee"));
+        List<Integer> getArtifactIDList = (List<Integer>) response.getBody().get("loanArtifactIDList");
+        assertEquals(loan.getRequestedArtifacts().size(), getArtifactIDList.size());
+        Room room = roomRepository.findRoomByRoomID(roomID);
+        for (int artifactID: getArtifactIDList) {
+            Artifact artifact = artifactRepository.findByArtID(artifactID);
+            assertTrue(artifact.getLoaned());
+            assertFalse(room.getRoomArtifacts().contains(artifact));
+        }
+
     }
 }
