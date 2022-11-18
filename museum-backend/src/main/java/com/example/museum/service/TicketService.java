@@ -76,6 +76,10 @@ public class TicketService {
 
 
     //TODO: test once aymen updates customer stuff
+    //create 2 tickets
+    //create 1 customer
+    //link the customer to one of the tickets
+    //check that it returns the other ticket only (not both)
     public List<Ticket> getAllAvailableTickets() {
         List<Ticket> ticketsList = new ArrayList<>();
         Iterator<Ticket> tickets = ticketRepository.findAll().iterator();

@@ -1,7 +1,9 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.model.Customer;
 import com.example.museum.model.Ticket;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.TicketRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,50 +26,52 @@ import static org.mockito.Mockito.*;
 public class TicketServiceTests {
 
     @Mock
-    TicketRepository TicketRepository;
+    TicketRepository ticketRepository;
+    @Mock
+    CustomerRepository customerRepository;
 
     @InjectMocks
-    TicketService TicketService;
+    TicketService ticketService;
 
     @Test
     public void testGetTicketID(){
         final int id = 1;
         final Date day = Date.valueOf("2022-11-08");
         final Ticket testTicket = new Ticket(id, day, 25);
-        when(TicketRepository.findByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> testTicket);
+        when(ticketRepository.findByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> testTicket);
 
-        Ticket Ticket = TicketService.getTicketById(id);
+        Ticket Ticket = ticketService.getTicketById(id);
 
         assertNotNull(Ticket);
         assertEquals(Ticket.getDay(), testTicket.getDay());
     }
 
     @Test
-    void testGetTicketByInvalidID(){
+    public void testGetTicketByInvalidID(){
         final int invalidID = 2;
 
-        when(TicketRepository.findByTicketID(invalidID)).thenAnswer((InvocationOnMock) -> null);
+        when(ticketRepository.findByTicketID(invalidID)).thenAnswer((InvocationOnMock) -> null);
 
-        DatabaseException ex = assertThrows(DatabaseException.class, () -> TicketService.getTicketById(invalidID));
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> ticketService.getTicketById(invalidID));
 
         assertEquals("Ticket not found", ex.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
 
     @Test
-    void testCreateTicket(){
+    public void testCreateTicket(){
         //mock the database and return the 0th argument (which is the Ticket object)
-        when(TicketRepository.save(any(Ticket.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        when(ticketRepository.save(any(Ticket.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
         final Date day = Date.valueOf("2022-11-11");
-        Ticket returnedTicket = TicketService.createTicket(day, 34);
+        Ticket returnedTicket = ticketService.createTicket(day, 34);
 
         //checking fields - just like persistence testing
         assertNotNull(returnedTicket);
         assertEquals(day, returnedTicket.getDay());
 
         //the most important part - making sure we actually performed a save operation
-        verify(TicketRepository, times(1)).save(returnedTicket);
+        verify(ticketRepository, times(1)).save(returnedTicket);
     }
 
     @Test
@@ -78,14 +83,49 @@ public class TicketServiceTests {
         ArrayList<Ticket> existingTickets = new ArrayList<Ticket>();
         existingTickets.add(existingTicket);
 
-        when(TicketRepository.findByTicketID(any(Integer.class))).thenReturn(null);
-        when(TicketRepository.findAll()).thenReturn(existingTickets);
+        when(ticketRepository.findByTicketID(any(Integer.class))).thenReturn(null);
+        when(ticketRepository.findAll()).thenReturn(existingTickets);
 
 
-        DatabaseException exception = assertThrows(DatabaseException.class, () -> TicketService.createTicket(day, 21));
+        DatabaseException exception = assertThrows(DatabaseException.class, () -> ticketService.createTicket(day, 21));
         assertEquals("A Ticket with the given date already exists", exception.getMessage());
         assertEquals(HttpStatus.CONFLICT, exception.getStatus());
 
+    }
+
+    @Test
+    void testGetAllAvailableTickets(){
+        int id1 = 1;
+        Date day1 = Date.valueOf("2020-10-10");
+        int fee1 = 11;
+        Ticket ticket1 = new Ticket(1, day1, fee1);
+        int id2 = 2;
+        Date day2 = Date.valueOf("2020-11-11");
+        int fee2 = 22;
+        Ticket ticket2 = new Ticket(2, day2, fee2);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(ticket1);
+        tickets.add(ticket2);
+
+        Customer customer = new Customer();
+        customer.addCustomerTicket(ticket1);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer);
+
+        when(ticketRepository.findAll()).thenReturn(tickets);
+        when(customerRepository.findAll()).thenReturn(customers);
+
+        List<Ticket> availableTickets = ticketService.getAllAvailableTickets();
+
+        //the customer has ticket with id1, so we should only see the second ticket returned in the list
+        assertNotNull(availableTickets);
+        assertEquals(1, availableTickets.size());
+        assertEquals(id2, availableTickets.get(0).getTicketID());
+        assertEquals(day2, availableTickets.get(0).getDay());
+        assertEquals(fee2, availableTickets.get(0).getPrice());
+
+        verify(customerRepository, times(1)).findAll();
+        verify(ticketRepository, times(1)).findAll();
     }
 }
 

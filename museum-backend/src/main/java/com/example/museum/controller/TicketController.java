@@ -42,7 +42,8 @@ public class TicketController {
     }
 
     @GetMapping("/ticket/all")
-    public ResponseEntity<List<TicketDto>> getAllTickets() {
+    //returns a list of tickets that other customers don't already own (unowned tickets only)
+    public ResponseEntity<List<TicketDto>> getAllAvailableTickets() {
         List<Ticket> tickets = TicketService.getAllAvailableTickets();
         List<TicketDto> ticketDtoList = new ArrayList<>();
         for (Ticket t : tickets) {
