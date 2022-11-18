@@ -31,6 +31,10 @@ public class LoanDto {
         return this.loanID;
     }
 
+    public void setLoanID(int id) {
+        this.loanID = id;
+    }
+
     public int getLoanFee() {
         return this.loanFee;
     }
@@ -41,6 +45,10 @@ public class LoanDto {
 
     public boolean getLoanApproval() {
         return this.loanApproval;
+    }
+
+    public void setLoanApproval(boolean approval) {
+        this.loanApproval = approval;
     }
 
     public void setLoanApprovalToTrue() {

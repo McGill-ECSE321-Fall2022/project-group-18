@@ -23,11 +23,11 @@ public class RoomController {
         return new ResponseEntity<RoomDto>(new RoomDto(room), HttpStatus.OK);
     }
 
-    @PostMapping("/room")
-    public ResponseEntity<RoomDto> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
+    @GetMapping("/room")
+    public ResponseEntity<Integer> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
         Room room = roomService.createRoom(roomName, roomCapacity);
         RoomDto response = new RoomDto(room);
-        return new ResponseEntity<RoomDto>(response, HttpStatus.OK);
+        return new ResponseEntity<Integer>(room.getRoomID(), HttpStatus.OK);
     }
 
     @PostMapping("/room/artifacts/add")
