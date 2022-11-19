@@ -85,6 +85,7 @@ public class CustomerIntegrationTest {
         Loan loan = createLoan(createArtifactList);
         testAddLoanToCustomer(id, loan.getRequestID());
         testGetLoansFromCustomer(id, loan);
+        testApproveLoansForCustomer(id, loan);
         testRemoveLoanFromCustomer(id, loan.getRequestID());
     }
 
@@ -106,6 +107,18 @@ public class CustomerIntegrationTest {
         testAddLoanToCustomer(id, loan.getRequestID());
         testRemoveInvalidLoanFromCustomer(id, loan.getRequestID() + 1);
     }
+
+    @Test
+    public void testCreateCustomerAndApproveInvalidLoan() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddLoanToCustomer(id, loan.getRequestID());
+        testGetLoansFromCustomer(id, loan);
+        testApproveInvalidLoansForCustomer(id, loan);
+    }
+
     // @Test
     public void getAllCustomerLoans() {
         List<Artifact> artifacts = createArtifacts();
@@ -465,5 +478,24 @@ public class CustomerIntegrationTest {
         assertEquals(returnedDonation2.getDonatedArtifacts().size(), response.get(1).getArtifactList().size());
 
 
+    }
+
+    private void testApproveLoansForCustomer(int customerID, Loan loan) {
+        Customer customer = customerRepository.findByAccountID(customerID);
+        int previousCredit = customer.getCredit();
+        String approveLoanParam = "/customer/" + customerID + "/loans/approve?loanID=" + loan.getRequestID();
+        ResponseEntity<CustomerDto> response = client.getForEntity(approveLoanParam, CustomerDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(loan.getLoanFee() + previousCredit, response.getBody().getCredit());
+    }
+
+    private void testApproveInvalidLoansForCustomer(int customerID, Loan loan) {
+        int invalidLoanID = loan.getRequestID() + 1;
+        String approveLoanParam = "/customer/" + customerID + "/loans/approve?loanID=" + invalidLoanID;
+        ResponseEntity<String> response = client.getForEntity(approveLoanParam, String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Loan not found", response.getBody());
     }
 }
