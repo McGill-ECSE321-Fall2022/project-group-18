@@ -75,15 +75,18 @@ public class TicketService {
         return updatedTicket;
     }
 
-
-    //TODO: test once aymen updates customer stuff
-    public List<Ticket> getAllAvailableTickets() {
+    public List<Ticket> getAllTickets(){
         List<Ticket> ticketsList = new ArrayList<>();
         Iterator<Ticket> tickets = ticketRepository.findAll().iterator();
         while (tickets.hasNext()) {
             Ticket t = tickets.next();
             ticketsList.add(t);
         }
+        return ticketsList;
+    }
+
+    public List<Ticket> getAllAvailableTickets() {
+        List<Ticket> ticketsList = getAllTickets();
         Iterator<Customer> customers = customerRepository.findAll().iterator();
         while(customers.hasNext()){
             Customer cust = customers.next();

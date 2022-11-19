@@ -42,7 +42,7 @@ public class TicketController {
     }
 
     @GetMapping("/ticket/all")
-    public ResponseEntity<List<TicketDto>> getAllTickets() {
+    public ResponseEntity<List<TicketDto>> getAllAvailableTickets() {
         List<Ticket> tickets = TicketService.getAllAvailableTickets();
         List<TicketDto> ticketDtoList = new ArrayList<>();
         for (Ticket t : tickets) {

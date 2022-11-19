@@ -109,7 +109,8 @@ public class TicketServiceTests {
     }
 
     @Test
-    void testGetAllTickets(){
+    //test that we get only the tickets that are NOT in a customer's possession
+    void testGetAllAvailableTickets(){
         final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
         final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
         List<Ticket> tickets = new ArrayList<>();
@@ -130,6 +131,7 @@ public class TicketServiceTests {
     }
 
     @Test
+    //test to get all tickets - even if customer owns tickets (this should be irrelevant but the test simply ensures that this assumption was correct)
     void testGetAllTicketsWhenCustomersOwnTickets(){
         final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
         final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
@@ -153,6 +155,31 @@ public class TicketServiceTests {
     }
 
     @Test
+    //test that we get all tickets - even when some are in a customer's possession
+    void testGetAllTickets(){
+        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
+        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(ticket1);
+        tickets.add(ticket2);
+
+        Customer customer = new Customer();
+        customer.addCustomerTicket(ticket2);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer);
+
+        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
+
+        List<Ticket> returnedTickets = ticketService.getAllTickets();
+
+        assertNotNull(returnedTickets);
+        assertEquals(2, returnedTickets.size());
+        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
+        assertEquals(ticket2.getTicketID(), returnedTickets.get(1).getTicketID());
+    }
+
+    @Test
+    //generic test to update ticket fields
     void testUpdateTicket(){
         final int id = 1;
         final Ticket ticket1 = new Ticket(id,Date.valueOf("2022-12-12"), 50);
@@ -176,6 +203,7 @@ public class TicketServiceTests {
     }
 
     @Test
+    //test to update ticket price
     void testUpdateTicketPrice(){
         final int id = 1;
         final Ticket ticket1 = new Ticket(id,Date.valueOf("2022-12-12"), 50);
@@ -199,6 +227,7 @@ public class TicketServiceTests {
     }
 
     @Test
+    //test to ensure no ticket can have a negative price
     void testUpdateTicketNegativePrice(){
         final int id = 1;
         final Ticket ticket1 = new Ticket(id,Date.valueOf("2022-12-12"), 50);
@@ -221,6 +250,7 @@ public class TicketServiceTests {
 
 
     @Test
+    //test to update a ticket's date
     void testUpdateTicketDate(){
         final int id = 1;
         final Ticket ticket1 = new Ticket(id,Date.valueOf("2022-12-12"), 50);
