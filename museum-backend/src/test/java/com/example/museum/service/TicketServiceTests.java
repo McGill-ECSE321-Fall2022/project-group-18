@@ -75,6 +75,7 @@ public class TicketServiceTests {
     }
 
     @Test
+    //create a ticket using the second createTicket service method (takes in a ticket object instead of the ticket's parameters)
     void testCreateTicket2(){
         when(ticketRepository.save(any(Ticket.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
