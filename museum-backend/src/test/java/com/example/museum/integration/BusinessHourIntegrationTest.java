@@ -129,8 +129,6 @@ public class BusinessHourIntegrationTest {
                 final Date day = Date.valueOf("2022-11-08");
                 final Time openTime = Time.valueOf("09:29:00");
                 final Time closeTime = Time.valueOf("16:45:00");
-//                restTemplate.postForObject("/businessHour/all", new BusinessHourList)
-
 
                 ResponseEntity<List<BusinessHourDto>> responseEntity =
                         client.exchange(

@@ -13,31 +13,30 @@ public class TicketDto {
     private Date day;
     private int price;
 
-    public TicketDto(Ticket ticket) {
+    public TicketDto(Ticket ticket){
         this.ticketID = ticket.getTicketID();
         this.day = ticket.getDay();
         this.price = ticket.getPrice();
     }
 
-    public TicketDto() {
-    }
+    public TicketDto(){}
 
-    public int getTicketID() {
+    public int getTicketID(){
         return ticketID;
     }
 
-    public Date getDay() {
+    public Date getDay(){
         return day;
     }
 
-    public int getPrice() {
-        return price;
-    }
+    public int getPrice(){ return price; }
 
-    public Ticket toModel() {
+    public Ticket toModel(){
         Ticket ticket = new Ticket();
         ticket.setTicketID(this.ticketID);
         ticket.setDay(this.getDay());
+        ticket.setPrice(this.getPrice());
         return ticket;
     }
 }
+
