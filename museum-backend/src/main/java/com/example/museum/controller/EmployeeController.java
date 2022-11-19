@@ -56,7 +56,7 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 
-    //not best practice, but allows the integration tests to work seemlessly
+    //not best practice to make it a POST, but allows the integration tests to work seemlessly
     @PostMapping("/employee/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
         employeeService.deleteEmployeeByID(id);
