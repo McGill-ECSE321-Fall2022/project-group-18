@@ -64,7 +64,7 @@ public class CustomerService {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given id already exists.");
         }
 
-        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRepository, employeeRepository,
+        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRequest.getAccountID(), customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given username already exists.");
         }
@@ -90,7 +90,10 @@ public class CustomerService {
 
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
-        if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
+        if(customer == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+        if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An customer with the given username already exists.");
         }
