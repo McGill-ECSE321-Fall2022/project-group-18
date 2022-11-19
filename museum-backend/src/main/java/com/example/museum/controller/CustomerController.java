@@ -91,7 +91,7 @@ public class CustomerController {
         return new ResponseEntity<List<TicketDto>>(ticketDtos, HttpStatus.OK);
     }
 
-    @PostMapping("/customer/{id}")
+    @PostMapping("/customer/{id}/update")
     public ResponseEntity<CustomerDto> updatedCustomer(@PathVariable int id, @RequestBody CustomerDto request) {
         Customer updatedCustomer = customerService.modifyCustomerByID(id, request.getUsername(), request.getPassword(),
                 request.getFirstName(), request.getLastName());
@@ -99,7 +99,7 @@ public class CustomerController {
         return new ResponseEntity<CustomerDto>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/customer/{id}")
+    @DeleteMapping("/customer/{id}/delete")
     public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
         customerService.deleteCustomerByID(id);
         return new ResponseEntity<String>("Customer deleted successfully.", HttpStatus.OK);

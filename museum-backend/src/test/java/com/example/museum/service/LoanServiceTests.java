@@ -7,7 +7,6 @@ import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.LoanRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

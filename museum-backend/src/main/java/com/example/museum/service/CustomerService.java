@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -67,7 +66,7 @@ public class CustomerService {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given id already exists.");
         }
 
-        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRepository, employeeRepository,
+        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRequest.getAccountID(), customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given username already exists.");
         }
@@ -75,25 +74,12 @@ public class CustomerService {
         return customer;
     }
 
-    // private boolean conflictingUsername(String username) {
-    // for (Customer c : customerRepository.findAll()) {
-    // if (c.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Employee e : employeeRepository.findAll()) {
-    // if (e.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Owner o : ownerRepository.findAll()) {
-    // if (o.getPassword().equals(username))
-    // return true;
-    // }
-    // return false;
-    // }
-
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
-        if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
+        if(customer == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+        if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An customer with the given username already exists.");
         }

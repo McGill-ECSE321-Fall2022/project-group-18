@@ -1,10 +1,14 @@
 package com.example.museum.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.example.museum.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,21 +18,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.Artifact;
-import com.example.museum.model.Customer;
-import com.example.museum.model.Donation;
-import com.example.museum.model.Loan;
-import com.example.museum.model.Ticket;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.DonationRepository;
+import com.example.museum.repository.EmployeeRepository;
 import com.example.museum.repository.LoanRepository;
+import com.example.museum.repository.OwnerRepository;
 import com.example.museum.repository.TicketRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTests {
     @Mock
     CustomerRepository customerRepository;
+    @Mock
+    EmployeeRepository employeeRepository;
+    @Mock
+    OwnerRepository ownerRepository;
     @Mock
     ArtifactRepository artifactRepository;
     @Mock
@@ -40,6 +45,10 @@ public class CustomerServiceTests {
 
     @InjectMocks
     CustomerService customerService;
+    @InjectMocks
+    EmployeeService employeeService;
+    @InjectMocks
+    OwnerService ownerService;
     @InjectMocks
     ArtifactService artifactService;
     @InjectMocks
@@ -136,5 +145,86 @@ public class CustomerServiceTests {
 
         assertEquals("Customer not found", ex.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    void testCreateCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+
+        // Testing customer
+        assertNotNull(returnedCustomer);
+        assertEquals(customerID, returnedCustomer.getAccountID());
+        assertEquals(username, returnedCustomer.getUsername());
+        assertEquals(password, returnedCustomer.getPassword());
+        assertEquals(firstName, returnedCustomer.getFirstName());
+        assertEquals(lastName, returnedCustomer.getLastName());
+    }
+
+    @Test
+    void testCreateConflictingUsername() {
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "User";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(testCustomer);
+
+        when(customerRepository.findAll())
+                .thenAnswer((InvocationOnMock invocation) -> customers);
+
+        final int customerID2 = 2;
+        final String username2 = "customer1";
+        final String password2 = "password";
+        final String firstName2 = "Second";
+        final String lastName2 = "User";
+        final int credit2 = 10;
+        final Customer testCustomer2 = new Customer(customerID2, username2, password2, firstName2, lastName2, credit2);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> customerService.createCustomer(testCustomer2));
+        verify(customerRepository, times(0)).save(testCustomer2);
+    }
+
+    @Test
+    void testInvalidLoginCustomer() {
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> customerService.loginCustomer(testCustomer));
+    }
+
+    @Test
+    void testCustomerLogin(){
+        final int customerID = 1;
+        final String username = "customer";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 10;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        final Customer storedCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(storedCustomer);
+
+        when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> customers);
+
+        assertDoesNotThrow(() -> customerService.loginCustomer(testCustomer));
     }
 }

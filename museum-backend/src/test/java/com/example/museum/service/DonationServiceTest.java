@@ -52,6 +52,17 @@ public class DonationServiceTest {
     }
 
     @Test
+    public void testCreateDonationNoArtifact(){
+        final int id = 1;
+
+        Donation testDonation = new Donation();
+
+
+
+        Exception ex = assertThrows(DatabaseException.class, () -> donationService.getDonationByDonationID(id));
+    }
+
+    @Test
     void testCreateDonation(){
         when(donationRepository.save(any(Donation.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 

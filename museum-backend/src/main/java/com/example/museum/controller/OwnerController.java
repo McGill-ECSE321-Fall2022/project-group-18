@@ -29,7 +29,7 @@ public class OwnerController {
     }
 
     @GetMapping("/owner/{id}")
-    public ResponseEntity<OwnerDto> getOwnerByBusinessID(@PathVariable int id) {
+    public ResponseEntity<OwnerDto> getOwnerByAccountID(@PathVariable int id) {
         Owner owner = ownerService.getOwnerByID(id);
         return new ResponseEntity<OwnerDto>(new OwnerDto(owner), HttpStatus.OK);
     }

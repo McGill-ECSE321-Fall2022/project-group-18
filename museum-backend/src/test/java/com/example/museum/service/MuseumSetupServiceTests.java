@@ -1,12 +1,10 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Owner;
 import com.example.museum.model.Room;
 import com.example.museum.repository.OwnerRepository;
 import com.example.museum.repository.RoomRepository;
-import org.hibernate.dialect.Database;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

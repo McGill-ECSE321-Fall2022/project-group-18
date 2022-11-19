@@ -6,18 +6,19 @@ import com.example.museum.repository.EmployeeRepository;
 import com.example.museum.repository.OwnerRepository;
 
 public class ServiceUtils {
-    public static boolean conflictingUsername(String username, CustomerRepository customerRepository,
+    //check for conflicting usernames (if two users don't have the same id)
+    public static boolean conflictingUsername(String username, int id, CustomerRepository customerRepository,
             EmployeeRepository employeeRepository, OwnerRepository ownerRepository) {
         for (Customer c : customerRepository.findAll()) {
-            if (c.getUsername().equals(username))
+            if (c.getUsername().equals(username) && c.getAccountID() != id)
                 return true;
         }
         for (Employee e : employeeRepository.findAll()) {
-            if (e.getUsername().equals(username))
+            if (e.getUsername().equals(username) && e.getAccountID() != id)
                 return true;
         }
         for (Owner o : ownerRepository.findAll()) {
-            if (o.getUsername().equals(username))
+            if (o.getUsername().equals(username) && o.getAccountID() != id)
                 return true;
         }
         return false;

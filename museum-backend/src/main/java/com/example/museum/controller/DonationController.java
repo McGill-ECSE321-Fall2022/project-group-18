@@ -1,7 +1,6 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.DonationDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
@@ -17,19 +16,21 @@ import java.util.List;
 
 @RestController
 public class DonationController {
-//
+
     @Autowired
     DonationService donationService;
 
     @Autowired
     ArtifactService artifactService;
 
+    //Get donation from donationID
     @GetMapping("/donation/{donationID}")
     public ResponseEntity<DonationDto> getDonationByDonationID(@PathVariable int donationID){
         Donation donation = donationService.getDonationByDonationID(donationID);
         return new ResponseEntity<DonationDto>(new DonationDto(donation), HttpStatus.OK);
     }
 
+    //Create a donation from a aritfact dto list
     @PostMapping("/donation")
     public ResponseEntity<DonationDto> createDonation(@RequestBody List<ArtifactDto> artifactDtoList){
         List<Artifact> artifactList = new ArrayList<>();
@@ -43,7 +44,7 @@ public class DonationController {
         }
 
 
-
+    //Get all artifacts in donation
 
     @GetMapping("/donation/artifacts/{id}")
     public ResponseEntity<List<ArtifactDto>> getAllArtifactsDonation(@PathVariable int id) {

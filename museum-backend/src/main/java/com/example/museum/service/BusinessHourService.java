@@ -22,9 +22,6 @@ public class BusinessHourService {
 
     @Transactional
     public BusinessHour createBusinessHour(BusinessHour businessHour) {
-//        if (businessHour.getBusinessHourID() > 0) {
-//            throw new RequestException(HttpStatus.BAD_REQUEST, "Request should not contain an id field");
-//        }
         checkDateConflict(businessHour.getBusinessHourID(), businessHour.getDay());
         businessHour = businessHourRepository.save(businessHour);
         return businessHour;

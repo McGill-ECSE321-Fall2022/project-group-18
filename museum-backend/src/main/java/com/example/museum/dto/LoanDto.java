@@ -2,7 +2,6 @@ package com.example.museum.dto;
 
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
-import com.example.museum.service.ArtifactService;
 
 import java.util.ArrayList;
 import java.util.List;

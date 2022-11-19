@@ -1,9 +1,6 @@
 package com.example.museum.controller;
 
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.TicketDto;
-import com.example.museum.model.Business;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Ticket;
 import com.example.museum.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +25,7 @@ public class TicketController {
     }
 
     // tested
-    @PutMapping("/ticket/update/{id}")
+    @PostMapping("/ticket/update/{id}")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request) {
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(), request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
@@ -42,7 +39,7 @@ public class TicketController {
     }
 
     @GetMapping("/ticket/all")
-    public ResponseEntity<List<TicketDto>> getAllTickets() {
+    public ResponseEntity<List<TicketDto>> getAllAvailableTickets() {
         List<Ticket> tickets = TicketService.getAllAvailableTickets();
         List<TicketDto> ticketDtoList = new ArrayList<>();
         for (Ticket t : tickets) {

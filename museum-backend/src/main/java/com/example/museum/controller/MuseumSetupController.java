@@ -4,7 +4,6 @@ import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Owner;
 import com.example.museum.model.Room;
 import com.example.museum.service.MuseumSetupService;
-import org.hibernate.type.TrueFalseType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

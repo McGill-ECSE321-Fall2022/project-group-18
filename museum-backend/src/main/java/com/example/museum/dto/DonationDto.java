@@ -18,7 +18,6 @@ public class DonationDto {
             this.artifactList.add(new ArtifactDto(a));
         }
     }
-    //
 
     public DonationDto(){}
 
