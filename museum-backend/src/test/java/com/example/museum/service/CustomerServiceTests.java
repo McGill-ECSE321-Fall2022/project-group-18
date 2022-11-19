@@ -6,8 +6,6 @@ import static org.mockito.Mockito.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import com.example.museum.model.*;
@@ -20,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.exceptions.RequestException;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.DonationRepository;

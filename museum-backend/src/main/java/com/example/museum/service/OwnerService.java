@@ -1,6 +1,5 @@
 package com.example.museum.service;
 
-import com.example.museum.dto.OwnerDto;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.*;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -63,22 +61,6 @@ public class OwnerService {
         Owner owner = ownerRepository.save(ownerRequest);
         return owner;
     }
-
-    // private boolean conflictingUsername(String username) {
-    // for (Customer c : customerRepository.findAll()) {
-    // if (c.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Employee e : employeeRepository.findAll()) {
-    // if (e.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Owner o : ownerRepository.findAll()) {
-    // if (o.getPassword().equals(username))
-    // return true;
-    // }
-    // return false;
-    // }
 
     public Owner modifyOwnerByID(int id, String username, String password, String firstName, String lastName) {
         Owner owner = ownerRepository.findByAccountID(id);

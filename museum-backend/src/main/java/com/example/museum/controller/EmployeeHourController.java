@@ -1,7 +1,6 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.EmployeeHourDto;
-import com.example.museum.model.Employee;
 import com.example.museum.model.EmployeeHour;
 import com.example.museum.service.EmployeeHourService;
 

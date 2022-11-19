@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.DonationDto;
 import com.example.museum.dto.LoanDto;
 import com.example.museum.model.Artifact;
@@ -22,11 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.example.museum.dto.CustomerDto;
@@ -50,8 +46,6 @@ public class CustomerIntegrationTest {
     private DonationRepository donationRepository;
     @Autowired
     private LoanRepository loanRepository;
-    @Autowired
-    private TicketRepository ticketRepository;
 
     @BeforeEach
     @AfterEach

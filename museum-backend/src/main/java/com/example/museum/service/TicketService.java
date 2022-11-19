@@ -1,11 +1,8 @@
 package com.example.museum.service;
 
-import com.example.museum.dto.TicketDto;
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Customer;
 import com.example.museum.repository.CustomerRepository;
-import com.fasterxml.jackson.datatype.jsr310.deser.key.LocalDateTimeKeyDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,6 @@ import com.example.museum.repository.TicketRepository;
 
 import javax.transaction.Transactional;
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,9 +37,6 @@ public class TicketService {
         Ticket ticket = new Ticket();
         ticket.setDay(day);
         ticket.setPrice(price);
-//        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
-//            throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
-//        }
         if(price < 0){
             throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }

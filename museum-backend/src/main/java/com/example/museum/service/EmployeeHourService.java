@@ -1,7 +1,6 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.Employee;
 import com.example.museum.model.EmployeeHour;
 import com.example.museum.repository.EmployeeHourRepository;
 import org.springframework.beans.factory.annotation.Autowired;

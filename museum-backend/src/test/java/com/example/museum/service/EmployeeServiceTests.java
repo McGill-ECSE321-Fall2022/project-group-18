@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Employee;
 import com.example.museum.model.EmployeeHour;
-import com.example.museum.repository.EmployeeHourRepository;
 import com.example.museum.repository.EmployeeRepository;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +31,8 @@ public class EmployeeServiceTests {
     EmployeeRepository employeeRepository;
     @Mock
     CustomerRepository customerRepository;
+    @Mock
+    OwnerRepository ownerRepository;
 
 
     @InjectMocks

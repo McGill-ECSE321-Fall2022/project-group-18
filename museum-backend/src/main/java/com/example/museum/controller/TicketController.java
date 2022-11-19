@@ -1,9 +1,6 @@
 package com.example.museum.controller;
 
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.TicketDto;
-import com.example.museum.model.Business;
-import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Ticket;
 import com.example.museum.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;

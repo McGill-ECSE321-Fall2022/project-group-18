@@ -2,8 +2,6 @@ package com.example.museum.integration;
 
 
 import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.LoanDto;
-import com.example.museum.dto.RoomDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;

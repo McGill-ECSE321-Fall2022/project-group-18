@@ -4,7 +4,6 @@ import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.Business;
 import com.example.museum.model.BusinessHour;
-import com.example.museum.repository.BusinessHourRepository;
 import com.example.museum.repository.BusinessRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

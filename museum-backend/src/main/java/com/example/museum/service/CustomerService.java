@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -71,22 +70,6 @@ public class CustomerService {
         Customer customer = customerRepository.save(customerRequest);
         return customer;
     }
-
-    // private boolean conflictingUsername(String username) {
-    // for (Customer c : customerRepository.findAll()) {
-    // if (c.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Employee e : employeeRepository.findAll()) {
-    // if (e.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Owner o : ownerRepository.findAll()) {
-    // if (o.getPassword().equals(username))
-    // return true;
-    // }
-    // return false;
-    // }
 
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);

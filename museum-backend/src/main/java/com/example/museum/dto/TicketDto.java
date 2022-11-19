@@ -4,7 +4,6 @@ import com.example.museum.model.Ticket;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.sql.Date;
-import java.sql.Time;
 
 public class TicketDto {
 

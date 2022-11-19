@@ -2,12 +2,9 @@ package com.example.museum.integration;
 
 import com.example.museum.dto.ArtifactDto;
 import com.example.museum.dto.DonationDto;
-import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Artifact;
-import com.example.museum.model.Donation;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.DonationRepository;
-import org.apache.coyote.ajp.AjpAprProtocol;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,8 +15,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import javax.persistence.criteria.CriteriaBuilder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,8 +30,6 @@ public class DonationIntegrationTest {
     @Autowired
     private DonationRepository donationRepository;
 
-    @Autowired
-    private ArtifactRepository artifactRepository;
 
     @BeforeEach
     @AfterEach
@@ -58,12 +51,9 @@ public class DonationIntegrationTest {
         final boolean loaned = false;
         final int loanFee = 87;
 
-
-
         Artifact art = new Artifact(0, name, type, loanable, loaned, loanFee);
         List<Artifact> arts = new ArrayList<>();
         arts.add(art);
-
 
         ResponseEntity<DonationDto> response = client.postForEntity("/donation", arts, DonationDto.class);
 
@@ -81,7 +71,6 @@ public class DonationIntegrationTest {
         final boolean loanable = true;
         final boolean loaned = false;
         final int loanFee = 87;
-
 
         ResponseEntity<DonationDto> response = client.getForEntity("/donation/" + id, DonationDto.class);
 
@@ -104,7 +93,6 @@ public class DonationIntegrationTest {
         final boolean loanable = true;
         final boolean loaned = false;
         final int loanFee = 87;
-
 
         ResponseEntity<List<ArtifactDto>> responseEntity = client.exchange("/donation/artifacts/" + id , HttpMethod.GET, null, new ParameterizedTypeReference<List<ArtifactDto>>() {
         });
@@ -134,6 +122,4 @@ public class DonationIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Donation not found", response.getBody());
     }
-
-
 }

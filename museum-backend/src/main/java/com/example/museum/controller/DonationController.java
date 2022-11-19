@@ -1,7 +1,6 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.BusinessHourDto;
 import com.example.museum.dto.DonationDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RestController
 public class DonationController {
-//
+
     @Autowired
     DonationService donationService;
 
