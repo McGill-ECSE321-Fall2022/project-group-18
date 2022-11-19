@@ -71,20 +71,15 @@ public class TicketServiceTests {
     }
 
     @Test
-    void testDateUniqueTicketField(){
-        Date day = Date.valueOf("2022-11-12");
-        Ticket existingTicket = new Ticket();
-        existingTicket.setDay(day);
-        ArrayList<Ticket> existingTickets = new ArrayList<Ticket>();
-        existingTickets.add(existingTicket);
+    void testCreateTicketInvalidPrice(){
+        //mock the database and return the 0th argument (which is the Ticket object)
+        when(ticketRepository.findByTicketID(anyInt())).thenReturn(null);
 
-        when(ticketRepository.findByTicketID(any(Integer.class))).thenReturn(null);
-        when(ticketRepository.findAll()).thenReturn(existingTickets);
+        final Date day = Date.valueOf("2022-11-11");
+        final int price = -5;
 
-
-        DatabaseException exception = assertThrows(DatabaseException.class, () -> ticketService.createTicket(day, 21));
-        assertEquals("A Ticket with the given date already exists", exception.getMessage());
-        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+        //checking fields - just like persistence testing
+        assertThrows(DatabaseException.class, () -> ticketService.createTicket(day, price));
 
     }
 

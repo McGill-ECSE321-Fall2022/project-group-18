@@ -5,6 +5,7 @@ import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.BusinessHour;
 import com.example.museum.model.Customer;
 import com.example.museum.repository.CustomerRepository;
+import com.fasterxml.jackson.datatype.jsr310.deser.key.LocalDateTimeKeyDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class TicketService {
         if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
             throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
         }
-        if(ticketRepository.findByTicketID(ticket.getTicketID()).getPrice() < 0){
+        if(price < 0){
             throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
         Iterator<Ticket> t = ticketRepository.findAll().iterator();
