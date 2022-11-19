@@ -30,14 +30,10 @@ public class TicketService {
 
     @Transactional
     public Ticket createTicket(Ticket ticket) {
-        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
-            throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
+        if(ticket != null){
+            return createTicket(ticket.getDay(), ticket.getPrice());
         }
-        if(ticket.getPrice() < 0){
-            throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
-        }
-        ticket = ticketRepository.save(ticket);
-        return ticket;
+        return null;
     }
 
     @Transactional
@@ -51,7 +47,6 @@ public class TicketService {
         if(price < 0){
             throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
-        Iterator<Ticket> t = ticketRepository.findAll().iterator();
 
         ticket = ticketRepository.save(ticket);
         return ticket;

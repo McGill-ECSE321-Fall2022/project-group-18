@@ -1,7 +1,9 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.model.Customer;
 import com.example.museum.model.Ticket;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.TicketRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,8 @@ public class TicketServiceTests {
 
     @Mock
     TicketRepository ticketRepository;
+    @Mock
+    CustomerRepository customerRepository;
 
     @InjectMocks
     TicketService ticketService;
@@ -71,6 +75,27 @@ public class TicketServiceTests {
     }
 
     @Test
+    void testCreateTicket2(){
+        when(ticketRepository.save(any(Ticket.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final Date day = Date.valueOf("2022-11-11");
+        final int price = 34;
+        Ticket ticket = new Ticket();
+        ticket.setDay(day);
+        ticket.setPrice(price);
+
+        Ticket returnedTicket = ticketService.createTicket(ticket);
+
+        //checking fields - just like persistence testing
+        assertNotNull(returnedTicket);
+        assertEquals(day, returnedTicket.getDay());
+        assertEquals(price, returnedTicket.getPrice());
+
+        //the most important part - making sure we actually performed a save operation
+        verify(ticketRepository, times(1)).save(returnedTicket);
+    }
+
+    @Test
     void testCreateTicketInvalidPrice(){
         //mock the database and return the 0th argument (which is the Ticket object)
         when(ticketRepository.findByTicketID(anyInt())).thenReturn(null);
@@ -83,22 +108,49 @@ public class TicketServiceTests {
 
     }
 
-//    @Test
-//    void testGetAllTickets(){
-//        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
-//        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
-//        List<Ticket> tickets = new ArrayList<>();
-//        tickets.add(ticket1);
-//        tickets.add(ticket2);
-//
-//        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
-//
-//        List<Ticket> returnedTickets = ticketService.getAllAvailableTickets();
-//
-//        assertNotNull(returnedTickets);
-//        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
-//        assertEquals(ticket2.getTicketID(), returnedTickets.get(1).getTicketID());
-//    }
+    @Test
+    void testGetAllTickets(){
+        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
+        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(ticket1);
+        tickets.add(ticket2);
+
+        List<Customer> customers = new ArrayList<>();
+
+        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
+        when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> customers);
+
+        List<Ticket> returnedTickets = ticketService.getAllAvailableTickets();
+
+        assertNotNull(returnedTickets);
+        assertEquals(2, returnedTickets.size());
+        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
+        assertEquals(ticket2.getTicketID(), returnedTickets.get(1).getTicketID());
+    }
+
+    @Test
+    void testGetAllTicketsWhenCustomersOwnTickets(){
+        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
+        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
+        List<Ticket> tickets = new ArrayList<>();
+        tickets.add(ticket1);
+        tickets.add(ticket2);
+
+        Customer customer = new Customer();
+        customer.addCustomerTicket(ticket2);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(customer);
+
+        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
+        when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> customers);
+
+        List<Ticket> returnedTickets = ticketService.getAllAvailableTickets();
+
+        assertNotNull(returnedTickets);
+        assertEquals(1, returnedTickets.size());
+        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
+    }
 
     @Test
     void testUpdateTicket(){
@@ -144,6 +196,26 @@ public class TicketServiceTests {
         assertEquals(price, returnedTicket.getPrice());
 
         verify(ticketRepository, times(1)).save(any(Ticket.class));
+    }
+
+    @Test
+    void testUpdateTicketNegativePrice(){
+        final int id = 1;
+        final Ticket ticket1 = new Ticket(id,Date.valueOf("2022-12-12"), 50);
+        List<Ticket> tick = new ArrayList<>();
+        tick.add(ticket1);
+
+        when(ticketRepository.findByTicketID(id)).thenAnswer((InvocationOnMock invocation) -> ticket1);
+        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tick);
+
+        final Date day = Date.valueOf("2022-12-12");
+        final int price = -10;
+
+        Exception ex = assertThrows(DatabaseException.class, () -> ticketService.modifyTicketById(id, day, price));
+
+        assertEquals("Ticket price can't have a negative value", ex.getMessage());
+
+        verify(ticketRepository, times(0)).save(any(Ticket.class));
     }
 
     @Test

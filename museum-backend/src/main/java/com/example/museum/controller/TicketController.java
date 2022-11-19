@@ -28,7 +28,7 @@ public class TicketController {
     }
 
     // tested
-    @PutMapping("/ticket/update/{id}")
+    @PostMapping("/ticket/update/{id}")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request) {
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(), request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
