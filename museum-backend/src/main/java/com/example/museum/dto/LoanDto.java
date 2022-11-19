@@ -11,7 +11,6 @@ public class LoanDto {
     private int loanID;
     private int loanFee;
     private boolean loanApproval;
-    //private List<ArtifactDto> artifactList;
     private List<Integer> artifactIDList;
 
     public LoanDto(Loan loan) {
@@ -54,12 +53,15 @@ public class LoanDto {
         this.loanApproval = true;
     }
 
-    public List<Integer> getArtifactList() {
+    public List<Integer> getArtifactIDList() {
         return this.artifactIDList;
     }
 
     public void setArtifactDtoList(List<Integer> artifactIDList) {
-        this.artifactIDList = artifactIDList;
+        this.artifactIDList = new ArrayList<>();
+        for (int id: artifactIDList) {
+            this.artifactIDList.add(id);
+        }
     }
 
     public Loan toModel() {

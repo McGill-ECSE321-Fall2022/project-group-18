@@ -1,5 +1,6 @@
 package com.example.museum.integration;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -10,9 +11,8 @@ import com.example.museum.dto.LoanDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
 import com.example.museum.model.Loan;
-import com.example.museum.repository.DonationRepository;
-import com.example.museum.repository.LoanRepository;
-import com.example.museum.repository.TicketRepository;
+import com.example.museum.repository.*;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +29,12 @@ import com.example.museum.dto.CustomerDto;
 import com.example.museum.dto.TicketDto;
 import com.example.museum.model.Customer;
 import com.example.museum.model.Ticket;
-import com.example.museum.repository.CustomerRepository;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CustomerIntegrationTest {
@@ -47,10 +48,20 @@ public class CustomerIntegrationTest {
     @Autowired
     private LoanRepository loanRepository;
 
+    @Autowired
+    private TicketRepository ticketRepository;
+
+
+    @Autowired
+    private ArtifactRepository artifactRepository;
+
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
         customerRepository.deleteAll();
+        ticketRepository.deleteAll();
+        loanRepository.deleteAll();
+        artifactRepository.deleteAll();
     }
 
     @Test
@@ -64,6 +75,36 @@ public class CustomerIntegrationTest {
         testCreateInvalidCustomer();
     }
 
+
+    @Test
+    public void testCreateCustomerAndLoan() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddLoanToCustomer(id, loan.getRequestID());
+        testGetLoansFromCustomer(id, loan);
+        testRemoveLoanFromCustomer(id, loan.getRequestID());
+    }
+
+    @Test
+    public void testCreateCustomerWithInvalidLonaID() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddInvalidLoanToCustomer(id, loan.getRequestID()+1);
+    }
+
+    @Test
+    public void testCreateCustomerAndGetInvalidLoan() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddLoanToCustomer(id, loan.getRequestID());
+        testRemoveInvalidLoanFromCustomer(id, loan.getRequestID() + 1);
+    }
     // @Test
     public void getAllCustomerLoans() {
         List<Artifact> artifacts = createArtifacts();
@@ -95,6 +136,7 @@ public class CustomerIntegrationTest {
         assertEquals(loan.getRequestID(), response.getBody().get(0).getLoanId());
         assertEquals(loan.getApproved(), response.getBody().get(0).getLoanApproval());
         assertEquals(loan.getLoanFee(), response.getBody().get(0).getLoanFee());
+
     }
 
     private Ticket createTicket() {
@@ -143,26 +185,26 @@ public class CustomerIntegrationTest {
         return artifactList;
     }
 
-    private Loan createLoan(List<Artifact> artifactList) {
-        List<Integer> artifactIDList = new ArrayList<>();
-        int artifactFeeSum = 0;
-        for (Artifact artifact : artifactList) {
-            artifactIDList.add(artifact.getArtID());
-            artifactFeeSum += artifact.getLoanFee();
-        }
-        String artifactIDStr = "?artifactIDList=";
-        for (int i = 0; i < artifactIDList.size(); i++) {
-            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
-            if (i == artifactIDList.size() - 1) {
-                continue;
-            }
-            artifactIDStr = artifactIDStr + ",";
-        }
-        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
-        assertNotNull(response.getBody());
-        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
-        return loan;
-    }
+//    private Loan createLoan(List<Artifact> artifactList) {
+//        List<Integer> artifactIDList = new ArrayList<>();
+//        int artifactFeeSum = 0;
+//        for (Artifact artifact : artifactList) {
+//            artifactIDList.add(artifact.getArtID());
+//            artifactFeeSum += artifact.getLoanFee();
+//        }
+//        String artifactIDStr = "?artifactIDList=";
+//        for (int i = 0; i < artifactIDList.size(); i++) {
+//            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
+//            if (i == artifactIDList.size() - 1) {
+//                continue;
+//            }
+//            artifactIDStr = artifactIDStr + ",";
+//        }
+//        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
+//        assertNotNull(response.getBody());
+//        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
+//        return loan;
+//    }
 
     private int testCreateCustomer(Ticket ticket) {
         final String username = "customer1";
@@ -282,6 +324,105 @@ public class CustomerIntegrationTest {
         }
     }
 
+
+    private List<Artifact> createArtifact() {
+        final String name1 = "Mona Lisa";
+        final Artifact.ArtType type1 = Artifact.ArtType.Painting;
+        final boolean loanable1 = true;
+        final boolean loaned1 = false;
+        final int loanFee1 = 100;
+        Artifact artifact1 = new Artifact();
+        artifact1.setName(name1);
+        artifact1.setType(type1);
+        artifact1.setLoanable(loanable1);
+        artifact1.setLoaned(loaned1);
+        artifact1.setLoanFee(loanFee1);
+        ArtifactDto artifactDto1 = new ArtifactDto(artifact1);
+        ResponseEntity<ArtifactDto> response1 = client.postForEntity("/artifact", artifactDto1, ArtifactDto.class);
+
+        List<Artifact> artifactList = new ArrayList<>();
+        artifactList.add(response1.getBody().toModel());
+
+        final String name2 = "David";
+        final Artifact.ArtType type2 = Artifact.ArtType.Sculpture;
+        final boolean loanable2 = true;
+        final boolean loaned2 = false;
+        final int loanFee2 = 120;
+        Artifact artifact2 = new Artifact();
+        artifact2.setName(name2);
+        artifact2.setType(type2);
+        artifact2.setLoanable(loanable2);
+        artifact2.setLoaned(loaned2);
+        artifact2.setLoanFee(loanFee2);
+        ArtifactDto artifactDto2 = new ArtifactDto(artifact2);
+        ResponseEntity<ArtifactDto> response2 = client.postForEntity("/artifact", artifactDto2, ArtifactDto.class);
+        artifactList.add(response2.getBody().toModel());
+        return artifactList;
+    }
+
+    private Loan createLoan(List<Artifact> artifactList) {
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: artifactList) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        String artifactIDStr = "?artifactIDList=";
+        for (int i = 0; i < artifactIDList.size(); i++) {
+            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
+            if (i == artifactIDList.size()-1) {
+                continue;
+            }
+            artifactIDStr = artifactIDStr + ",";
+        }
+        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
+        assertNotNull(response.getBody());
+        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
+        return loan;
+    }
+
+    private void testAddLoanToCustomer(int customerID, int loanID) {
+        String addLoanParam = "/customer/" + customerID + "/loans/add?loanID=" + loanID;
+        ResponseEntity<List> response = client.getForEntity(addLoanParam, List.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(response.getBody().contains(loanID));
+    }
+
+    private void testGetLoansFromCustomer(int customerID, Loan loan) {
+        String getLoanParam = "/customer/" + customerID + "/loans";
+        ResponseEntity<List> response = client.getForEntity(getLoanParam, List.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().size());
+        Loan loanFromGet = loanRepository.findLoanRequestByRequestID((Integer) response.getBody().get(0));
+        assertEquals(loan.getRequestID(), loanFromGet.getRequestID());
+        assertEquals(loan.getLoanFee(), loanFromGet.getLoanFee());
+        assertEquals(loan.getApproved(), loanFromGet.getApproved());
+        assertEquals(loan.getRequestedArtifacts().size(), loanFromGet.getRequestedArtifacts().size());
+    }
+
+    private void testRemoveLoanFromCustomer(int customerID, int loanID) {
+        String addLoanParam = "/customer/" + customerID + "/loans/delete?loanID=" + loanID;
+        ResponseEntity<List> response = client.getForEntity(addLoanParam, List.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertFalse(response.getBody().contains(loanID));
+    }
+
+    private void testAddInvalidLoanToCustomer(int customerID, int loanID) {
+        String addLoanParam = "/customer/" + customerID + "/loans/add?loanID=" + loanID;
+        ResponseEntity<String> response = client.getForEntity(addLoanParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Loan not found", response.getBody());
+    }
+
+    private void testRemoveInvalidLoanFromCustomer(int customerID, int loanID) {
+        String deleteLoanParam = "/customer/" + customerID + "/loans/delete?loanID=" + loanID;
+        ResponseEntity<String> response = client.getForEntity(deleteLoanParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Loan not found", response.getBody());
+    }
     @Test
     void testGetCustomerEmptyDonationLists() {
         Donation donation1 = new Donation();
@@ -321,6 +462,7 @@ public class CustomerIntegrationTest {
         assertEquals(returnedDonation1.getDonatedArtifacts().size(), response.get(0).getArtifactList().size());
         assertEquals(returnedDonation2.getDonationID(), response.get(1).getDonationID());
         assertEquals(returnedDonation2.getDonatedArtifacts().size(), response.get(1).getArtifactList().size());
+
 
     }
 }
