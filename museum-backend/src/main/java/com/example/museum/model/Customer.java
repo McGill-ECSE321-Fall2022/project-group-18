@@ -24,18 +24,15 @@ public class Customer extends Person
   @OneToMany
   private List<Ticket> customerTickets;
 
-  private int credit;
-
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
   public Customer() {}
 
-  public Customer(int aAccountID, String aUsername, String aPassword, String aFirstName, String aLastName, int aCredit)
+  public Customer(int aAccountID, String aUsername, String aPassword)
   {
-    super(aAccountID, aUsername, aPassword, aFirstName, aLastName);
-    credit = aCredit;
+    super(aAccountID, aUsername, aPassword);
     customerDonatedArtifacts = new ArrayList<Donation>();
     loans = new ArrayList<Loan>();
     customerTickets = new ArrayList<Ticket>();
@@ -318,15 +315,6 @@ public class Customer extends Person
     }
     return wasAdded;
   }
-
-  public boolean setCredit(int aCredit){
-    boolean wasSet = false;
-    credit = aCredit;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public int getCredit(){ return credit; }
 
   public void delete()
   {

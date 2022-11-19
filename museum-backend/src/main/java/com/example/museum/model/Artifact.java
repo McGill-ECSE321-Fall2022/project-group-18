@@ -11,8 +11,7 @@ import javax.persistence.Id;
 // line 4 "model.ump"
 // line 56 "model.ump"
 @Entity
-public class
-Artifact
+public class Artifact
 {
 
   //------------------------
@@ -33,21 +32,19 @@ Artifact
   private ArtType type;
   private boolean loanable;
   private boolean loaned;
-  private int loanFee;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
   public Artifact() {}
-  public Artifact(int aArtID, String aName, ArtType aType, boolean aLoanable, boolean aLoaned, int aLoanFee)
+  public Artifact(int aArtID, String aName, ArtType aType, boolean aLoanable, boolean aLoaned)
   {
     artID = aArtID;
     name = aName;
     type = aType;
     loanable = aLoanable;
     loaned = aLoaned;
-    loanFee = aLoanFee;
   }
 
   //------------------------
@@ -94,13 +91,6 @@ Artifact
     return wasSet;
   }
 
-  public boolean setLoanFee(int aLoanFee){
-    boolean wasSet = false;
-    loanFee = aLoanFee;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getArtID()
   {
     return artID;
@@ -125,8 +115,6 @@ Artifact
   {
     return loaned;
   }
-
-  public int getLoanFee(){ return loanFee; }
 
   public void delete()
   {}

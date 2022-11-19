@@ -29,9 +29,9 @@ public class Employee extends Person
   // CONSTRUCTOR
   //------------------------
 
-  public Employee(int aAccountID, String aUsername, String aPassword, String aFirstName, String aLastName)
+  public Employee(int aAccountID, String aUsername, String aPassword)
   {
-    super(aAccountID, aUsername, aPassword, aFirstName, aLastName);
+    super(aAccountID, aUsername, aPassword);
     employeeHours = new ArrayList<EmployeeHour>();
   }
 

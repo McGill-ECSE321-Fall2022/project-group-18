@@ -24,8 +24,6 @@ public abstract class Person
   private int accountID;
   private String username;
   private String password;
-  private String firstName;
-  private String lastName;
 
   //------------------------
   // CONSTRUCTOR
@@ -33,13 +31,11 @@ public abstract class Person
 
   public Person() {}
 
-  public Person(int aAccountID, String aUsername, String aPassword, String aFirstName, String aLastName)
+  public Person(int aAccountID, String aUsername, String aPassword)
   {
     accountID = aAccountID;
     username = aUsername;
     password = aPassword;
-    firstName = aFirstName;
-    lastName = aLastName;
   }
 
   //------------------------
@@ -70,20 +66,6 @@ public abstract class Person
     return wasSet;
   }
 
-  public boolean setFirstName(String aFirstName){
-    boolean wasSet = false;
-    firstName = aFirstName;
-    wasSet = true;
-    return wasSet;
-  }
-
-  public boolean setLastName(String aLastName){
-    boolean wasSet = false;
-    lastName = aLastName;
-    wasSet = true;
-    return wasSet;
-  }
-
   public int getAccountID()
   {
     return accountID;
@@ -99,10 +81,6 @@ public abstract class Person
     return password;
   }
 
-  public String getFirstName(){ return firstName; }
-
-  public String getLastName(){ return lastName; }
-
   public void delete()
   {}
 
@@ -112,8 +90,6 @@ public abstract class Person
     return super.toString() + "["+
             "accountID" + ":" + getAccountID()+ "," +
             "username" + ":" + getUsername()+ "," +
-            "password" + ":" + getPassword()+ "," +
-            "firstName" + ":" + getFirstName()+ "," +
-            "lastName" + ":" + getLastName()+ "]";
+            "password" + ":" + getPassword()+ "]";
   }
 }

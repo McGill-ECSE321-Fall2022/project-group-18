@@ -28,8 +28,8 @@ public class Owner extends Person {
   public Owner() {
   }
 
-  public Owner(int aAccountID, String aUsername, String aPassword, Business aBusiness, String aFirstName, String aLastName) {
-    super(aAccountID, aUsername, aPassword, aFirstName, aLastName);
+  public Owner(int aAccountID, String aUsername, String aPassword, Business aBusiness) {
+    super(aAccountID, aUsername, aPassword);
     if (!setBusiness(aBusiness)) {
       throw new RuntimeException(
           "Unable to create Owner due to aBusiness. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");

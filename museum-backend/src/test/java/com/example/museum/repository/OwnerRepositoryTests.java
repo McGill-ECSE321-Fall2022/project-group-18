@@ -43,14 +43,10 @@ public class OwnerRepositoryTests {
 
         String ownerUsername = "Owner";
         String ownerPassword = "password";
-        String ownerFirstname = "Michael";
-        String ownerLastName = "Scott";
         // Create an Owner object with some attributes and associations
         Owner owner = new Owner();
         owner.setUsername(ownerUsername);
         owner.setPassword(ownerPassword);
-        owner.setFirstName(ownerFirstname);
-        owner.setLastName(ownerLastName);
         owner.setBusiness(business);
         // Save the owner in its database, tests its writing
         owner = ownerRepository.save(owner);
@@ -67,8 +63,6 @@ public class OwnerRepositoryTests {
         assertEquals(ownerId, owner.getAccountID());
         assertEquals(ownerUsername, owner.getUsername());
         assertEquals(ownerPassword, owner.getPassword());
-        assertEquals(ownerFirstname, owner.getFirstName());
-        assertEquals(ownerLastName, owner.getLastName());
         // Test if the associations are correct
         assertNotNull(owner.getBusiness());
         assertEquals(businessID, owner.getBusiness().getBusinessID());
