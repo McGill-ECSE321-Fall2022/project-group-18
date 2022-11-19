@@ -24,6 +24,9 @@ public class CustomerService {
     private OwnerRepository ownerRepository;
 
     @Autowired
+    private LoanRepository loanRepository;
+
+    @Autowired
     private LoanService loanService;
 
     @Transactional
@@ -107,7 +110,10 @@ public class CustomerService {
         if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
         }
-        Loan loan = loanService.getLoanByID(loanID);
+        if (!loanRepository.existsById(loanID)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+        }
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
         customer.addLoan(loan);
         customer = customerRepository.save(customer);
         return customer;
@@ -119,7 +125,10 @@ public class CustomerService {
         if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
         }
-        Loan loan = loanService.getLoanByID(loanID);
+        if (!loanRepository.existsById(loanID)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+        }
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
         customer.removeLoan(loan);
         customer = customerRepository.save(customer);
         return customer;

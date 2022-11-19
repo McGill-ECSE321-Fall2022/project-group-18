@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import com.example.museum.model.*;
@@ -226,5 +227,240 @@ public class CustomerServiceTests {
         when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> customers);
 
         assertDoesNotThrow(() -> customerService.loginCustomer(testCustomer));
+    }
+
+    @Test
+    void testAddLoanToCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+.thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+
+        final int artifact1ID = 1;
+        final int artifact2ID = 2;
+        final Artifact.ArtType artifact1Type = Artifact.ArtType.Painting;
+        final Artifact.ArtType artifact2Type = Artifact.ArtType.Sculpture;
+        final String artifact1Name = "Mona Lisa";
+        final String artifact2Name = "David";
+        final boolean artifact1Loanable = true;
+        final boolean artifact2Loanable = true;
+        final boolean artifact1Loaned = false;
+        final boolean artifact2Loaned = false;
+        final int artifact1LoanFee = 100;
+        final int artifact2LoanFee = 200;
+        Artifact testArtifact1 = new Artifact(artifact1ID, artifact1Name, artifact1Type, artifact1Loanable, artifact1Loaned, artifact1LoanFee);
+        Artifact testArtifact2 = new Artifact(artifact2ID, artifact2Name, artifact2Type, artifact2Loanable, artifact2Loaned, artifact2LoanFee);
+//        List<Artifact> testArtifactList = new ArrayList<>();
+//        testArtifactList.add(testArtifact1);
+//        testArtifactList.add(testArtifact2);
+        HashSet<Integer> testArtifactIDSet = new HashSet<>();
+        testArtifactIDSet.add(testArtifact1.getArtID());
+        testArtifactIDSet.add(testArtifact2.getArtID());
+
+        final int requestID = 3;
+        final int loanFee = 123;
+        final boolean approval = false;
+        final Loan testLoan = new Loan();
+        testLoan.setRequestID(requestID);
+        testLoan.setLoanFee(loanFee);
+        testLoan.setApproved(approval);
+        testLoan.setNewrequestedArtifactsList();
+        testLoan.addRequestedArtifact(testArtifact1);
+        testLoan.addRequestedArtifact(testArtifact2);
+
+        when(loanRepository.findLoanRequestByRequestID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+        when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> true);
+        when(loanService.getLoanByID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+
+        Customer customer = customerService.addLoanToCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID());
+        assertNotNull(customer);
+        assertEquals(1, customer.getLoans().size());
+        assertEquals(requestID, customer.getLoan(0).getRequestID());
+        assertEquals(loanFee, customer.getLoan(0).getLoanFee());
+        assertEquals(approval, customer.getLoan(0).getApproved());
+        assertEquals(testLoan.getRequestedArtifacts().size(), customer.getLoan(0).getRequestedArtifacts().size());
+    }
+
+    @Test
+    void testAddInvalidLoanToCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+
+        final int artifact1ID = 1;
+        final int artifact2ID = 2;
+        final Artifact.ArtType artifact1Type = Artifact.ArtType.Painting;
+        final Artifact.ArtType artifact2Type = Artifact.ArtType.Sculpture;
+        final String artifact1Name = "Mona Lisa";
+        final String artifact2Name = "David";
+        final boolean artifact1Loanable = true;
+        final boolean artifact2Loanable = true;
+        final boolean artifact1Loaned = false;
+        final boolean artifact2Loaned = false;
+        final int artifact1LoanFee = 100;
+        final int artifact2LoanFee = 200;
+        Artifact testArtifact1 = new Artifact(artifact1ID, artifact1Name, artifact1Type, artifact1Loanable, artifact1Loaned, artifact1LoanFee);
+        Artifact testArtifact2 = new Artifact(artifact2ID, artifact2Name, artifact2Type, artifact2Loanable, artifact2Loaned, artifact2LoanFee);
+//        List<Artifact> testArtifactList = new ArrayList<>();
+//        testArtifactList.add(testArtifact1);
+//        testArtifactList.add(testArtifact2);
+        HashSet<Integer> testArtifactIDSet = new HashSet<>();
+        testArtifactIDSet.add(testArtifact1.getArtID());
+        testArtifactIDSet.add(testArtifact2.getArtID());
+
+        final int requestID = 3;
+        final int loanFee = 123;
+        final boolean approval = false;
+        final Loan testLoan = new Loan();
+        testLoan.setRequestID(requestID);
+        testLoan.setLoanFee(loanFee);
+        testLoan.setApproved(approval);
+        testLoan.setNewrequestedArtifactsList();
+        testLoan.addRequestedArtifact(testArtifact1);
+        testLoan.addRequestedArtifact(testArtifact2);
+
+        when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> false);
+
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> customerService.addLoanToCustomer(returnedCustomer.getAccountID(), requestID));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+        assertEquals("Loan not found", ex.getMessage());
+    }
+
+    @Test
+    void testRemoveLoanFromCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+
+        final int artifact1ID = 1;
+        final int artifact2ID = 2;
+        final Artifact.ArtType artifact1Type = Artifact.ArtType.Painting;
+        final Artifact.ArtType artifact2Type = Artifact.ArtType.Sculpture;
+        final String artifact1Name = "Mona Lisa";
+        final String artifact2Name = "David";
+        final boolean artifact1Loanable = true;
+        final boolean artifact2Loanable = true;
+        final boolean artifact1Loaned = false;
+        final boolean artifact2Loaned = false;
+        final int artifact1LoanFee = 100;
+        final int artifact2LoanFee = 200;
+        Artifact testArtifact1 = new Artifact(artifact1ID, artifact1Name, artifact1Type, artifact1Loanable, artifact1Loaned, artifact1LoanFee);
+        Artifact testArtifact2 = new Artifact(artifact2ID, artifact2Name, artifact2Type, artifact2Loanable, artifact2Loaned, artifact2LoanFee);
+//        List<Artifact> testArtifactList = new ArrayList<>();
+//        testArtifactList.add(testArtifact1);
+//        testArtifactList.add(testArtifact2);
+        HashSet<Integer> testArtifactIDSet = new HashSet<>();
+        testArtifactIDSet.add(testArtifact1.getArtID());
+        testArtifactIDSet.add(testArtifact2.getArtID());
+
+        final int requestID = 3;
+        final int loanFee = 123;
+        final boolean approval = false;
+        final Loan testLoan = new Loan();
+        testLoan.setRequestID(requestID);
+        testLoan.setLoanFee(loanFee);
+        testLoan.setApproved(approval);
+        testLoan.setNewrequestedArtifactsList();
+        testLoan.addRequestedArtifact(testArtifact1);
+        testLoan.addRequestedArtifact(testArtifact2);
+
+        when(loanRepository.findLoanRequestByRequestID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+        when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> true);
+        when(loanService.getLoanByID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+
+        Customer customer = customerService.addLoanToCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID());
+        Customer removeLoancustomer = customerService.deleteLoanFromCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID());
+
+        assertNotNull(customer);
+        assertEquals(0, customer.getLoans().size());
+        assertTrue(loanRepository.existsById(requestID));
+    }
+
+    @Test
+    void testRemoveInvalidLoanFromCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+
+        final int artifact1ID = 1;
+        final int artifact2ID = 2;
+        final Artifact.ArtType artifact1Type = Artifact.ArtType.Painting;
+        final Artifact.ArtType artifact2Type = Artifact.ArtType.Sculpture;
+        final String artifact1Name = "Mona Lisa";
+        final String artifact2Name = "David";
+        final boolean artifact1Loanable = true;
+        final boolean artifact2Loanable = true;
+        final boolean artifact1Loaned = false;
+        final boolean artifact2Loaned = false;
+        final int artifact1LoanFee = 100;
+        final int artifact2LoanFee = 200;
+        Artifact testArtifact1 = new Artifact(artifact1ID, artifact1Name, artifact1Type, artifact1Loanable, artifact1Loaned, artifact1LoanFee);
+        Artifact testArtifact2 = new Artifact(artifact2ID, artifact2Name, artifact2Type, artifact2Loanable, artifact2Loaned, artifact2LoanFee);
+//        List<Artifact> testArtifactList = new ArrayList<>();
+//        testArtifactList.add(testArtifact1);
+//        testArtifactList.add(testArtifact2);
+        HashSet<Integer> testArtifactIDSet = new HashSet<>();
+        testArtifactIDSet.add(testArtifact1.getArtID());
+        testArtifactIDSet.add(testArtifact2.getArtID());
+
+        final int requestID = 3;
+        final int loanFee = 123;
+        final boolean approval = false;
+        final Loan testLoan = new Loan();
+        testLoan.setRequestID(requestID);
+        testLoan.setLoanFee(loanFee);
+        testLoan.setApproved(approval);
+        testLoan.setNewrequestedArtifactsList();
+        testLoan.addRequestedArtifact(testArtifact1);
+        testLoan.addRequestedArtifact(testArtifact2);
+
+        when(loanRepository.findLoanRequestByRequestID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+        when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> true);
+        when(loanService.getLoanByID(requestID)).thenAnswer((InvocationOnMock invocation) -> testLoan);
+
+        Customer customer = customerService.addLoanToCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID());
+        when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> false);
+        
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> customerService.deleteLoanFromCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID()));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+        assertEquals("Loan not found", ex.getMessage());
     }
 }
