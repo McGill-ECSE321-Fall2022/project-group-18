@@ -41,6 +41,8 @@ public class OwnerIntegrationTest {
         testLoginOwner(business);
         testInvalidLoginOwner(business);
         testCreateInvalidOwner(business);
+        testUpdateInvalidOwner();
+        testUpdateOwner(id);
     }
 
     private Business createBusiness() {
@@ -138,5 +140,48 @@ public class OwnerIntegrationTest {
             assertNotNull(response);
             assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         }
+    }
+
+    void testUpdateInvalidOwner(){
+        final int id = Integer.MAX_VALUE;
+        final String username = "owner1";
+        final String password = "password";
+        final String firstName = "Owner";
+        final String lastName = "Account";
+        final Business business = new Business();
+        final Owner owner = new Owner(id, username, password, business, firstName, lastName);
+        final OwnerDto ownerDto = new OwnerDto(owner);
+
+        try {
+            ResponseEntity<OwnerDto> response = client.postForEntity("/owner/update/" + id, ownerDto, OwnerDto.class);
+            assertEquals(1, 2);
+        } catch (Exception e) {
+            ResponseEntity<String> response = client.postForEntity("/owner/update/" + id, ownerDto, String.class);
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
+
+
+    }
+
+    void testUpdateOwner(int ownerId){
+        final int id = ownerId;
+        final String username = "owner123";
+        final String password = "password123";
+        final String firstName = "Marwan";
+        final String lastName = "Kanaan";
+        final Business business = new Business();
+        final int ticketFee = 10;
+        business.setTicketFee(ticketFee);
+        final Owner owner = new Owner(id, username, password, business, firstName, lastName);
+        final OwnerDto ownerDto = new OwnerDto(owner);
+
+        ResponseEntity<OwnerDto> response = client.postForEntity("/owner/update/" + id, ownerDto, OwnerDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(id, response.getBody().getAccountID());
+        assertEquals(ticketFee, response.getBody().getBusiness().getTicketFee());
     }
 }

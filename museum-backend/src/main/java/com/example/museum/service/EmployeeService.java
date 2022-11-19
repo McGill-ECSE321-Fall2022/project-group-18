@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -22,8 +23,9 @@ public class EmployeeService {
     private CustomerRepository customerRepository;
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private EmployeeHourRepository employeeHourRepository;
 
-    @Transactional
     public Employee getEmployeeByID(int id) {
         Employee employee = employeeRepository.findByAccountID(id);
         if (employee == null) {
@@ -33,7 +35,6 @@ public class EmployeeService {
         return employee;
     }
 
-    @Transactional
     public void loginEmployee(Employee employeeRequest) {
         Iterator<Employee> employees = employeeRepository.findAll().iterator();
 
@@ -50,7 +51,6 @@ public class EmployeeService {
         throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee does not exist");
     }
 
-    @Transactional
     public Employee createEmployee(Employee employeeRequest) {
         if (employeeRepository.findByAccountID(employeeRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given id already exists.");
@@ -76,12 +76,12 @@ public class EmployeeService {
         return updatedEmployee;
     }
 
+    //deletes the employee
     public boolean deleteEmployeeByID(int id) {
         Employee employee = employeeRepository.findByAccountID(id);
         if (employee == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
         }
-
         employeeRepository.deleteById(id);
         return true;
     }

@@ -47,7 +47,8 @@ public class EmployeeHourService {
         }
         return employeeHour;
     }
-    
+
+    @Transactional
     public EmployeeHour modifyEmployeeHourById(int id, Date day, Time startTime, Time endTime){
         checkDateConflict(id, day);
         EmployeeHour employeeHour = employeeHourRepository.findEmployeeHourByEmployeeHourID(id);
