@@ -98,7 +98,7 @@ public class TicketServiceTests {
     @Test
     void testCreateTicketInvalidPrice(){
         //mock the database and return the 0th argument (which is the Ticket object)
-        when(ticketRepository.findByTicketID(anyInt())).thenReturn(null);
+//        when(ticketRepository.findByTicketID(anyInt())).thenReturn(null);
 
         final Date day = Date.valueOf("2022-11-11");
         final int price = -5;
@@ -217,6 +217,8 @@ public class TicketServiceTests {
 
         verify(ticketRepository, times(0)).save(any(Ticket.class));
     }
+
+
 
     @Test
     void testUpdateTicketDate(){

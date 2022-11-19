@@ -41,9 +41,9 @@ public class TicketService {
         Ticket ticket = new Ticket();
         ticket.setDay(day);
         ticket.setPrice(price);
-        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
-            throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
-        }
+//        if(ticketRepository.findByTicketID(ticket.getTicketID()) != null){
+//            throw new DatabaseException(HttpStatus.CONFLICT, "A ticket with the given id already exists.");
+//        }
         if(price < 0){
             throw new DatabaseException(HttpStatus.CONFLICT, "Ticket price can't have a negative value");
         }
