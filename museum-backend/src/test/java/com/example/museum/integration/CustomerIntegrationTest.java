@@ -67,7 +67,7 @@ public class CustomerIntegrationTest {
     }
 
     @Test
-    public void testCreateCustomerAndAddLoan() {
+    public void testCreateCustomerAndLoan() {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
         List<Artifact> createArtifactList = createArtifact();
@@ -75,6 +75,25 @@ public class CustomerIntegrationTest {
         testAddLoanToCustomer(id, loan.getRequestID());
         testGetLoansFromCustomer(id, loan);
         testRemoveLoanFromCustomer(id, loan.getRequestID());
+    }
+
+    @Test
+    public void testCreateCustomerWithInvalidLonaID() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddInvalidLoanToCustomer(id, loan.getRequestID()+1);
+    }
+
+    @Test
+    public void testCreateCustomerAndGetInvalidLoan() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        List<Artifact> createArtifactList = createArtifact();
+        Loan loan = createLoan(createArtifactList);
+        testAddLoanToCustomer(id, loan.getRequestID());
+        testRemoveInvalidLoanFromCustomer(id, loan.getRequestID()+1);
     }
 
     private Ticket createTicket() {
@@ -287,5 +306,21 @@ public class CustomerIntegrationTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertFalse(response.getBody().contains(loanID));
+    }
+
+    private void testAddInvalidLoanToCustomer(int customerID, int loanID) {
+        String addLoanParam = "/customer/" + customerID + "/loans/add?loanID=" + loanID;
+        ResponseEntity<String> response = client.getForEntity(addLoanParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Loan not found", response.getBody());
+    }
+
+    private void testRemoveInvalidLoanFromCustomer(int customerID, int loanID) {
+        String deleteLoanParam = "/customer/" + customerID + "/loans/delete?loanID=" + loanID;
+        ResponseEntity<String> response = client.getForEntity(deleteLoanParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Loan not found", response.getBody());
     }
 }
