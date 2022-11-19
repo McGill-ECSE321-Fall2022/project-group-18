@@ -128,7 +128,7 @@ public class ArtifactIntegrationTest {
         assertEquals(loaned, response.get(0).getLoaned());
         assertEquals(loanFee, response.get(0).getLoanFee());
     }
-//
+
     public void testGetLoanableArtifacts(int id){
         final String name = "David";
         final Artifact.ArtType type = Artifact.ArtType.Painting;
@@ -149,23 +149,6 @@ public class ArtifactIntegrationTest {
         assertEquals(loanFee, response.get(0).getLoanFee());
     }
 
-
-
-//    @Test
-//    public void testCreateInvalidArtifact(){
-//        ResponseEntity<String> response = client.postForEntity("/artifact", new ArtifactDto(" ",Artifact.ArtType.Sculpture,true,false,10),String.class);
-//        assertNotNull(response);
-//        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode(), "Response has correct status");
-//    }
-
-//    @Test
-//    public void testGetAllArtifacts(){
-//        ResponseEntity<List> response = client.getForEntity("/artifact/all", List.class);
-//        assertNotNull(response);
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//
-//    }
-
     @Test
     public void testGetInvalidArtifact(){
         ResponseEntity<String> response = client.getForEntity("/artifact/" + Integer.MAX_VALUE, String.class);
@@ -184,6 +167,7 @@ public class ArtifactIntegrationTest {
             //we should not hit this line - an exception should be called before this
             assertEquals(1,2);
         }catch (Exception e){
+            //Deal with aritfact that is not found.
             ResponseEntity<String> response = client.postForEntity("/artifact/update/" + id, artifactDto, String.class);
             assertNotNull(response);
             assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
