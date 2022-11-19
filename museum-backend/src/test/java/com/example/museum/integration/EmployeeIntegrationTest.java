@@ -50,7 +50,7 @@ public class EmployeeIntegrationTest {
         testInvalidLoginEmployee();
         testCreateInvalidEmployee();
         testUpdateInvalidEmployee();
-        testUpdateEmployee(id);
+//        testUpdateEmployee(id);
         testDeleteInvalidEmployee();
         testDeleteEmployee(id);
     }
@@ -200,9 +200,22 @@ public class EmployeeIntegrationTest {
         }
     }
 
-    private void testUpdateEmployee(int employeeID){
-        int id = employeeID;
-        EmployeeHour hour = new EmployeeHour();
+    @Test
+    public void testUpdateEmployee() {
+        EmployeeDto employeeDto = testCreateAndUpdateEmployee();
+    }
+
+    private EmployeeDto testCreateAndUpdateEmployee(){
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "Employee";
+        final String lastName = "Account";
+        Employee emp = employeeRepository.save(new Employee(0, username, password, firstName, lastName));
+        int id = emp.getAccountID();
+        Date day = Date.valueOf("2020-10-10");
+        Time start = Time.valueOf("08:08:08");
+        Time end = Time.valueOf("14:14:14");
+        EmployeeHour hour = new EmployeeHour(0, day, start, end);
         Employee employee = new Employee();
         employee.setUsername("krab");
         employee.setPassword("mr");
@@ -212,9 +225,14 @@ public class EmployeeIntegrationTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(employeeID, response.getBody().getAccountID());
+        assertEquals(id, response.getBody().getAccountID());
         assertEquals("krab", response.getBody().getUsername());
         assertEquals("mr", response.getBody().getPassword());
+        //checking employee hour
+        assertEquals(1, response.getBody().getEmployeeHours().size());
+        assertEquals(day, response.getBody().getEmployeeHours().get(0).getDay());
+        assertNotEquals(0, response.getBody().getEmployeeHours().get(0).getEmployeeHourID());
+        return response.getBody();
     }
 
     private void testDeleteInvalidEmployee(){

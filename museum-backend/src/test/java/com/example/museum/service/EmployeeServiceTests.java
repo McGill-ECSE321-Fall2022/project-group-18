@@ -2,7 +2,9 @@ package com.example.museum.service;
 
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.repository.CustomerRepository;
+import com.example.museum.repository.EmployeeHourRepository;
 import com.example.museum.repository.OwnerRepository;
+import org.hibernate.dialect.Database;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,6 +36,8 @@ public class EmployeeServiceTests {
     CustomerRepository customerRepository;
     @Mock
     OwnerRepository ownerRepository;
+    @Mock
+    EmployeeHourRepository employeeHourRepository;
 
 
     @InjectMocks
@@ -178,7 +183,7 @@ public class EmployeeServiceTests {
 
         when(employeeRepository.findByAccountID(employeeID)).thenAnswer((InvocationOnMock) -> null);
 
-        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.modifyEmployeeByID(employeeID, username, password, firstName, lastName));
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.modifyEmployeeByID(employeeID, username, password, firstName, lastName, employee.getEmployeeHours()));
         assertEquals("Employee not found", ex.getMessage());
     }
 
@@ -200,7 +205,7 @@ public class EmployeeServiceTests {
         when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> new ArrayList<>());
 
 
-        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.modifyEmployeeByID(employeeID, username, password, firstName, lastName));
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.modifyEmployeeByID(employeeID, username, password, firstName, lastName, employee1.getEmployeeHours()));
         assertEquals("An employee with the given username already exists.", ex.getMessage());
     }
 
@@ -228,7 +233,7 @@ public class EmployeeServiceTests {
         when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> new ArrayList<>());
         when(employeeRepository.save(any(Employee.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
-        Employee response = employeeService.modifyEmployeeByID(employeeID1, requestedUsername, requestedPassword, requestedFirstName, requestedLastName);
+        Employee response = employeeService.modifyEmployeeByID(employeeID1, requestedUsername, requestedPassword, requestedFirstName, requestedLastName, employee1.getEmployeeHours());
 
         assertNotNull(response);
         assertEquals(employeeID1, response.getAccountID());
@@ -276,5 +281,110 @@ public class EmployeeServiceTests {
         assertEquals(lastName, response.getLastName());
 
         verify(employeeRepository, times(1)).save(any(Employee.class));
+    }
+
+    @Test
+    void testUpdateEmployee(){
+        final int employeeID1 = 1;
+        final int employeeID2 = 2;
+        final String username1 = "employee1";
+        final String username2 = "employee2";
+        final String password1 = "password";
+        final String password2 = "password2";
+        final String firstName1 = "First1";
+        final String firstName2 = "First2";
+        final String lastName1 = "Last1";
+        final String lastName2 = "Last2";
+        Employee employee1 = new Employee(employeeID1, username1, password1, firstName1, lastName1);
+        Employee employee2 = new Employee(employeeID2, username2, password2, firstName2, lastName2);
+
+        final int hourID1 = 3;
+        final int hourID2 = 4;
+        final int hourID3 = 5;
+        Date day1 = Date.valueOf("2020-10-10");
+        Date day2 = Date.valueOf("2021-10-10");
+//        Date day3 = Date.valueOf("2022-10-10");
+        Time start = Time.valueOf("8:00:00");
+        Time end = Time.valueOf("19:00:00");
+        EmployeeHour hour1 = new EmployeeHour(hourID1,day1, start, end);
+        //same date - on purpose
+        EmployeeHour hour2 = new EmployeeHour(hourID2, day2, start, end);
+        EmployeeHour hour3 = new EmployeeHour(hourID3, day2, start, end);
+
+        employee1.addEmployeeHour(hour1);
+        employee2.addEmployeeHour(hour2);
+
+        List<Employee> employees = new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee2);
+
+        //list of hours that will override the previous list of hours for the employee
+        List<EmployeeHour> newHours = new ArrayList<>();
+        newHours.add(hour1);
+        newHours.add(hour3);
+
+        //hour 3 is missing. now we will add it to the first employee and sure that no exception is thrown.
+        //in another test, we would add this to employee 2 (see below) and ensure that an exception is thrown
+        when(employeeRepository.findByAccountID(employeeID1)).thenAnswer((InvocationOnMock) -> employee1);
+        when(employeeRepository.save(any(Employee.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        Employee response = employeeService.modifyEmployeeByID(employeeID1, username1, password1, firstName1, lastName1, newHours);
+
+        assertNotNull(response);
+        assertEquals(2, response.getEmployeeHours().size());
+        assertEquals(hourID1, response.getEmployeeHour(0).getEmployeeHourID());
+        assertEquals(day1, response.getEmployeeHour(0).getDay());
+        assertEquals(hourID3, response.getEmployeeHour(1).getEmployeeHourID());
+        assertEquals(day2, response.getEmployeeHour(1).getDay());
+    }
+
+    @Test
+    void testUpdateEmployeeWithConflictingEmployeeHours(){
+        final int employeeID1 = 1;
+        final int employeeID2 = 2;
+        final String username1 = "employee1";
+        final String username2 = "employee2";
+        final String password1 = "password";
+        final String password2 = "password2";
+        final String firstName1 = "First1";
+        final String firstName2 = "First2";
+        final String lastName1 = "Last1";
+        final String lastName2 = "Last2";
+        Employee employee1 = new Employee(employeeID1, username1, password1, firstName1, lastName1);
+        Employee employee2 = new Employee(employeeID2, username2, password2, firstName2, lastName2);
+
+        final int hourID1 = 3;
+        final int hourID2 = 4;
+        final int hourID3 = 5;
+        Date day1 = Date.valueOf("2020-10-10");
+        Date day2 = Date.valueOf("2021-10-10");
+//        Date day3 = Date.valueOf("2022-10-10");
+        Time start = Time.valueOf("8:00:00");
+        Time end = Time.valueOf("19:00:00");
+        EmployeeHour hour1 = new EmployeeHour(hourID1,day1, start, end);
+        //same date - on purpose
+        EmployeeHour hour2 = new EmployeeHour(hourID2, day2, start, end);
+        EmployeeHour hour3 = new EmployeeHour(hourID3, day2, start, end);
+
+        employee1.addEmployeeHour(hour1);
+        employee2.addEmployeeHour(hour2);
+
+        List<Employee> employees = new ArrayList<>();
+        employees.add(employee1);
+        employees.add(employee2);
+
+        //list of hours that will override the previous list of hours for the employee2
+        List<EmployeeHour> newHours = new ArrayList<>();
+        newHours.add(hour2);
+        newHours.add(hour3);
+
+        //hour 3 is missing. now we will add it to the first employee and sure that no exception is thrown.
+        //in this test, we would add this to employee 2 and ensure that an exception is thrown
+        when(employeeRepository.findByAccountID(employeeID1)).thenAnswer((InvocationOnMock) -> employee1);
+        when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.modifyEmployeeByID(employeeID1, username1, password1, firstName1, lastName1, newHours));
+        assertEquals("A EmployeeHour with the given date already exists for this employee", ex.getMessage());
     }
 }
