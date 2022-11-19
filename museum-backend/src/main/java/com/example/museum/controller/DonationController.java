@@ -6,6 +6,7 @@ import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
 import com.example.museum.service.ArtifactService;
 import com.example.museum.service.DonationService;
+import com.example.museum.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,9 @@ public class DonationController {
     @Autowired
     ArtifactService artifactService;
 
+    @Autowired
+    RoomService roomService;
+
     //Get donation from donationID
     @GetMapping("/donation/{donationID}")
     public ResponseEntity<DonationDto> getDonationByDonationID(@PathVariable int donationID){
@@ -38,6 +42,11 @@ public class DonationController {
             Artifact art = artifactService.createArtifact(artifactDto.toModel());
             artifactList.add(art);
         }
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: artifactList) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        roomService.addArtifactsToRoom("Storage", artifactIDList); // add artifacts created into storage room
         Donation createdDonation = donationService.createDonation(artifactList);
         DonationDto response = new DonationDto(createdDonation);
         return new ResponseEntity<DonationDto>(response, HttpStatus.CREATED);
