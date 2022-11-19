@@ -108,6 +108,8 @@ public class EmployeeHourIntegrationTest {
         private void testUpdateEmployeeHour(int id) {
                 ResponseEntity<EmployeeHourDto> response = client.getForEntity("/employeeHour/" + id,
                                 EmployeeHourDto.class);
+                assertNotNull(response);
+
                 final Time prevStartTime = response.getBody().getStartTime();
                 final Time updatedStartTime = Time.valueOf("09:29:00");
                 final EmployeeHourDto employeeHourDto = new EmployeeHourDto(new EmployeeHour(0,
@@ -127,7 +129,7 @@ public class EmployeeHourIntegrationTest {
                 final Date day = Date.valueOf("2022-11-08");
                 final Time startTime = Time.valueOf("09:29:00");
                 final Time endTime = Time.valueOf("16:45:00");
-//                restTemplate.postForObject("/employeeHour/all", new EmployeeHourList)
+
 
 
                 ResponseEntity<List<EmployeeHourDto>> responseEntity =
@@ -137,6 +139,10 @@ public class EmployeeHourIntegrationTest {
                                 null,
                                 new ParameterizedTypeReference<List<EmployeeHourDto>>() {}
                         );
+
+                assertNotNull(responseEntity);
+                assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
                 List<EmployeeHourDto> response = responseEntity.getBody();
 
                 assertNotNull(response);
@@ -162,6 +168,21 @@ public class EmployeeHourIntegrationTest {
                 assertNotNull(response);
                 assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
                 assertEquals("EmployeeHour not found", response.getBody());
+        }
+
+        @Test
+        public void testUpdateInvalidEmployeeHour(){
+                int id = Integer.MAX_VALUE;
+                EmployeeHourDto employeeHourDto = new EmployeeHourDto();
+                try{
+                        ResponseEntity<EmployeeHourDto> response = client.postForEntity("/employeeHour/update/" + id, employeeHourDto, EmployeeHourDto.class);
+                        //we should not hit this line - an exception should be called before this
+                        assertEquals(1,2);
+                }catch(Exception e){
+                        ResponseEntity<String> response = client.postForEntity("/employeeHour/update/" + id, employeeHourDto, String.class);
+                        assertNotNull(response);
+                        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+                }
         }
 
 }

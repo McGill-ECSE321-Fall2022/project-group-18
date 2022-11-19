@@ -28,7 +28,7 @@ import java.sql.Time;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class EmployeeIntegration {
+public class EmployeeIntegrationTest {
     @Autowired
     private TestRestTemplate client;
     @Autowired

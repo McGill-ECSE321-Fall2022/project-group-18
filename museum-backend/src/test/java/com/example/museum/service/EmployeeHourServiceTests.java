@@ -69,11 +69,11 @@ public class EmployeeHourServiceTests {
         final Date day = Date.valueOf("2022-09-11");
         final Time startTime = Time.valueOf("08:00:01");
         final Time endTime = Time.valueOf("15:06:00");
-        EmployeeHour bh = new EmployeeHour();
-        bh.setDay(day);
-        bh.setStartTime(startTime);
-        bh.setEndTime(endTime);
-        EmployeeHour returnedEmployeeHour = employeeHourService.createEmployeeHour(bh);
+        EmployeeHour eh = new EmployeeHour();
+        eh.setDay(day);
+        eh.setStartTime(startTime);
+        eh.setEndTime(endTime);
+        EmployeeHour returnedEmployeeHour = employeeHourService.createEmployeeHour(eh);
 
         
         assertNotNull(returnedEmployeeHour);
@@ -82,7 +82,7 @@ public class EmployeeHourServiceTests {
         assertEquals(endTime, returnedEmployeeHour.getEndTime());
 
     
-        verify(employeeHourRepository, times(1)).save(bh);
+        verify(employeeHourRepository, times(1)).save(eh);
     }
 
 
@@ -138,11 +138,11 @@ public class EmployeeHourServiceTests {
     void testUpdateEmployeeHour(){
         final int id = 1;
         final EmployeeHour hour1 = new EmployeeHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
-        List<EmployeeHour> bh = new ArrayList<>();
-        bh.add(hour1);
+        List<EmployeeHour> eh = new ArrayList<>();
+        eh.add(hour1);
 
         when(employeeHourRepository.findEmployeeHourByEmployeeHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
-        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> eh);
         when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
         final Date day = Date.valueOf("2022-10-10");
@@ -163,11 +163,11 @@ public class EmployeeHourServiceTests {
     void testUpdateWithSameDateEmployeeHour(){
         final int id = 1;
         final EmployeeHour hour1 = new EmployeeHour(id,Date.valueOf("2022-09-11"), Time.valueOf("08:00:00"), Time.valueOf("15:00:00"));
-        List<EmployeeHour> bh = new ArrayList<>();
-        bh.add(hour1);
+        List<EmployeeHour> eh = new ArrayList<>();
+        eh.add(hour1);
 
         when(employeeHourRepository.findEmployeeHourByEmployeeHourID(id)).thenAnswer((InvocationOnMock invocation) -> hour1);
-        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> bh);
+        when(employeeHourRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> eh);
         when(employeeHourRepository.save(any(EmployeeHour.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
 
         final Date day = Date.valueOf("2022-09-11");
