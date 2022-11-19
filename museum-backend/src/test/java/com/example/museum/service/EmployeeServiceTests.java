@@ -1,5 +1,7 @@
 package com.example.museum.service;
 
+import com.example.museum.exceptions.RequestException;
+import com.example.museum.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
@@ -77,5 +81,56 @@ public class EmployeeServiceTests {
 
         assertEquals("Employee not found", ex.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+    }
+
+    @Test
+    void testEmployeeLoginDoesNotExist(){
+        final int employeeID = 1;
+        final String username = "employee";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+        final List<Employee> employees = new ArrayList<>();
+        when(employeeRepository.findAll()).thenAnswer((InvocationOnMock) -> employees);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.loginEmployee(testEmployee));
+        assertEquals("Employee does not exist", ex.getMessage());
+    }
+
+    @Test
+    void testEmployeeLoginWrongPassword(){
+        final int employeeID = 1;
+        final String username = "employee";
+        final String password = "password";
+        final String wrongpassword = "pass";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+        final Employee actualEmployee = new Employee(employeeID, username, wrongpassword, firstName, lastName);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(actualEmployee);
+
+        when(employeeRepository.findAll()).thenAnswer((InvocationOnMock) -> employees);
+
+        Exception ex = assertThrows(RequestException.class, () -> employeeService.loginEmployee(testEmployee));
+        assertEquals("Wrong password", ex.getMessage());
+    }
+
+    @Test
+    void testEmployeeLogin(){
+        final int employeeID = 1;
+        final String username = "employee";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+        final Employee storedEmployee = new Employee(employeeID, username, password, firstName, lastName);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(storedEmployee);
+
+        when(employeeRepository.findAll()).thenAnswer((InvocationOnMock) -> employees);
+
+        assertDoesNotThrow(() -> employeeService.loginEmployee(testEmployee));
     }
 }

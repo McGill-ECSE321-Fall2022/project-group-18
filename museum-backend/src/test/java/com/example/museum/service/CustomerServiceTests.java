@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.museum.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,11 +21,6 @@ import org.springframework.http.HttpStatus;
 
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
-import com.example.museum.model.Artifact;
-import com.example.museum.model.Customer;
-import com.example.museum.model.Donation;
-import com.example.museum.model.Loan;
-import com.example.museum.model.Ticket;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.DonationRepository;
@@ -215,5 +211,23 @@ public class CustomerServiceTests {
         final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
 
         Exception ex = assertThrows(DatabaseException.class, () -> customerService.loginCustomer(testCustomer));
+    }
+
+    @Test
+    void testCustomerLogin(){
+        final int customerID = 1;
+        final String username = "customer";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 10;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        final Customer storedCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+        List<Customer> customers = new ArrayList<>();
+        customers.add(storedCustomer);
+
+        when(customerRepository.findAll()).thenAnswer((InvocationOnMock) -> customers);
+
+        assertDoesNotThrow(() -> customerService.loginCustomer(testCustomer));
     }
 }

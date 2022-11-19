@@ -51,13 +51,14 @@ public class EmployeeIntegrationTest {
     }
 
     private EmployeeHour createEmployeeHour() {
-        final int employeeHourId = 1;
         final Date day = Date.valueOf("2022-11-11");
         final Time startTime = Time.valueOf("08:30:00");
         final Time endTime = Time.valueOf("17:30:00");
-        final EmployeeHour employeeHourDto = new EmployeeHour(employeeHourId, day, startTime, endTime);
+        final EmployeeHour employeeHourDto = new EmployeeHour(0, day, startTime, endTime);
         ResponseEntity<EmployeeHourDto> response = client.postForEntity("/employeeHour", employeeHourDto, EmployeeHourDto.class);
 
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         return response.getBody().toModel();
     }
 
@@ -136,7 +137,6 @@ public class EmployeeIntegrationTest {
     }
 
     private void testGetEmployeeHours(int id) {
-        final int employeeHourId = 1;
         final Date day = Date.valueOf("2022-11-11");
         final Time startTime = Time.valueOf("08:30:00");
         final Time endTime = Time.valueOf("17:30:00");
@@ -152,7 +152,6 @@ public class EmployeeIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
-        assertEquals(id,response.getBody().get(0).getEmployeeHourID());
         assertEquals(day, response.getBody().get(0).getDay());
         assertEquals(startTime, response.getBody().get(0).getStartTime());
         assertEquals(endTime, response.getBody().get(0).getEndTime());
