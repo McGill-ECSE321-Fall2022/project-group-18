@@ -323,8 +323,10 @@ public class RoomIntegrationTest {
         ResponseEntity<Map> response = client.getForEntity(getAllRoomsArtifactsParam, Map.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        Map<Integer, Integer> allRoomsArtifactsMap = response.getBody();
+        Map<String, Integer> allRoomsArtifactsMap = response.getBody();
         assertEquals(artifactList.size(), allRoomsArtifactsMap.size());
+        assertEquals(room.getRoomID(), allRoomsArtifactsMap.get(Integer.toString(artifactList.get(0).getArtID())));
+        assertEquals(room.getRoomID(), allRoomsArtifactsMap.get(Integer.toString(artifactList.get(0).getArtID())));
     }
 
 

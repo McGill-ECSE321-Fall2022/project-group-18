@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class RoomController {
@@ -43,9 +40,14 @@ public class RoomController {
     }
 
     @GetMapping("/room/all/artifacts")
-    public ResponseEntity<Map<Integer, Integer>> getAllRoomsArtifactsID() {
+    public ResponseEntity<Map<String, Integer>> getAllRoomsArtifactsID() {
         Map<Integer, Integer> roomArtifactsIDMap = roomService.getAllRoomsAndArtifacts();
-        return new ResponseEntity<Map<Integer, Integer>>(roomArtifactsIDMap, HttpStatus.OK);
+        Map<String, Integer> anotherRoomArtifactsIDMap = new HashMap<>();
+        roomArtifactsIDMap.forEach((key, value) -> {
+            String keyInStr = key.toString();
+            anotherRoomArtifactsIDMap.put(keyInStr, value);
+        });
+        return new ResponseEntity<Map<String, Integer>>(anotherRoomArtifactsIDMap, HttpStatus.OK);
     }
 
     @GetMapping("/room")
