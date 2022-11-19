@@ -49,6 +49,8 @@ public class EmployeeIntegrationTest {
         testLoginEmployee();
         testInvalidLoginEmployee();
         testCreateInvalidEmployee();
+        testUpdateInvalidEmployee();
+        testUpdateEmployee(id);
         testDeleteInvalidEmployee();
         testDeleteEmployee(id);
     }
@@ -177,6 +179,42 @@ public class EmployeeIntegrationTest {
             assertNotNull(response);
             assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         }
+    }
+
+   private void testUpdateInvalidEmployee(){
+        int id = Integer.MAX_VALUE;
+        EmployeeHour hour = new EmployeeHour();
+        Employee employee = new Employee();
+        employee.setUsername("krab");
+        employee.setPassword("mr");
+        employee.addEmployeeHour(hour);
+        EmployeeDto employeeDto = new EmployeeDto(employee);
+        try {
+            ResponseEntity<Boolean> response = client.postForEntity("/employee/update/" + id, employeeDto, Boolean.class);
+            assertEquals(1, 2);
+        } catch (Exception e) {
+            ResponseEntity<String> response = client.postForEntity("/employee/update/" + id, employeeDto, String.class);
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+            assertEquals("Employee not found", response.getBody());
+        }
+    }
+
+    private void testUpdateEmployee(int employeeID){
+        int id = employeeID;
+        EmployeeHour hour = new EmployeeHour();
+        Employee employee = new Employee();
+        employee.setUsername("krab");
+        employee.setPassword("mr");
+        employee.addEmployeeHour(hour);
+        EmployeeDto employeeDto = new EmployeeDto(employee);
+        ResponseEntity<EmployeeDto> response = client.postForEntity("/employee/update/" + id, employeeDto, EmployeeDto.class);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(employeeID, response.getBody().getAccountID());
+        assertEquals("krab", response.getBody().getUsername());
+        assertEquals("mr", response.getBody().getPassword());
     }
 
     private void testDeleteInvalidEmployee(){

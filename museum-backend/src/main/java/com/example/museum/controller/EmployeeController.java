@@ -48,7 +48,7 @@ public class EmployeeController {
         return new ResponseEntity<List<EmployeeHourDto>>(employeeHourDtos, HttpStatus.OK);
     }
 
-    @PostMapping("/employee/{id}/update")
+    @PostMapping("/employee/update/{id}")
     public ResponseEntity<EmployeeDto> updatedEmployee(@PathVariable int id, @RequestBody EmployeeDto request) {
         Employee updatedEmployee = employeeService.modifyEmployeeByID(id, request.getUsername(), request.getPassword(),
                 request.getFirstName(), request.getLastName());
