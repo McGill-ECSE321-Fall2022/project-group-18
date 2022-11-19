@@ -42,6 +42,12 @@ public class RoomController {
         return new ResponseEntity<List<Integer>>(roomIDList, HttpStatus.OK);
     }
 
+    @GetMapping("/room/all/artifacts")
+    public ResponseEntity<Map<Integer, Integer>> getAllRoomsArtifactsID() {
+        Map<Integer, Integer> roomArtifactsIDMap = roomService.getAllRoomsAndArtifacts();
+        return new ResponseEntity<Map<Integer, Integer>>(roomArtifactsIDMap, HttpStatus.OK);
+    }
+
     @GetMapping("/room")
     public ResponseEntity<Integer> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
         Room room = roomService.createRoom(roomName, roomCapacity);

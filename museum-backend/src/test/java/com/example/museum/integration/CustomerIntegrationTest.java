@@ -3,6 +3,7 @@ package com.example.museum.integration;
 import com.example.museum.dto.ArtifactDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
+import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.LoanRepository;
 import com.example.museum.repository.TicketRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -42,12 +43,16 @@ public class CustomerIntegrationTest {
     @Autowired
     private LoanRepository loanRepository;
 
+    @Autowired
+    private ArtifactRepository artifactRepository;
+
     @BeforeEach
     @AfterEach
     public void clearDatabase() {
         customerRepository.deleteAll();
         ticketRepository.deleteAll();
         loanRepository.deleteAll();
+        artifactRepository.deleteAll();
     }
 
     @Test

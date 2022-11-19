@@ -104,6 +104,16 @@ public class RoomIntegrationTest {
         testTransferWithArtifactNotInSrcRoom(room.getRoomID(), room1.getRoomID(), artifactList.get(0).getArtID());
     }
 
+    @Test
+    public void testCreateRoomsAndArtifactsAndGetAll() {
+        Room room = testCreateAValidRoom();
+
+        List<Artifact> artifactList = createAValidArtifactList();
+        testAddArtifactListIntoRoom(artifactList, room.getRoomID());
+
+        testGetAllRoomsAndArtifacts(room, artifactList);
+    }
+
 
     private Room testCreateAValidRoom() {
         final String roomName = "LR1";
@@ -306,6 +316,15 @@ public class RoomIntegrationTest {
         assertNotNull(response.getBody());
         assertEquals("The artifact conflicts with this transfer", response.getBody());
 
+    }
+
+    private void testGetAllRoomsAndArtifacts(Room room, List<Artifact> artifactList) {
+        String getAllRoomsArtifactsParam = "/room/all/artifacts";
+        ResponseEntity<Map> response = client.getForEntity(getAllRoomsArtifactsParam, Map.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        Map<Integer, Integer> allRoomsArtifactsMap = response.getBody();
+        assertEquals(artifactList.size(), allRoomsArtifactsMap.size());
     }
 
 
