@@ -49,7 +49,6 @@ public class OwnerService {
                 }
             }
         }
-
         throw new DatabaseException(HttpStatus.NOT_FOUND, "Owner does not exist");
     }
 
@@ -57,8 +56,7 @@ public class OwnerService {
     public Owner createOwner(Owner ownerRequest) {
         if (ownerRepository.findByAccountID(ownerRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An owner with the given id already exists.");
-        }
-        if (ServiceUtils.conflictingUsername(ownerRequest.getUsername(), customerRepository, employeeRepository,
+        }else if(ServiceUtils.conflictingUsername(ownerRequest.getUsername(), customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An owner with the given username already exists.");
         }
@@ -84,9 +82,10 @@ public class OwnerService {
 
     public Owner modifyOwnerByID(int id, String username, String password, String firstName, String lastName) {
         Owner owner = ownerRepository.findByAccountID(id);
-        if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
-                ownerRepository)) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "An owner with the given username already exists.");
+        if (owner == null) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Owner not found");
+        }else if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository, ownerRepository)) {
+            throw new DatabaseException(HttpStatus.CONFLICT, "A user with the given username already exists.");
         }
         owner.setUsername(username);
         owner.setPassword(password);
