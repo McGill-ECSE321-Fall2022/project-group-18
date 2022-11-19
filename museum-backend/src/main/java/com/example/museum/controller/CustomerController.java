@@ -5,6 +5,7 @@ import com.example.museum.dto.DonationDto;
 import com.example.museum.dto.LoanDto;
 import com.example.museum.dto.TicketDto;
 import com.example.museum.model.Customer;
+import com.example.museum.model.Loan;
 import com.example.museum.service.*;
 
 import java.util.*;
@@ -51,13 +52,33 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/{id}/loans")
-    public ResponseEntity<List<LoanDto>> getCustomerLoans(@PathVariable int id) {
+    public ResponseEntity<List<Integer>> getCustomerLoans(@PathVariable int id) {
         Customer customer = customerService.getCustomerByID(id);
-        CustomerDto customerDto = new CustomerDto(customer);
+        List<Integer> loanIDList= new ArrayList<>();
+        for (Loan loan: customer.getLoans()) {
+            loanIDList.add(loan.getRequestID());
+        }
+        return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
+    }
 
-        List<LoanDto> loanDtos = customerDto.getLoans();
+    @GetMapping("/customer/{id}/loans/add")
+    public ResponseEntity<List<Integer>> addLoanToCustomer(@PathVariable int id, @RequestParam int loanID) {
+        Customer customer = customerService.addLoanToCustomer(id, loanID);
+        List<Integer> loanIDList = new ArrayList<>();
+        for (Loan loan: customer.getLoans()) {
+            loanIDList.add(loan.getRequestID());
+        }
+        return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<List<LoanDto>>(loanDtos, HttpStatus.OK);
+    @GetMapping("/customer/{id}/loans/delete")
+    public ResponseEntity<List<Integer>> deleteLoanFromCustomer(@PathVariable int id, @RequestParam int loanID) {
+        Customer customer = customerService.deleteLoanFromCustomer(id, loanID);
+        List<Integer> loanIDList = new ArrayList<>();
+        for (Loan loan: customer.getLoans()) {
+            loanIDList.add(loan.getRequestID());
+        }
+        return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
     }
 
     @GetMapping("/customer/{id}/tickets")

@@ -33,8 +33,17 @@ public class RoomService {
 
     @Transactional
     public List<Room> getAllRooms() {
+        return (List<Room>) (ArrayList<Room>) roomRepo.findAll();
+    }
+
+    @Transactional
+    public List<Integer> getAllRoomsID() {
         List<Room> roomList = (ArrayList<Room>) roomRepo.findAll();
-        return roomList;
+        List<Integer> roomIDList = new ArrayList<>();
+        for (Room room: roomList) {
+            roomIDList.add(room.getRoomID());
+        }
+        return roomIDList;
     }
 
     @Transactional
@@ -166,6 +175,9 @@ public class RoomService {
 
     @Transactional
     public Room createRoom(String roomName, int roomCapacity) {
+        if (roomRepo.existsByName(roomName)) {
+            throw new DatabaseException(HttpStatus.BAD_REQUEST, "This room name already exists");
+        }
         Room room = new Room();
         room.setName(roomName);
         room.setCapacity(roomCapacity);

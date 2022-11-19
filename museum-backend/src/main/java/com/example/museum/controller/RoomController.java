@@ -1,6 +1,7 @@
 package com.example.museum.controller;
 
 import com.example.museum.dto.RoomDto;
+import com.example.museum.model.Artifact;
 import com.example.museum.model.Room;
 import com.example.museum.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class RoomController {
@@ -18,32 +18,83 @@ public class RoomController {
     RoomService roomService;
 
     @GetMapping("/room/{roomID}")
-    public ResponseEntity<RoomDto> getRoomByRoomID(@PathVariable int roomID) {
+    public ResponseEntity<Map<String, Object>> getRoomByRoomID(@PathVariable int roomID) {
         Room room = roomService.getRoomByID(roomID);
-        return new ResponseEntity<RoomDto>(new RoomDto(room), HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("roomID", room.getRoomID());
+        response.put("roomCapacity", room.getCapacity());
+        response.put("roomName", room.getName());
+        List<Integer> artifactIDList = new ArrayList<>();
+        for (Artifact artifact: room.getRoomArtifacts()) {
+            artifactIDList.add(artifact.getArtID());
+        }
+        response.put("roomArtifactIDList", artifactIDList);
+        response.put("roomArtifactNum", artifactIDList.size());
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/room/all")
+    public ResponseEntity<List<Integer>> getAllRoomsID() {
+        List<Integer> roomIDList = roomService.getAllRoomsID();
+        return new ResponseEntity<List<Integer>>(roomIDList, HttpStatus.OK);
+    }
+
+    @GetMapping("/room/all/artifacts")
+    public ResponseEntity<Map<String, Integer>> getAllRoomsArtifactsID() {
+        Map<Integer, Integer> roomArtifactsIDMap = roomService.getAllRoomsAndArtifacts();
+        Map<String, Integer> anotherRoomArtifactsIDMap = new HashMap<>();
+        roomArtifactsIDMap.forEach((key, value) -> {
+            String keyInStr = key.toString();
+            anotherRoomArtifactsIDMap.put(keyInStr, value);
+        });
+        return new ResponseEntity<Map<String, Integer>>(anotherRoomArtifactsIDMap, HttpStatus.OK);
     }
 
     @GetMapping("/room")
     public ResponseEntity<Integer> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
         Room room = roomService.createRoom(roomName, roomCapacity);
-        RoomDto response = new RoomDto(room);
         return new ResponseEntity<Integer>(room.getRoomID(), HttpStatus.OK);
     }
 
-    @PostMapping("/room/artifacts/add")
-    public ResponseEntity<RoomDto> addArtifacts(@RequestParam int roomID, @RequestParam List<Integer> artifactIDList) {
+    @GetMapping("/room/artifacts/add")
+    public ResponseEntity<Map<String, Object>> addArtifacts(@RequestParam int roomID, @RequestParam List<Integer> artifactIDList) {
         Room room = roomService.addArtifactsToRoom(roomID, artifactIDList);
-        RoomDto response = new RoomDto(room);
-        return new ResponseEntity<RoomDto>(response, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("roomID", room.getRoomID());
+        response.put("roomName", room.getName());
+        response.put("roomCapacity", room.getCapacity());
+        response.put("roomArtifactNum", room.getRoomArtifacts().size());
+        List<Integer> roomArtifactIDList = new ArrayList<>();
+        for (Artifact artifact: room.getRoomArtifacts()) {
+            roomArtifactIDList.add(artifact.getArtID());
+        }
+        response.put("roomArtifactIDList", roomArtifactIDList);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/room/artifacts/move")
-    public ResponseEntity<List<RoomDto>> moveArtifact(@RequestParam int srcRoomID, @RequestParam int destRoomID, @RequestParam int artifactID) {
+    @GetMapping("/room/artifacts/move")
+    public ResponseEntity<Map<String, Object>> moveArtifact(@RequestParam int srcRoomID, @RequestParam int destRoomID, @RequestParam int artifactID) {
         List<Room> roomList = roomService.transferArtifactBetweenRooms(srcRoomID, destRoomID, artifactID);
-        List<RoomDto> roomDtoList = new ArrayList<>();
-        roomDtoList.add(0, new RoomDto(roomList.get(0)));
-        roomDtoList.add(1, new RoomDto(roomList.get(1)));
-        return new ResponseEntity<List<RoomDto>>(roomDtoList, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("srcRoomID", roomList.get(0).getRoomID());
+        response.put("srcRoomName", roomList.get(0).getName());
+        response.put("srcRoomCapacity", roomList.get(0).getCapacity());
+        response.put("srcRoomArtifactNum", roomList.get(0).getRoomArtifacts().size());
+        List<Integer> srcRoomArtifactIDList = new ArrayList<>();
+        List<Integer> destRoomArtifactIDList = new ArrayList<>();
+        for (Artifact artifact: roomList.get(0).getRoomArtifacts()) {
+            srcRoomArtifactIDList.add(artifact.getArtID());
+        }
+        for (Artifact artifact: roomList.get(1).getRoomArtifacts()) {
+            destRoomArtifactIDList.add(artifact.getArtID());
+        }
+        response.put("srcRoomArtifactIDList", srcRoomArtifactIDList);
+        response.put("destRoomID", roomList.get(1).getRoomID());
+        response.put("destRoomName", roomList.get(1).getName());
+        response.put("destRoomCapacity", roomList.get(1).getCapacity());
+        response.put("destRoomArtifactNum", roomList.get(1).getRoomArtifacts().size());
+        response.put("destRoomArtifactIDList", destRoomArtifactIDList);
+        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
 }
