@@ -169,6 +169,63 @@ public class RoomServiceTests {
     }
 
     @Test
+    public void testGetAllRoomsID() {
+        final int artifact1ID = 1;
+        final int artifact2ID = 2;
+        final Artifact.ArtType artifact1Type = Artifact.ArtType.Painting;
+        final Artifact.ArtType artifact2Type = Artifact.ArtType.Sculpture;
+        final String artifact1Name = "Mona Lisa";
+        final String artifact2Name = "David";
+        final boolean artifact1Loanable = true;
+        final boolean artifact2Loanable = true;
+        final boolean artifact1Loaned = false;
+        final boolean artifact2Loaned = false;
+        final int artifact1LoanFee = 100;
+        final int artifact2LoanFee = 200;
+        Artifact testArtifact1 = new Artifact(artifact1ID, artifact1Name, artifact1Type, artifact1Loanable, artifact1Loaned, artifact1LoanFee);
+        Artifact testArtifact2 = new Artifact(artifact2ID, artifact2Name, artifact2Type, artifact2Loanable, artifact2Loaned, artifact2LoanFee);
+        HashSet<Integer> testArtifactIDSet = new HashSet<>();
+        testArtifactIDSet.add(testArtifact1.getArtID());
+        testArtifactIDSet.add(testArtifact2.getArtID());
+
+        final int testRoom1ID = 3;
+        final int testRoom2ID = 4;
+        final String testRoomName1 = "Storage";
+        final String testRoomName2 = "LR1";
+        final int testRoomCapacity1 = -1;
+        final int testRoomCapacity2 = 300;
+
+        Room testRoom1 = new Room();
+        testRoom1.setRoomID(testRoom1ID);
+        testRoom1.setName(testRoomName1);
+        testRoom1.setCapacity(testRoomCapacity1);
+        testRoom1.setNewRoomArtifactsList();
+        testRoom1.addRoomArtifact(testArtifact1);
+
+        Room testRoom2 = new Room();
+        testRoom2.setRoomID(testRoom2ID);
+        testRoom2.setName(testRoomName2);
+        testRoom2.setCapacity(testRoomCapacity2);
+        testRoom2.setNewRoomArtifactsList();
+        testRoom2.addRoomArtifact(testArtifact2);
+
+        List<Room> testRoomList = new ArrayList<>();
+        testRoomList.add(testRoom1);
+        testRoomList.add(testRoom2);
+        List<Integer> testRoomIDList = new ArrayList<>();
+        testRoomIDList.add(testRoom1.getRoomID());
+        testRoomIDList.add(testRoom2.getRoomID());
+
+        when(roomRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> testRoomList);
+
+        List<Integer> roomIDList = roomService.getAllRoomsID();
+        assertNotNull(roomIDList);
+        for (int roomID: roomIDList) {
+            assertTrue(testRoomIDList.contains(roomID));
+        }
+    }
+
+    @Test
     public void testGetAllRoomsAndArtifacts() {
         final int artifact1ID = 1;
         final int artifact2ID = 2;

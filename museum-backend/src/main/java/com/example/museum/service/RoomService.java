@@ -33,8 +33,17 @@ public class RoomService {
 
     @Transactional
     public List<Room> getAllRooms() {
+        return (List<Room>) (ArrayList<Room>) roomRepo.findAll();
+    }
+
+    @Transactional
+    public List<Integer> getAllRoomsID() {
         List<Room> roomList = (ArrayList<Room>) roomRepo.findAll();
-        return roomList;
+        List<Integer> roomIDList = new ArrayList<>();
+        for (Room room: roomList) {
+            roomIDList.add(room.getRoomID());
+        }
+        return roomIDList;
     }
 
     @Transactional
