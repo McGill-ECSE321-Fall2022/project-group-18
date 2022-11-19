@@ -62,6 +62,8 @@ public class EmployeeHourService {
         return updatedEmployeeHour;
     }
 
+    //this might be glitched - we need to check that employee hours don't conflict for the same employee - not that they don't conflict at all...
+    //TODO: shaheer needs to fix his part
     private void checkDateConflict(int id, Date day) throws DatabaseException{
         Iterator<EmployeeHour> bHours = employeeHourRepository.findAll().iterator();
         while (bHours.hasNext()) {
