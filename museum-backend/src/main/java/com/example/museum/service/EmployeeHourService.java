@@ -29,7 +29,6 @@ public class EmployeeHourService {
         return employeeHour;
     }
 
-    @Transactional
     public List<EmployeeHour> getAllEmployeeHours() {
         List<EmployeeHour> employeeHours = new ArrayList<>();
         Iterator<EmployeeHour> eHours = employeeHourRepository.findAll().iterator();
@@ -59,7 +58,6 @@ public class EmployeeHourService {
         employeeHour.setDay(day);
         employeeHour.setStartTime(startTime);
         employeeHour.setEndTime(endTime);
-        
         EmployeeHour updatedEmployeeHour = employeeHourRepository.save(employeeHour);
         return updatedEmployeeHour;
     }
@@ -73,6 +71,4 @@ public class EmployeeHourService {
             }
         }
     }
-
-
 }

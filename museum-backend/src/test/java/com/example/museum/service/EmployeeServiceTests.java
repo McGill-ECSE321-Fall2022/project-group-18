@@ -1,7 +1,6 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.RequestException;
-import com.example.museum.model.Customer;
 import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.OwnerRepository;
 import org.junit.jupiter.api.Test;
@@ -32,16 +31,12 @@ public class EmployeeServiceTests {
     @Mock
     EmployeeRepository employeeRepository;
     @Mock
-    EmployeeHourRepository employeeHourRepository;
-    @Mock
     CustomerRepository customerRepository;
-    @Mock
-    OwnerRepository ownerRepository;
+
 
     @InjectMocks
     EmployeeService employeeService;
-    @InjectMocks
-    EmployeeHourService employeeHourService;
+
 
     @Test
     public void testGetEmployeeID() {
@@ -242,6 +237,43 @@ public class EmployeeServiceTests {
         assertEquals(requestedLastName, response.getLastName());
 
         verify(employeeRepository, times(1)).save(any(Employee.class));
+    }
 
+    @Test
+    void testCreateEmployeeExists(){
+        final int employeeID = 1;
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        Employee employee = new Employee(employeeID, username, password, firstName, lastName);
+
+        when(employeeRepository.findByAccountID(employeeID)).thenAnswer((InvocationOnMock) -> employee);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.createEmployee(employee));
+        assertEquals("An employee with the given id already exists.", ex.getMessage());
+    }
+
+    @Test
+    void testCreateEmployee(){
+        final int employeeID = 1;
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        Employee employee = new Employee(employeeID, username, password, firstName, lastName);
+
+        when(employeeRepository.findByAccountID(employeeID)).thenAnswer((InvocationOnMock) -> null);
+        when(employeeRepository.save(any(Employee.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        Employee response = employeeService.createEmployee(employee);
+        assertNotNull(response);
+        assertEquals(employeeID, response.getAccountID());
+        assertEquals(username, response.getUsername());
+        assertEquals(password, response.getPassword());
+        assertEquals(firstName, response.getFirstName());
+        assertEquals(lastName, response.getLastName());
+
+        verify(employeeRepository, times(1)).save(any(Employee.class));
     }
 }

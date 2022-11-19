@@ -48,7 +48,6 @@ public class EmployeeService {
                 }
             }
         }
-
         throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee does not exist");
     }
 
@@ -56,38 +55,18 @@ public class EmployeeService {
     public Employee createEmployee(Employee employeeRequest) {
         if (employeeRepository.findByAccountID(employeeRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given id already exists.");
-        }
-        if (ServiceUtils.conflictingUsername(employeeRequest.getUsername(), employeeRequest.getAccountID(), customerRepository, employeeRepository,
-                ownerRepository)) {
+        }else if (ServiceUtils.conflictingUsername(employeeRequest.getUsername(), employeeRequest.getAccountID(), customerRepository, employeeRepository, ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given username already exists.");
         }
         Employee employee = employeeRepository.save(employeeRequest);
         return employee;
     }
 
-    // private boolean conflictingUsername(String username) {
-    // for (Customer c : customerRepository.findAll()) {
-    // if (c.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Employee e : employeeRepository.findAll()) {
-    // if (e.getPassword().equals(username))
-    // return true;
-    // }
-    // for (Owner o : ownerRepository.findAll()) {
-    // if (o.getPassword().equals(username))
-    // return true;
-    // }
-    // return false;
-    // }
-
     public Employee modifyEmployeeByID(int id, String username, String password, String firstName, String lastName) {
         Employee employee = employeeRepository.findByAccountID(id);
         if(employee == null){
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
-        }
-        if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
-                ownerRepository)) {
+        }else if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository, ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given username already exists.");
         }
         employee.setUsername(username);
@@ -98,7 +77,6 @@ public class EmployeeService {
         return updatedEmployee;
     }
 
-    @Transactional
     public boolean deleteEmployeeByID(int id) {
         Employee employee = employeeRepository.findByAccountID(id);
         if (employee == null) {
