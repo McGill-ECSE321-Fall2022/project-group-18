@@ -64,16 +64,5 @@ public class ArtifactService {
     }
 
 
-//    private void checkNameConflict(int id, String name) throws DatabaseException{
-//        Iterator<Artifact> arts = artifactRepo.findAll().iterator();
-//        while (arts.hasNext()){
-//            Artifact a = arts.next();
-//            if(a.getName() == name && a.getArtID() != id || id == 0){
-//                throw new DatabaseException(HttpStatus.CONFLICT, "An artifact with the same name already exists");
-//            }
-//        }
-//    }
-
-
 }
 
