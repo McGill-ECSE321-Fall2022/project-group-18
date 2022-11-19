@@ -458,7 +458,7 @@ public class CustomerServiceTests {
 
         Customer customer = customerService.addLoanToCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID());
         when(loanRepository.existsById(requestID)).thenAnswer((InvocationOnMock invocation) -> false);
-        
+
         DatabaseException ex = assertThrows(DatabaseException.class, () -> customerService.deleteLoanFromCustomer(returnedCustomer.getAccountID(), testLoan.getRequestID()));
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
         assertEquals("Loan not found", ex.getMessage());

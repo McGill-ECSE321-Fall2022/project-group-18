@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,45 @@ public class ArtifactServiceTests {
         assertEquals(loanFee, returnedArtfact.getLoanFee());
 
         verify(artifactRepository, times(1)).save(artifact);
+
+    }
+
+    @Test
+    public void testCreateDuplicatedArtifact(){
+        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final int artID = 10;
+        final String name = "TheSculpture";
+        final Artifact.ArtType type = Artifact.ArtType.Sculpture;
+        final boolean loanable = false;
+        final boolean loaned = false;
+        final int loanFee = 10;
+
+
+        Artifact artifact = new Artifact();
+        artifact.setArtID(artID);
+        artifact.setName(name);
+        artifact.setType(type);
+        artifact.setLoanable(loanable);
+        artifact.setLoaned(loaned);
+        artifact.setLoanFee(loanFee);
+
+        Artifact returnedArtfact = artifactService.createArtifact(artifact);
+        List<Artifact> allArtifactList = new ArrayList<>();
+        allArtifactList.add(returnedArtfact);
+        when(artifactRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> allArtifactList);
+
+        Artifact artifact1 = new Artifact();
+        artifact1.setArtID(artID + 1);
+        artifact1.setName(name);
+        artifact1.setType(type);
+        artifact1.setLoaned(loaned);
+        artifact1.setLoanable(loanable);
+        artifact1.setLoanFee(loanFee);
+
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> artifactService.createArtifact(artifact1));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+        assertEquals("Artifact with identical name and type exists in database", ex.getMessage());
 
     }
 
