@@ -37,13 +37,13 @@ public class DonationService {
 
         Donation donation = new Donation();
         donation.setNewDonationArtifactsList();
+        if(artifactList.size() == 0){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "A donation can't have no artifacts");
+        }
         for(Artifact artifact: artifactList){
-//            if (artifactRepo.existsById(artifact.getArtID())) {
-//                throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Donation is already in database");
-//            }
-//            artifact = artifactRepo.save(artifact);
             donation.addDonatedArtifact(artifact);
         }
+
         donation = donationRepo.save(donation);
         return donation;
 
@@ -54,6 +54,7 @@ public class DonationService {
         List<Artifact> artifacts = new ArrayList<>();
         Donation donation = getDonationByDonationID(id);
         List<Artifact> arts = donation.getDonatedArtifacts();
+
         for (Artifact a : arts){
             artifacts.add(a);
         }

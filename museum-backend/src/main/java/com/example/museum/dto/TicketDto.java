@@ -8,21 +8,21 @@ import java.sql.Time;
 
 public class TicketDto {
 
-    private int TicketID;
+    private int ticketID;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date day;
     private int price;
 
-    public TicketDto(Ticket Ticket){
-        this.TicketID = Ticket.getTicketID();
-        this.day = Ticket.getDay();
-        this.price = Ticket.getPrice();
+    public TicketDto(Ticket ticket){
+        this.ticketID = ticket.getTicketID();
+        this.day = ticket.getDay();
+        this.price = ticket.getPrice();
     }
 
     public TicketDto(){}
 
     public int getTicketID(){
-        return TicketID;
+        return ticketID;
     }
 
     public Date getDay(){
@@ -32,10 +32,11 @@ public class TicketDto {
     public int getPrice(){ return price; }
 
     public Ticket toModel(){
-        Ticket Ticket = new Ticket();
-        Ticket.setTicketID(this.TicketID);
-        Ticket.setDay(this.getDay());
-        return Ticket;
+        Ticket ticket = new Ticket();
+        ticket.setTicketID(this.ticketID);
+        ticket.setDay(this.getDay());
+        ticket.setPrice(this.getPrice());
+        return ticket;
     }
 }
 

@@ -4,11 +4,12 @@ import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.*;
 import com.example.museum.repository.*;
+import com.example.museum.service.utils.ServiceUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.example.museum.service.utils.ServiceUtils;
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -52,12 +53,6 @@ public class EmployeeService {
     }
 
     @Transactional
-    public Iterator<Employee> getAllEmployees() {
-        Iterator<Employee> employees = employeeRepository.findAll().iterator();
-        return employees;
-    }
-
-    @Transactional
     public Employee createEmployee(Employee employeeRequest) {
         if (employeeRepository.findByAccountID(employeeRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given id already exists.");
@@ -70,7 +65,21 @@ public class EmployeeService {
         return employee;
     }
 
-
+    // private boolean conflictingUsername(String username) {
+    // for (Customer c : customerRepository.findAll()) {
+    // if (c.getPassword().equals(username))
+    // return true;
+    // }
+    // for (Employee e : employeeRepository.findAll()) {
+    // if (e.getPassword().equals(username))
+    // return true;
+    // }
+    // for (Owner o : ownerRepository.findAll()) {
+    // if (o.getPassword().equals(username))
+    // return true;
+    // }
+    // return false;
+    // }
 
     public Employee modifyEmployeeByID(int id, String username, String password, String firstName, String lastName) {
         Employee employee = employeeRepository.findByAccountID(id);
@@ -84,19 +93,5 @@ public class EmployeeService {
         employee.setLastName(lastName);
         Employee updatedEmployee = employeeRepository.save(employee);
         return updatedEmployee;
-    }
-
-    @Transactional
-    public void deleteEmployeeByID(int id) {
-        Employee employee = employeeRepository.findByAccountID(id);
-        if (employee == null) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
-        }
-
-        employeeRepository.deleteById(id);
-    }
-
-    public Optional<Employee> retrieveEmployee(int id) {
-        return employeeRepository.findById(id);
     }
 }

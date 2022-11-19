@@ -20,32 +20,32 @@ public class TicketController {
     @Autowired
     TicketService TicketService;
 
-    @PostMapping("/Ticket")
+    @PostMapping("/ticket")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
         Ticket createdTicket = TicketService.createTicket(ticket.getDay(), ticket.getPrice());
         TicketDto response = new TicketDto(createdTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
     }
 
-    //tested
-    @PutMapping("/Ticket/update/{id}")
-    public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request){
+    // tested
+    @PostMapping("/ticket/update/{id}")
+    public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request) {
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(), request.getPrice());
         TicketDto response = new TicketDto(updatedTicket);
         return new ResponseEntity<TicketDto>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/Ticket/{id}")
+    @GetMapping("/ticket/{id}")
     public ResponseEntity<TicketDto> getTicketByTicketID(@PathVariable int id) {
         Ticket Ticket = TicketService.getTicketById(id);
         return new ResponseEntity<TicketDto>(new TicketDto(Ticket), HttpStatus.OK);
     }
 
-    @GetMapping("Ticket/all")
-    public ResponseEntity<List<TicketDto>> getAllTickets(){
+    @GetMapping("/ticket/all")
+    public ResponseEntity<List<TicketDto>> getAllAvailableTickets() {
         List<Ticket> tickets = TicketService.getAllAvailableTickets();
         List<TicketDto> ticketDtoList = new ArrayList<>();
-        for(Ticket t : tickets){
+        for (Ticket t : tickets) {
             TicketDto ticketDto = new TicketDto(t);
             ticketDtoList.add(ticketDto);
         }

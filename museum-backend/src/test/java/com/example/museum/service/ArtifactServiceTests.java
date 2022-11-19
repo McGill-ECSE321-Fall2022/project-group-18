@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -68,8 +71,8 @@ public class ArtifactServiceTests {
         final Artifact.ArtType type = Artifact.ArtType.Sculpture;
         final boolean loanable = false;
         final boolean loaned = false;
+        final int loanFee = 10;
 
-        //TODO loanFee
 
         Artifact artifact = new Artifact();
         artifact.setArtID(artID);
@@ -77,6 +80,7 @@ public class ArtifactServiceTests {
         artifact.setType(type);
         artifact.setLoanable(loanable);
         artifact.setLoaned(loaned);
+        artifact.setLoanFee(loanFee);
 
         Artifact returnedArtfact = artifactService.createArtifact(artifact);
 
@@ -85,40 +89,52 @@ public class ArtifactServiceTests {
         assertEquals(type, returnedArtfact.getType());
         assertEquals(loanable, returnedArtfact.getLoanable());
         assertEquals(loaned, returnedArtfact.getLoaned());
+        assertEquals(loanFee, returnedArtfact.getLoanFee());
 
         verify(artifactRepository, times(1)).save(artifact);
 
     }
 
-//    @Test
-//    public void testUpdateArtifact(){
-////        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
-//
-//        final int artID = 1;
-//        final String name = "Mona Lisa";
-//        final Artifact.ArtType type = Artifact.ArtType.Painting;
-//        final boolean loanable = false;
-//        final boolean loaned = false;
-//        final int loanFee = 1000;
-//
-//        Artifact artifact = new Artifact();
-//        artifact.setArtID(artID);
-//        artifact.setName(name);
-//        artifact.setType(type);
-//        artifact.setLoanable(loanable);
-//        artifact.setLoaned(loaned);
-//        artifact.setLoanFee(loanFee);
-//
-//        when(artifactRepository.findByArtID(artID)).thenAnswer((InvocationOnMock invocation) -> artifact);
-//
-//        Artifact returnedArtfact = artifactService.updateArtifact(artID,true,true,1);
-//
-//        assertNotNull(returnedArtfact);
-//        assertEquals(true, returnedArtfact.getLoanable());
-//        assertEquals(true, returnedArtfact.getLoaned());
-//        assertEquals(1,returnedArtfact.getLoanFee() );
-//
-//        verify(artifactRepository, times(1)).save(artifact);
-//
-//    }
+    @Test
+    public void testUpdateArtifact(){
+
+        final int artID = 1;
+        final Artifact artifact1 = new Artifact(artID,"Mona Lisa",Artifact.ArtType.Painting, false, false, 1000);
+        List<Artifact> arts = new ArrayList<>();
+        arts.add(artifact1);
+
+        when(artifactRepository.findByArtID(artID)).thenAnswer((InvocationOnMock invocation) -> artifact1);
+        when(artifactRepository.save(any(Artifact.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        final boolean loanable = true;
+        final boolean loaned = true;
+        final int loanFee = 1001;
+
+        Artifact returnedArtifact = artifactService.updateArtifact(artID,loanable,loaned, loanFee);
+
+        assertNotNull(returnedArtifact);
+        assertEquals(loanable, returnedArtifact.getLoanable());
+        assertEquals(loaned,returnedArtifact.getLoaned());
+        assertEquals(loanFee, returnedArtifact.getLoanFee());
+
+        verify(artifactRepository, times(1)).save(any(Artifact.class));
+
+    }
+
+    @Test
+    void testGetAllArtifacts(){
+        final Artifact artifact1 = new Artifact(1, "Piece of garbage, 1865", Artifact.ArtType.valueOf("Painting"), true, false, 40);
+        final Artifact artifact2 = new Artifact(1, "Piece of crab, 1528", Artifact.ArtType.valueOf("Painting"), true, false, 40);
+        List<Artifact> artifacts = new ArrayList<>();
+        artifacts.add(artifact1);
+        artifacts.add(artifact2);
+
+        when(artifactRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> artifacts);
+
+        List<Artifact> returnedArtifacts = artifactService.getAllArtifacts();
+
+        assertNotNull(returnedArtifacts);
+        assertEquals(artifact1.getArtID(), returnedArtifacts.get(0).getArtID());
+        assertEquals(artifact2.getArtID(), returnedArtifacts.get(1).getArtID());
+    }
 }

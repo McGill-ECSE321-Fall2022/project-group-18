@@ -1,9 +1,5 @@
 package com.example.museum.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,21 +11,27 @@ import org.springframework.http.HttpStatus;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Employee;
 import com.example.museum.model.EmployeeHour;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.EmployeeHourRepository;
 import com.example.museum.repository.EmployeeRepository;
+import com.example.museum.repository.OwnerRepository;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
     @Mock
     EmployeeRepository employeeRepository;
+    @Mock
+    CustomerRepository customerRepository;
+    @Mock
+    OwnerRepository ownerRepository;
     @Mock
     EmployeeHourRepository employeeHourRepository;
 
@@ -126,8 +128,8 @@ public class EmployeeServiceTests {
         final String password2 = "password";
         final String firstName2 = "Second";
         final String lastName2 = "User";
+        final int credit2 = 10;
         final Employee testEmployee2 = new Employee(employeeID2, username2, password2, firstName2, lastName2);
-
         Exception ex = assertThrows(DatabaseException.class, () -> employeeService.createEmployee(testEmployee2));
         verify(employeeRepository, times(0)).save(testEmployee2);
     }
@@ -139,10 +141,9 @@ public class EmployeeServiceTests {
         final String password = "password";
         final String firstName = "First";
         final String lastName = "Last";
+        final int credit = 5;
         final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
 
         Exception ex = assertThrows(DatabaseException.class, () -> employeeService.loginEmployee(testEmployee));
     }
-
-
 }

@@ -24,12 +24,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class BusinessServiceTests {
     @Mock
-    BusinessHourRepository businessHourRepository;
-    @Mock
     BusinessRepository businessRepository;
 
-    @InjectMocks
-    BusinessHourService businessHourService;
     @InjectMocks
     BusinessService businessService;
 

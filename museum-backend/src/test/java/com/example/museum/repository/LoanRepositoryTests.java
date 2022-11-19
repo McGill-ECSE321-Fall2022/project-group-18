@@ -101,6 +101,12 @@ public class LoanRepositoryTests {
         assertEquals(artType2, loan.getRequestedArtifact(1).getType());
         assertEquals(loaned2, loan.getRequestedArtifact(1).getLoaned());
         assertEquals(loanFee2, loan.getRequestedArtifact(1).getLoanFee());
+
+        // test if this can be deleted
+        assertEquals(loanRepository.count(), 1);
+        loanRepository.deleteById(loanID);
+        assertEquals(loanRepository.existsById(loanID), false);
+        assertEquals(loanRepository.count(), 0);
     }
 
 }

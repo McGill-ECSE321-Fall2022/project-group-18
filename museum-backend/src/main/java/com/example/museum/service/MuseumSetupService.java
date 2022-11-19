@@ -32,6 +32,7 @@ public class MuseumSetupService {
         for(int i = 1; i <= 5; i ++){
             Room room = new Room();
             room.setCapacity(200);
+            room.setNewRoomArtifactsList();
             room.setName("SR" + i);
             Room createdRoom = roomRepository.save(room);
             roomList.add(createdRoom);
@@ -41,6 +42,7 @@ public class MuseumSetupService {
         for(int i = 1; i <= 5; i++){
             Room room = new Room();
             room.setCapacity(300);
+            room.setNewRoomArtifactsList();
             room.setName("LR" + i);
             Room createdRoom = roomRepository.save(room);
             roomList.add(createdRoom);
@@ -49,6 +51,7 @@ public class MuseumSetupService {
         //storage
         Room storage = new Room();
         storage.setCapacity(MAX_VALUE);
+        storage.setNewRoomArtifactsList();
         storage.setName("Storage");
         Room createdStorage = roomRepository.save(storage);
         roomList.add(createdStorage);
