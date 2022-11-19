@@ -45,7 +45,7 @@ public class EmployeeIntegrationTest {
         EmployeeHour employeeHour = createEmployeeHour();
         int id = testCreateEmployee(employeeHour);
         testGetEmployee(id);
-        // testGetCustomerTickets(id);
+        testGetEmployeeHours(id);
         testLoginEmployee();
         testInvalidLoginEmployee();
         testCreateInvalidEmployee();
@@ -134,6 +134,29 @@ public class EmployeeIntegrationTest {
         assertEquals(password, response.getBody().getPassword());
         assertEquals(firstName, response.getBody().getFirstName());
         assertEquals(lastName, response.getBody().getLastName());
+    }
+
+    private void testGetEmployeeHours(int id) {
+        //final int employeeHourId = 1;
+        final Date day = Date.valueOf("2022-11-11");
+        final Time startTime = Time.valueOf("08:30:00");
+        final Time endTime = Time.valueOf("17:30:00");
+
+        ResponseEntity<List<EmployeeHourDto>> response = client.exchange(
+                "/employee/" + id + "/employeeHours",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<EmployeeHourDto>>() {
+                });
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(1, response.getBody().size());
+        assertEquals(id, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getEmployeeHourID());
+        assertEquals(day, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getDay());
+        assertEquals(startTime, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getStartTime());
+        assertEquals(endTime, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getEndTime());
     }
 
     private void testCreateInvalidEmployee() {

@@ -38,13 +38,6 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(new EmployeeDto(employee), HttpStatus.OK);
     }
 
-    @PostMapping("/employee/{id}")
-    public ResponseEntity<EmployeeDto> updatedEmployee(@PathVariable int id, @RequestBody EmployeeDto request) {
-        Employee updatedEmployee = employeeService.modifyEmployeeByID(id, request.getUsername(), request.getPassword(),
-                request.getFirstName(), request.getLastName());
-        EmployeeDto response = new EmployeeDto(updatedEmployee);
-        return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
-    }
     @GetMapping("/employee/{id}/employeeHours")
     public ResponseEntity<List<EmployeeHourDto>> getEmployeeEmployeeHours(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeByID(id);
@@ -53,6 +46,14 @@ public class EmployeeController {
         List<EmployeeHourDto> employeeHourDtos = employeeDto.getEmployeeHours();
 
         return new ResponseEntity<List<EmployeeHourDto>>(employeeHourDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/employee/{id}/update")
+    public ResponseEntity<EmployeeDto> updatedEmployee(@PathVariable int id, @RequestBody EmployeeDto request) {
+        Employee updatedEmployee = employeeService.modifyEmployeeByID(id, request.getUsername(), request.getPassword(),
+                request.getFirstName(), request.getLastName());
+        EmployeeDto response = new EmployeeDto(updatedEmployee);
+        return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/employee/{id}")

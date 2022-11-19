@@ -1,5 +1,9 @@
 package com.example.museum.service;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
@@ -78,4 +84,65 @@ public class EmployeeServiceTests {
         assertEquals("Employee not found", ex.getMessage());
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
     }
+
+    @Test
+    void testCreateEmployee() {
+        when(employeeRepository.save(any(Employee.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int employeeID = 1;
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+
+        Employee returnedEmployee = employeeService.createEmployee(testEmployee);
+
+        // Testing employee
+        assertNotNull(returnedEmployee);
+        assertEquals(employeeID, returnedEmployee.getAccountID());
+        assertEquals(username, returnedEmployee.getUsername());
+        assertEquals(password, returnedEmployee.getPassword());
+        assertEquals(firstName, returnedEmployee.getFirstName());
+        assertEquals(lastName, returnedEmployee.getLastName());
+    }
+
+    @Test
+    void testCreateConflictingUsername() {
+        final int employeeID = 1;
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "User";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(testEmployee);
+
+        when(employeeRepository.findAll())
+                .thenAnswer((InvocationOnMock invocation) -> employees);
+
+        final int employeeID2 = 2;
+        final String username2 = "employee1";
+        final String password2 = "password";
+        final String firstName2 = "Second";
+        final String lastName2 = "User";
+        final Employee testEmployee2 = new Employee(employeeID2, username2, password2, firstName2, lastName2);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.createEmployee(testEmployee2));
+        verify(employeeRepository, times(0)).save(testEmployee2);
+    }
+
+    @Test
+    void testInvalidLoginEmployee() {
+        final int employeeID = 1;
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final Employee testEmployee = new Employee(employeeID, username, password, firstName, lastName);
+
+        Exception ex = assertThrows(DatabaseException.class, () -> employeeService.loginEmployee(testEmployee));
+    }
+
+
 }
