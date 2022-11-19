@@ -60,7 +60,7 @@ No payments will be handled by the museum website.
 | --- | --- | ---------- |
 | Andrei Sandor | - | - |
 | Feihong Chu | - | - |
-| Matthew Litwiller | - | Ideated all necessary endpoints to accomplish the use cases + helped assign the work associated to all tyeam members. Implemented + tested Business, BusinessHour, MuseumSetup Services, Controller, and DTOs. Provided code reviews to team members, and wrote the report in the wiki |
+| Matthew Litwiller | - | Ideated all necessary endpoints to accomplish the use cases + helped assign the work associated to all team members. Implemented + tested all Business, BusinessHour, MuseumSetup Services, Controller, and DTOs (+ assisted in testing with other parts of the museum). Provided code reviews to team members, and wrote the reports in the wiki |
 | Aymen Ouali | - | - |
 | Zachary Godden | - | - |
 | Mohammad Shaheer Bilal | - | - |
