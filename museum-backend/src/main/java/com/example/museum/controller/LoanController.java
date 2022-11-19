@@ -91,7 +91,7 @@ public class LoanController {
     }
 
     // remove a loan when 1. employee reject the loan
-    @PostMapping(value = {"/loan/update/remove", "/loan/update/remove/"})
+    @GetMapping(value = {"/loan/update/remove", "/loan/update/remove/"})
     public ResponseEntity<List<ArtifactDto>> updateLoanRemove(@RequestParam int loanID) {
         // if rejected, simply delete the loan object, since artifacts are still in the room
         List<ArtifactDto> artifactDtoList = new ArrayList<>();
@@ -105,21 +105,18 @@ public class LoanController {
         return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
     }
 
-    @PostMapping(value = {"/loan/update/return", "/loan/update/return/"})
-    public ResponseEntity<List<ArtifactDto>> updateLoanReturn(@RequestParam int loanID) {
+    @GetMapping(value = {"/loan/update/return", "/loan/update/return/"})
+    public ResponseEntity<List<Integer>> updateLoanReturn(@RequestParam int loanID) {
         // when a loan is returned, 1. artifacts set loaned status to false
         //                          2. artifacts go to storage room
         //                          3. loan object is deleted
-        List<ArtifactDto> artifactDtoList = new ArrayList<>();
-        Loan loan = loanService.getLoanByID(loanID);
-        for (Artifact artifact: loan.getRequestedArtifacts()) {
-            artifactDtoList.add(new ArtifactDto(artifact));
-        }
+
         List<Integer> artifactIDList = loanService.getArtifactsIDByLoanID(loanID);
         loanService.setArtifactsInLoanToUnloaned(loanID);
         roomService.addArtifactsToRoom("Storage", artifactIDList);
         loanService.deleteLoan(loanID);
-        return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
+
+        return new ResponseEntity<List<Integer>>(artifactIDList, HttpStatus.OK);
     }
 
 }

@@ -47,7 +47,7 @@ public class LoanIntegrationTest {
     }
 
     @Test
-    public void testCreateAndApproveLoan() {
+    public void testCreateGetAndApproveLoan() {
         List<Artifact> createArtifactList = createArtifact();
         Room room = createRoom();
         room = addArtifactToRoom(room.getRoomID(), createArtifactList);
@@ -55,11 +55,51 @@ public class LoanIntegrationTest {
         testApproveLoan(id, room.getRoomID());
     }
 
-    public void testCreateAndApproveWithInvalidArtifact() {
+    @Test
+    public void testCreateGetAndApproveWithInvalidArtifact() {
         List<Artifact> createArtifactList = createInvalidArtifact();
         Room room = createRoom();
         room = addArtifactToRoom(room.getRoomID(), createArtifactList);
         testCreateWithInvalidArtifacts(createArtifactList);
+    }
+
+    @Test
+    public void testCreateAndRejectLoan() {
+        List<Artifact> createArtifactList = createArtifact();
+        Room room = createRoom();
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        testRejectLoan(id);
+    }
+
+    @Test
+    public void testCreateAndRejectLoanWithInvalidID() {
+        List<Artifact> createArtifactList = createArtifact();
+        Room room = createRoom();
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        int invalidID = id + 1;
+        testRejectLoanWithInvalidLoanID(invalidID);
+    }
+
+    @Test
+    public void testCreateGetAndReturnLoan() {
+        List<Artifact> createArtifactList = createArtifact();
+        Room room = createRoom();
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        testApproveLoan(id, room.getRoomID());
+        testReturnLoan(id, room.getRoomID());
+    }
+
+    @Test
+    public void testCreateGetAndReturnLoanWithInvalidRoomName() {
+        List<Artifact> createArtifactList = createArtifact();
+        Room room = createRoomWithInvalidName();
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        testApproveLoan(id, room.getRoomID());
+        testReturnLoanWithInvalidRoomName(id, room.getRoomID());
     }
 
     private List<Artifact> createArtifact() {
@@ -98,8 +138,8 @@ public class LoanIntegrationTest {
     }
 
     private Room createRoom() {
-        final int roomCapacity = 300;
-        final String roomName = "LR2";
+        final int roomCapacity = -1;
+        final String roomName = "Storage";
         String getParam = "";
         getParam = getParam + "?roomName=";
         getParam = getParam + roomName;
@@ -247,5 +287,75 @@ public class LoanIntegrationTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertEquals("Artifact for Loan must be loanable with a valid fee", response.getBody());
+    }
+
+    private void testRejectLoan(int loanID) {
+        // test if the reject loan can   1. delete the loan
+        String loanGetParam = "/loan/update/remove?loanID=";
+        loanGetParam += loanID;
+        ResponseEntity<List> response = client.getForEntity(loanGetParam, List.class);
+        assertNotNull(response.getBody());
+        assertFalse(loanRepository.existsById(loanID));
+        assertEquals(0, loanRepository.count());
+    }
+
+    private void testRejectLoanWithInvalidLoanID(int loanID) {
+        String loanGetParam = "/loan/update/remove?loanID=";
+        loanGetParam += loanID;
+        ResponseEntity<String> response = client.getForEntity(loanGetParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Loan not found", response.getBody());
+    }
+
+    private void testReturnLoan(int loanID, int roomID) {
+        // test if the returned loan can 1. delete the loan
+        //                               2. change the loaned status of artifacts to false
+        //                               3. move artifacts to storage
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        String loanGetParam = "/loan/update/return?loanID=";
+        loanGetParam += loanID;
+
+        ResponseEntity<List> response = client.getForEntity(loanGetParam, List.class);
+        assertNotNull(response.getBody());
+        assertFalse(loanRepository.existsById(loanID));
+        assertEquals(0, loanRepository.count());
+
+        List<Integer> getArtifactIDList = (List<Integer>) response.getBody();
+        for (int artifactID: getArtifactIDList) {
+            Artifact artifact = artifactRepository.findByArtID(artifactID);
+            assertFalse(artifact.getLoaned());
+        }
+
+        Room room = roomRepository.findRoomByRoomID(roomID);
+        assertEquals(2, room.getRoomArtifacts().size());
+        for (Artifact artifact: room.getRoomArtifacts()) {
+            assertTrue(getArtifactIDList.contains(artifact.getArtID()));
+        }
+
+    }
+
+    private Room createRoomWithInvalidName() {
+        final int roomCapacity = 300;
+        final String roomName = "LR2";
+        String getParam = "";
+        getParam = getParam + "?roomName=";
+        getParam = getParam + roomName;
+        getParam = getParam + "&roomCapacity=";
+        getParam = getParam + roomCapacity;
+        ResponseEntity<Integer> response = client.getForEntity("/room" + getParam, Integer.class);
+        Room room = roomRepository.findRoomByRoomID(response.getBody());
+        return room;
+    }
+
+    private void testReturnLoanWithInvalidRoomName(int loanID, int roomID) {
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        String loanGetParam = "/loan/update/return?loanID=";
+        loanGetParam += loanID;
+
+        ResponseEntity<String> response = client.getForEntity(loanGetParam, String.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("This room does not exist", response.getBody());
     }
 }
