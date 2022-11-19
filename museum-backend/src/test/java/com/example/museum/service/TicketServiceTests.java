@@ -83,22 +83,22 @@ public class TicketServiceTests {
 
     }
 
-    @Test
-    void testGetAllTickets(){
-        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
-        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
-        List<Ticket> tickets = new ArrayList<>();
-        tickets.add(ticket1);
-        tickets.add(ticket2);
-
-        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
-
-        List<Ticket> returnedTickets = ticketService.getAllAvailableTickets();
-
-        assertNotNull(returnedTickets);
-        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
-        assertEquals(ticket2.getTicketID(), returnedTickets.get(1).getTicketID());
-    }
+//    @Test
+//    void testGetAllTickets(){
+//        final Ticket ticket1 = new Ticket(1,Date.valueOf("2022-09-11"), 40);
+//        final Ticket ticket2 = new Ticket(2,Date.valueOf("2022-10-11"), 30);
+//        List<Ticket> tickets = new ArrayList<>();
+//        tickets.add(ticket1);
+//        tickets.add(ticket2);
+//
+//        when(ticketRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> tickets);
+//
+//        List<Ticket> returnedTickets = ticketService.getAllAvailableTickets();
+//
+//        assertNotNull(returnedTickets);
+//        assertEquals(ticket1.getTicketID(), returnedTickets.get(0).getTicketID());
+//        assertEquals(ticket2.getTicketID(), returnedTickets.get(1).getTicketID());
+//    }
 
     @Test
     void testUpdateTicket(){
