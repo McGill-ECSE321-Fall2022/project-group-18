@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,20 +24,22 @@ public class EmployeeHourService {
 
     @Transactional
     public EmployeeHour createEmployeeHour(EmployeeHour employeeHour) {
-        if (employeeHourRepository.findEmployeeHourByEmployeeHourID(employeeHour.getEmployeeHourID()) != null) {
-            throw new DatabaseException(HttpStatus.CONFLICT, "A emloyee hour with the given id already exists.");
-        }
-        Iterator<EmployeeHour> eHours = employeeHourRepository.findAll().iterator();
-        while(eHours.hasNext()){
-            EmployeeHour eH = eHours.next();
-            if(eH.getDay().toString().equals(employeeHour.getDay().toString())){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A EmployeeHour with the given date already exists");
-            }
-        }
-
+        checkDateConflict(employeeHour.getEmployeeHourID(), employeeHour.getDay());
         employeeHour = employeeHourRepository.save(employeeHour);
         return employeeHour;
     }
+
+    @Transactional
+    public List<EmployeeHour> getAllEmployeeHours() {
+        List<EmployeeHour> employeeHours = new ArrayList<>();
+        Iterator<EmployeeHour> eHours = employeeHourRepository.findAll().iterator();
+        while (eHours.hasNext()) {
+            EmployeeHour eh = eHours.next();
+            employeeHours.add(eh);
+        }
+        return employeeHours;
+    }
+
 
     @Transactional
     public EmployeeHour getEmployeeHourById(int id){
@@ -46,15 +49,13 @@ public class EmployeeHourService {
         }
         return employeeHour;
     }
+    
     public EmployeeHour modifyEmployeeHourById(int id, Date day, Time startTime, Time endTime){
-        Iterator<EmployeeHour> eHours = employeeHourRepository.findAll().iterator();
-        while(eHours.hasNext()){
-            EmployeeHour eH = eHours.next();
-            if(eH.getDay().toString().equals(day.toString())){
-                throw new DatabaseException(HttpStatus.CONFLICT, "A EmployeeHour with the given date already exists");
-            }
-        }
+        checkDateConflict(id, day);
         EmployeeHour employeeHour = employeeHourRepository.findEmployeeHourByEmployeeHourID(id);
+        if(employeeHour == null){
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "EmployeeHour not found");
+        }
         employeeHour.setDay(day);
         employeeHour.setStartTime(startTime);
         employeeHour.setEndTime(endTime);
@@ -62,4 +63,16 @@ public class EmployeeHourService {
         EmployeeHour updatedEmployeeHour = employeeHourRepository.save(employeeHour);
         return updatedEmployeeHour;
     }
+
+    private void checkDateConflict(int id, Date day) throws DatabaseException{
+        Iterator<EmployeeHour> bHours = employeeHourRepository.findAll().iterator();
+        while (bHours.hasNext()) {
+            EmployeeHour bh = bHours.next();
+            if (bh.getDay().toString().equals(day.toString()) && (bh.getEmployeeHourID() != id || id == 0)) {
+                throw new DatabaseException(HttpStatus.CONFLICT, "A EmployeeHour with the given date already exists");
+            }
+        }
+    }
+
+
 }

@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+=======
+import com.example.museum.service.utils.ServiceUtils;
+>>>>>>> EmployeeBranch
 import java.util.Iterator;
 import java.util.Optional;
 
@@ -53,6 +57,15 @@ public class EmployeeService {
     }
 
     @Transactional
+<<<<<<< HEAD
+=======
+    public Iterator<Employee> getAllEmployees() {
+        Iterator<Employee> employees = employeeRepository.findAll().iterator();
+        return employees;
+    }
+
+    @Transactional
+>>>>>>> EmployeeBranch
     public Employee createEmployee(Employee employeeRequest) {
         if (employeeRepository.findByAccountID(employeeRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given id already exists.");
@@ -63,6 +76,35 @@ public class EmployeeService {
         }
         Employee employee = employeeRepository.save(employeeRequest);
         return employee;
+<<<<<<< HEAD
+=======
+    }
+
+
+
+    public Employee modifyEmployeeByID(int id, String username, String password, String firstName, String lastName) {
+        Employee employee = employeeRepository.findByAccountID(id);
+        if (ServiceUtils.conflictingUsername(username, customerRepository, employeeRepository,
+                ownerRepository)) {
+            throw new DatabaseException(HttpStatus.CONFLICT, "An employee with the given username already exists.");
+        }
+        employee.setUsername(username);
+        employee.setPassword(password);
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return updatedEmployee;
+    }
+
+    @Transactional
+    public void deleteEmployeeByID(int id) {
+        Employee employee = employeeRepository.findByAccountID(id);
+        if (employee == null) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
+        }
+
+        employeeRepository.deleteById(id);
+>>>>>>> EmployeeBranch
     }
 
     // private boolean conflictingUsername(String username) {
