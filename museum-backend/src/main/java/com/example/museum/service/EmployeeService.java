@@ -94,4 +94,14 @@ public class EmployeeService {
         Employee updatedEmployee = employeeRepository.save(employee);
         return updatedEmployee;
     }
+
+    @Transactional
+    public void deleteEmployeeByID(int id) {
+        Employee employee = employeeRepository.findByAccountID(id);
+        if (employee == null) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
+        }
+
+        employeeRepository.deleteById(id);
+    }
 }

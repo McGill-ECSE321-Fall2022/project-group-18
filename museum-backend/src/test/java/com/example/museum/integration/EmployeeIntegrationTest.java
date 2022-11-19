@@ -20,7 +20,6 @@ import com.example.museum.dto.EmployeeDto;
 import com.example.museum.dto.EmployeeHourDto;
 import com.example.museum.model.Employee;
 import com.example.museum.model.EmployeeHour;
-import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.EmployeeRepository;
 
 import java.sql.Date;
@@ -125,7 +124,7 @@ public class EmployeeIntegrationTest {
         final String password = "password";
         final String firstName = "Employee";
         final String lastName = "Account";
-        ResponseEntity<EmployeeDto> response = client.getForEntity("/customer/" + id, EmployeeDto.class);
+        ResponseEntity<EmployeeDto> response = client.getForEntity("/employee/" + id, EmployeeDto.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -137,7 +136,7 @@ public class EmployeeIntegrationTest {
     }
 
     private void testGetEmployeeHours(int id) {
-        //final int employeeHourId = 1;
+        final int employeeHourId = 1;
         final Date day = Date.valueOf("2022-11-11");
         final Time startTime = Time.valueOf("08:30:00");
         final Time endTime = Time.valueOf("17:30:00");
@@ -153,10 +152,10 @@ public class EmployeeIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(1, response.getBody().size());
-        assertEquals(id, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getEmployeeHourID());
-        assertEquals(day, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getDay());
-        assertEquals(startTime, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getStartTime());
-        assertEquals(endTime, ((EmployeeDto) response.getBody()).getEmployeeHours().get(0).getEndTime());
+        assertEquals(id,response.getBody().get(0).getEmployeeHourID());
+        assertEquals(day, response.getBody().get(0).getDay());
+        assertEquals(startTime, response.getBody().get(0).getStartTime());
+        assertEquals(endTime, response.getBody().get(0).getEndTime());
     }
 
     private void testCreateInvalidEmployee() {
