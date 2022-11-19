@@ -166,6 +166,9 @@ public class RoomService {
 
     @Transactional
     public Room createRoom(String roomName, int roomCapacity) {
+        if (roomRepo.existsByName(roomName)) {
+            throw new DatabaseException(HttpStatus.BAD_REQUEST, "This room name already exists");
+        }
         Room room = new Room();
         room.setName(roomName);
         room.setCapacity(roomCapacity);

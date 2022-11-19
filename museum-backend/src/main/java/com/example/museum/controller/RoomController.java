@@ -26,7 +26,6 @@ public class RoomController {
     @GetMapping("/room")
     public ResponseEntity<Integer> createRoom(@RequestParam String roomName, @RequestParam int roomCapacity) {
         Room room = roomService.createRoom(roomName, roomCapacity);
-        RoomDto response = new RoomDto(room);
         return new ResponseEntity<Integer>(room.getRoomID(), HttpStatus.OK);
     }
 

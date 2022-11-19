@@ -1167,4 +1167,17 @@ public class RoomServiceTests {
         assertEquals(roomName, room.getName());
         assertEquals(roomCapacity, room.getCapacity());
     }
+
+    @Test
+    public void testCreateRoomWithInvalidRoomName() {
+        when(roomRepository.save(any(Room.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final String roomName = "Storage";
+        final int roomCapacity = -1;
+        when(roomRepository.existsByName(roomName)).thenAnswer((InvocationOnMock invocation) -> false);
+        Room room = roomService.createRoom(roomName, roomCapacity);
+        when(roomRepository.existsByName(roomName)).thenAnswer((InvocationOnMock invocation) -> true);
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> roomService.createRoom(roomName, roomCapacity));
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+        assertEquals("This room name already exists", ex.getMessage());
+    }
 }
