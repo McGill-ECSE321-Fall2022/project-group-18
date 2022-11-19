@@ -11,10 +11,8 @@ import com.example.museum.dto.LoanDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Donation;
 import com.example.museum.model.Loan;
-import com.example.museum.repository.DonationRepository;
+import com.example.museum.repository.*;
 
-import com.example.museum.repository.LoanRepository;
-import com.example.museum.repository.TicketRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +29,6 @@ import com.example.museum.dto.CustomerDto;
 import com.example.museum.dto.TicketDto;
 import com.example.museum.model.Customer;
 import com.example.museum.model.Ticket;
-import com.example.museum.repository.CustomerRepository;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -54,8 +51,6 @@ public class CustomerIntegrationTest {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Autowired
-    private LoanRepository loanRepository;
 
     @Autowired
     private ArtifactRepository artifactRepository;
@@ -67,6 +62,7 @@ public class CustomerIntegrationTest {
         ticketRepository.deleteAll();
         loanRepository.deleteAll();
         artifactRepository.deleteAll();
+        donationRepository.deleteAll();
     }
 
     @Test
@@ -108,8 +104,9 @@ public class CustomerIntegrationTest {
         List<Artifact> createArtifactList = createArtifact();
         Loan loan = createLoan(createArtifactList);
         testAddLoanToCustomer(id, loan.getRequestID());
-        testRemoveInvalidLoanFromCustomer(id, loan.getRequestID()+1);
+        testRemoveInvalidLoanFromCustomer(id, loan.getRequestID() + 1);
 
+    }
     // @Test
     public void getAllCustomerLoans() {
         List<Artifact> artifacts = createArtifacts();
@@ -190,26 +187,26 @@ public class CustomerIntegrationTest {
         return artifactList;
     }
 
-    private Loan createLoan(List<Artifact> artifactList) {
-        List<Integer> artifactIDList = new ArrayList<>();
-        int artifactFeeSum = 0;
-        for (Artifact artifact : artifactList) {
-            artifactIDList.add(artifact.getArtID());
-            artifactFeeSum += artifact.getLoanFee();
-        }
-        String artifactIDStr = "?artifactIDList=";
-        for (int i = 0; i < artifactIDList.size(); i++) {
-            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
-            if (i == artifactIDList.size() - 1) {
-                continue;
-            }
-            artifactIDStr = artifactIDStr + ",";
-        }
-        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
-        assertNotNull(response.getBody());
-        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
-        return loan;
-    }
+//    private Loan createLoan(List<Artifact> artifactList) {
+//        List<Integer> artifactIDList = new ArrayList<>();
+//        int artifactFeeSum = 0;
+//        for (Artifact artifact : artifactList) {
+//            artifactIDList.add(artifact.getArtID());
+//            artifactFeeSum += artifact.getLoanFee();
+//        }
+//        String artifactIDStr = "?artifactIDList=";
+//        for (int i = 0; i < artifactIDList.size(); i++) {
+//            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
+//            if (i == artifactIDList.size() - 1) {
+//                continue;
+//            }
+//            artifactIDStr = artifactIDStr + ",";
+//        }
+//        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
+//        assertNotNull(response.getBody());
+//        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
+//        return loan;
+//    }
 
     private int testCreateCustomer(Ticket ticket) {
         final String username = "customer1";
@@ -427,7 +424,7 @@ public class CustomerIntegrationTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Loan not found", response.getBody());
-
+    }
     @Test
     void testGetCustomerEmptyDonationLists() {
         Donation donation1 = new Donation();
