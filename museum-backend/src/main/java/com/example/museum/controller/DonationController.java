@@ -45,7 +45,6 @@ public class DonationController {
 
 
     //Get all artifacts in donation
-
     @GetMapping("/donation/artifacts/{id}")
     public ResponseEntity<List<ArtifactDto>> getAllArtifactsDonation(@PathVariable int id) {
         List<Artifact> artifacts = donationService.getArtifactsInDonation(id);

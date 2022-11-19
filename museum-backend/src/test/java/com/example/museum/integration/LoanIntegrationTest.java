@@ -166,8 +166,8 @@ public class LoanIntegrationTest {
             }
             getParam = getParam + ",";
         }
-        ResponseEntity<Integer> response = client.getForEntity(getParam, Integer.class);
-        Room room = roomRepository.findRoomByRoomID(response.getBody());
+        ResponseEntity<Map> response = client.getForEntity(getParam, Map.class);
+        Room room = roomRepository.findRoomByRoomID((Integer) response.getBody().get("roomID"));
         return room;
     }
 

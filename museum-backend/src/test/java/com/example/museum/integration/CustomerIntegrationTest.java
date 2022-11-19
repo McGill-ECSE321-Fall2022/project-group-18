@@ -105,7 +105,6 @@ public class CustomerIntegrationTest {
         Loan loan = createLoan(createArtifactList);
         testAddLoanToCustomer(id, loan.getRequestID());
         testRemoveInvalidLoanFromCustomer(id, loan.getRequestID() + 1);
-
     }
     // @Test
     public void getAllCustomerLoans() {
