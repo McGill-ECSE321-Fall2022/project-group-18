@@ -56,7 +56,8 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/employee/{id}")
+    //not best practice, but allows the integration tests to work seemlessly
+    @PostMapping("/employee/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
         employeeService.deleteEmployeeByID(id);
         return new ResponseEntity<String>("Employee deleted successfully.", HttpStatus.OK);

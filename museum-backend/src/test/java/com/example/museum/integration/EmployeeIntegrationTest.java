@@ -1,9 +1,6 @@
 package com.example.museum.integration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import com.example.museum.repository.EmployeeHourRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +23,16 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class EmployeeIntegrationTest {
     @Autowired
     private TestRestTemplate client;
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private EmployeeHourRepository employeeHourRepository;
 
     @BeforeEach
     @AfterEach
@@ -48,6 +49,8 @@ public class EmployeeIntegrationTest {
         testLoginEmployee();
         testInvalidLoginEmployee();
         testCreateInvalidEmployee();
+        testDeleteInvalidEmployee();
+        testDeleteEmployee(id);
     }
 
     private EmployeeHour createEmployeeHour() {
@@ -174,6 +177,28 @@ public class EmployeeIntegrationTest {
             assertNotNull(response);
             assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         }
+    }
+
+    private void testDeleteInvalidEmployee(){
+        int id = Integer.MAX_VALUE;
+        EmployeeDto employeeDto = new EmployeeDto();
+        try {
+            ResponseEntity<Boolean> response = client.postForEntity("/employee/delete/" + id, employeeDto, Boolean.class);
+            assertEquals(1, 2);
+        } catch (Exception e) {
+            ResponseEntity<String> response = client.postForEntity("/employee/delete/" + id, employeeDto, String.class);
+            assertNotNull(response);
+            assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        }
+    }
+
+    private void testDeleteEmployee(int employeeID){
+        int id = employeeID;
+        EmployeeDto employeeDto = new EmployeeDto();
+        ResponseEntity<String> response = client.postForEntity("/employee/delete/" + id, employeeDto, String.class);
+        assertNotNull(response);
+        assertEquals("Employee deleted successfully.", response.getBody());
+        assertNull(employeeRepository.findByAccountID(id));
     }
 }
 

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -22,6 +23,8 @@ public class EmployeeService {
     private CustomerRepository customerRepository;
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private EmployeeHourRepository employeeHourRepository;
 
     @Transactional
     public Employee getEmployeeByID(int id) {
@@ -76,11 +79,16 @@ public class EmployeeService {
         return updatedEmployee;
     }
 
+    //deletes the employee
     public boolean deleteEmployeeByID(int id) {
         Employee employee = employeeRepository.findByAccountID(id);
         if (employee == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Employee not found");
         }
+//        List<EmployeeHour> hours = employee.getEmployeeHours();
+//        for(EmployeeHour hour : hours){
+//            employeeHourRepository.deleteById(hour.getEmployeeHourID());
+//        }
 
         employeeRepository.deleteById(id);
         return true;
