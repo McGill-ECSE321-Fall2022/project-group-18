@@ -48,19 +48,16 @@ public class LoanController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/loan/customer/all")
+    public ResponseEntity<Map<String, Integer>> getAllCustomersAndLoans() {
+        Map<String, Integer> allCustomersLoansMap = loanService.getAllCustomerLoans();
+        return new ResponseEntity<Map<String, Integer>>(allCustomersLoansMap, HttpStatus.OK);
+    }
+
     @GetMapping(value = {"/loan", "/loan/"})
     public ResponseEntity<Integer> createLoan(@RequestParam List<Integer> artifactIDList) {
 
         Loan loan = loanService.createLoan(artifactIDList);
-//        LoanDto response = new LoanDto();
-//        response.setLoanFee(loan.getLoanFee());
-//        response.setLoanApproval(loan.getApproved());
-//        response.setLoanID(loan.getRequestID());
-//        List<Integer> receivedArtifactIDList = new ArrayList<>();
-//        for (Artifact artifact: loan.getRequestedArtifacts()) {
-//            receivedArtifactIDList.add(artifact.getArtID());
-//        }
-//        response.setArtifactDtoList(receivedArtifactIDList);
         return new ResponseEntity<Integer>(loan.getRequestID(), HttpStatus.OK);
     }
 

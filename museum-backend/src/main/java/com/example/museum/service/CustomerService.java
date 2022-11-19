@@ -26,8 +26,6 @@ public class CustomerService {
     @Autowired
     private LoanRepository loanRepository;
 
-    @Autowired
-    private LoanService loanService;
 
     @Transactional
     public Customer getCustomerByID(int id) {
@@ -104,8 +102,7 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    @Transactional
-    public Customer addLoanToCustomer(int customerID, int loanID) {
+    private Customer checkLoanAndCustomer(int customerID, int loanID) {
         Customer customer = customerRepository.findByAccountID(customerID);
         if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
@@ -113,6 +110,12 @@ public class CustomerService {
         if (!loanRepository.existsById(loanID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
         }
+        return customer;
+    }
+
+    @Transactional
+    public Customer addLoanToCustomer(int customerID, int loanID) {
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
         Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
         customer.addLoan(loan);
         customer = customerRepository.save(customer);
@@ -120,15 +123,26 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer deleteLoanFromCustomer(int customerID, int loanID) {
-        Customer customer = customerRepository.findByAccountID(customerID);
-        if (customer == null) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
-        }
-        if (!loanRepository.existsById(loanID)) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
-        }
+    public Customer approveLoanOfCustomer(int customerID, int loanID) {
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
         Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        if (!customer.getLoans().contains(loan)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "This loan does not belong to this customer");
+        }
+        int customerCredit = customer.getCredit();
+        customerCredit += loan.getLoanFee();
+        customer.setCredit(customerCredit);
+        customer = customerRepository.save(customer);
+        return customer;
+    }
+
+    @Transactional
+    public Customer deleteLoanFromCustomer(int customerID, int loanID) {
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        if (!customer.getLoans().contains(loan)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "This loan does not belong to this customer");
+        }
         customer.removeLoan(loan);
         customer = customerRepository.save(customer);
         return customer;

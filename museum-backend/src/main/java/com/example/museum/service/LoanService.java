@@ -3,8 +3,10 @@ package com.example.museum.service;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.Artifact;
+import com.example.museum.model.Customer;
 import com.example.museum.model.Loan;
 import com.example.museum.repository.ArtifactRepository;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.LoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class LoanService {
@@ -22,6 +26,9 @@ public class LoanService {
 
     @Autowired
     ArtifactRepository artifactRepo;
+
+    @Autowired
+    CustomerRepository customerRepo;
 
     @Transactional
     public Loan getLoanByID(int id) {
@@ -52,6 +59,18 @@ public class LoanService {
             artifactsIDList.add(artifact.getArtID());
         }
         return artifactsIDList;
+    }
+
+    @Transactional
+    public Map<String, Integer> getAllCustomerLoans() {
+        Map<String, Integer> allCustomerLoansMap = new HashMap<>();
+        List<Customer> allCustomerList = (List<Customer>) customerRepo.findAll();
+        for (Customer savedCustomer: allCustomerList) {
+            for (Loan savedLoan: savedCustomer.getLoans()) {
+                allCustomerLoansMap.put(Integer.toString(savedLoan.getRequestID()), savedCustomer.getAccountID());
+            }
+        }
+        return allCustomerLoansMap;
     }
 
 //    @Transactional

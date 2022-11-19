@@ -71,6 +71,12 @@ public class CustomerController {
         return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
     }
 
+    @GetMapping("/customer/{id}/loans/approve")
+    public ResponseEntity<CustomerDto> approveLoanOfCustomer(@PathVariable int id, @RequestParam int loanID) {
+        Customer customer = customerService.approveLoanOfCustomer(id, loanID);
+        return new ResponseEntity<CustomerDto>(new CustomerDto(customer), HttpStatus.OK);
+    }
+
     @GetMapping("/customer/{id}/loans/delete")
     public ResponseEntity<List<Integer>> deleteLoanFromCustomer(@PathVariable int id, @RequestParam int loanID) {
         Customer customer = customerService.deleteLoanFromCustomer(id, loanID);
