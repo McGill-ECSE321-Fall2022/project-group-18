@@ -92,17 +92,17 @@ public class LoanController {
 
     // remove a loan when 1. employee reject the loan
     @GetMapping(value = {"/loan/update/remove", "/loan/update/remove/"})
-    public ResponseEntity<List<ArtifactDto>> updateLoanRemove(@RequestParam int loanID) {
+    public ResponseEntity<List<Integer>> updateLoanRemove(@RequestParam int loanID) {
         // if rejected, simply delete the loan object, since artifacts are still in the room
-        List<ArtifactDto> artifactDtoList = new ArrayList<>();
+        List<Integer> artifactIDList = new ArrayList<>();
         Loan loan = loanService.getLoanByID(loanID);
         for (Artifact artifact: loan.getRequestedArtifacts()) {
-            artifactDtoList.add(new ArtifactDto(artifact));
+            artifactIDList.add(artifact.getArtID());
         }
 
         loanService.deleteLoan(loanID);
 
-        return new ResponseEntity<List<ArtifactDto>>(artifactDtoList, HttpStatus.OK);
+        return new ResponseEntity<List<Integer>>(artifactIDList, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/loan/update/return", "/loan/update/return/"})
