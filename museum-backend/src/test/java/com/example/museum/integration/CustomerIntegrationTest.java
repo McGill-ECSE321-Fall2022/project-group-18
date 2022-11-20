@@ -30,6 +30,7 @@ import com.example.museum.dto.TicketDto;
 import com.example.museum.model.Customer;
 import com.example.museum.model.Ticket;
 
+import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,8 @@ public class CustomerIntegrationTest {
         testGetCustomer(id);
         testGetCustomerTickets(id);
         testLoginCustomer();
+        Ticket ticket1 = createAnotherTicket();
+        testUpdateCustomer(id, ticket1);
         testInvalidLoginCustomer();
         testCreateInvalidCustomer();
     }
@@ -119,39 +122,7 @@ public class CustomerIntegrationTest {
         testApproveInvalidLoansForCustomer(id, loan);
     }
 
-    // @Test
-    public void getAllCustomerLoans() {
-        List<Artifact> artifacts = createArtifacts();
-        Loan loan = createLoan(artifacts);
 
-        final String username = "customer";
-        final String password = "password";
-        final String firstName = "Customer";
-        final String lastName = "Account";
-        final int credit = 5;
-        final Customer customer = new Customer(0, username, password, firstName, lastName, credit);
-        customer.addLoan(loan);
-        final CustomerDto customerDto = new CustomerDto(customer);
-
-        ResponseEntity<CustomerDto> customerResponse = client.postForEntity("/customer", customerDto,
-                CustomerDto.class);
-
-        ResponseEntity<List<LoanDto>> response = client.exchange(
-                "/customer/" + customerResponse.getBody().getAccountID() + "/loans",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<LoanDto>>() {
-                });
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(1, response.getBody().size());
-        assertEquals(loan.getRequestID(), response.getBody().get(0).getLoanId());
-        assertEquals(loan.getApproved(), response.getBody().get(0).getLoanApproval());
-        assertEquals(loan.getLoanFee(), response.getBody().get(0).getLoanFee());
-
-    }
 
     private Ticket createTicket() {
         final Date day = Date.valueOf("2022-11-08");
@@ -199,26 +170,6 @@ public class CustomerIntegrationTest {
         return artifactList;
     }
 
-//    private Loan createLoan(List<Artifact> artifactList) {
-//        List<Integer> artifactIDList = new ArrayList<>();
-//        int artifactFeeSum = 0;
-//        for (Artifact artifact : artifactList) {
-//            artifactIDList.add(artifact.getArtID());
-//            artifactFeeSum += artifact.getLoanFee();
-//        }
-//        String artifactIDStr = "?artifactIDList=";
-//        for (int i = 0; i < artifactIDList.size(); i++) {
-//            artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
-//            if (i == artifactIDList.size() - 1) {
-//                continue;
-//            }
-//            artifactIDStr = artifactIDStr + ",";
-//        }
-//        ResponseEntity<Integer> response = client.getForEntity("/loan" + artifactIDStr, Integer.class);
-//        assertNotNull(response.getBody());
-//        Loan loan = loanRepository.findLoanRequestByRequestID(response.getBody());
-//        return loan;
-//    }
 
     private int testCreateCustomer(Ticket ticket) {
         final String username = "customer1";
@@ -263,6 +214,20 @@ public class CustomerIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Successful login", response.getBody());
+    }
+
+    private void testUpdateCustomer(int id, Ticket ticket1) {
+        Customer customer = customerRepository.findByAccountID(id);
+        customer.addCustomerTicket(ticket1);
+        CustomerDto customerDto = new CustomerDto(customer);
+        ResponseEntity<CustomerDto> response = client.postForEntity("/customer/"+id+"/update", customerDto, CustomerDto.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        List<Integer> ticketIDList = new ArrayList<>();
+        for (TicketDto ticketDto: response.getBody().getCustomerTickets()) {
+            ticketIDList.add(ticketDto.getTicketID());
+        }
+        assertTrue(ticketIDList.contains(ticket1.getTicketID()));
     }
 
     private void testInvalidLoginCustomer() {
@@ -497,5 +462,16 @@ public class CustomerIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Loan not found", response.getBody());
+    }
+
+    private Ticket createAnotherTicket() {
+        final Date day = Date.valueOf("2022-11-10");
+        final int price = 25;
+        final Ticket ticket = new Ticket(0, day, price);
+        final TicketDto ticketDto = new TicketDto(ticket);
+
+        ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto, TicketDto.class);
+
+        return response.getBody().toModel();
     }
 }
