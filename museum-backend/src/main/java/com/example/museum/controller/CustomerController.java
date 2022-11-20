@@ -116,7 +116,7 @@ public class CustomerController {
     }
 
     // delete a customer
-    @DeleteMapping("/customer/{id}/delete")
+    @GetMapping("/customer/{id}/delete")
     public ResponseEntity<String> deleteCustomer(@PathVariable int id) {
         customerService.deleteCustomerByID(id);
         return new ResponseEntity<String>("Customer deleted successfully.", HttpStatus.OK);
