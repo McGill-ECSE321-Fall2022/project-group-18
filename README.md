@@ -67,7 +67,7 @@ For deliverable 2, members agreed to log their hours in a shared Google sheet. M
 | Matthew Litwiller | 53 | Ideated all necessary endpoints to accomplish the use cases + helped assign the work associated to all team members. Provided a template for others by implementing + testing Business, BusinessHour, MuseumSetup Services, Controller, and DTOs (+ assisted in testing with other parts of the museum - most notably Employee services + unit testing). Provided code reviews to team members, and wrote the reports in the wiki |
 | Aymen Ouali | 31 | Created the DTOs, Controlller and Service for Customer, Owner and Employee. Made the Service tests for Customer, Owner and Employee. Did integration test on Customer and Owner, and contributed to the integration tests on Business and BusinessHour. |
 | Zachary Godden | 19 | - |
-| Mohammad Shaheer Bilal | 16 | - |
+| Mohammad Shaheer Bilal | 16 | Creted Controller, dto, service, ServiceTest and integration test for EmployeeHour. Created Controller, Dto, Service and integraion test for Employee. |
 
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
