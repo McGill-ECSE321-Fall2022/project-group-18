@@ -22,6 +22,7 @@ public class RoomService {
     @Autowired
     ArtifactRepository artifactRepo;
 
+    // get a Room object using room id
     @Transactional
     public Room getRoomByID(int id) {
         if (!roomRepo.existsById(id)) {
@@ -31,11 +32,13 @@ public class RoomService {
         return room;
     }
 
+    // get all rooms
     @Transactional
     public List<Room> getAllRooms() {
         return (List<Room>) (ArrayList<Room>) roomRepo.findAll();
     }
 
+    // get all rooms ID
     @Transactional
     public List<Integer> getAllRoomsID() {
         List<Room> roomList = (ArrayList<Room>) roomRepo.findAll();
@@ -46,6 +49,7 @@ public class RoomService {
         return roomIDList;
     }
 
+    // get Map<artifactID, roomID> for all artifacts in rooms
     @Transactional
     public Map<Integer, Integer> getAllRoomsAndArtifacts() { // key is art id, value is room id
         List<Room> roomList = this.getAllRooms();
@@ -60,14 +64,6 @@ public class RoomService {
         return allRoomsAndArtifacts;
     }
 
-//    @Transactional
-//    public Room createRoom(Room room) {
-//        if (roomRepo.existsById(room.getRoomID())) {
-//            throw new DatabaseException(HttpStatus.CONFLICT, "This room already exists");
-//        }
-//        room = roomRepo.save(room);
-//        return room;
-//    }
 
     // add an artifact from empty (i.e. from Loan or Donation)
     @Transactional
@@ -76,7 +72,7 @@ public class RoomService {
         if (!roomRepo.existsById(roomID)) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "This room does not exist");
         }
-        Room room = roomRepo.findRoomByRoomID(roomID);
+        Room room = roomRepo.findRoomByRoomID(roomID); // room should exist
         // check if the size of the adding artifacts exceed the capacity
         int totalRoomArtifactsNum = room.getRoomArtifacts().size() + artifactIDList.size();
         if ( room.getCapacity() > 0 && totalRoomArtifactsNum > room.getCapacity()) {
@@ -98,6 +94,7 @@ public class RoomService {
         return room;
     }
 
+    // same to add artifacts into a room, but find the room using room name in String
     @Transactional
     public Room addArtifactsToRoom(String roomName, List<Integer> artifactIDList) {
         // check if the room pass in exists
@@ -126,6 +123,8 @@ public class RoomService {
         return room;
     }
 
+    // transfer a single artifact from src room to dest room.
+    // a possible improvement: only provide artifact id and dest room ID to complete this move
     @Transactional
     public List<Room> transferArtifactBetweenRooms(int srcRoomID, int destRoomID, int artifactID) {
         if (!roomRepo.existsById(srcRoomID) || !roomRepo.existsById(destRoomID)) {
@@ -156,23 +155,26 @@ public class RoomService {
         return roomList;
     }
 
+    // remove a list of artifacts from their rooms (not necessarily removed from the same room)
     @Transactional
     public List<Room> removeArtifactsFromRooms(List<Artifact> removedArtifactList) {
         // get all artifacts rooms
         List<Room> roomList = new ArrayList<>();
         for (Artifact artifact: removedArtifactList) {
+            // a not loaned artifact must be in a room, display or storage
             if (!this.getAllRoomsAndArtifacts().containsKey(artifact.getArtID())) {
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "The artifact to remove is not found in any room");
             }
             int roomID = this.getAllRoomsAndArtifacts().get(artifact.getArtID());
             Room room = roomRepo.findRoomByRoomID(roomID);
-            room.removeRoomArtifact(artifact);
+            room.removeRoomArtifact(artifact); // remove from their room
             room = roomRepo.save(room);
             roomList.add(room);
         }
         return roomList;
     }
 
+    // create a room with no artifact inside. specify its name and capacity
     @Transactional
     public Room createRoom(String roomName, int roomCapacity) {
         if (roomRepo.existsByName(roomName)) {

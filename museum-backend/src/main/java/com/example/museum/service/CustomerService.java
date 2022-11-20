@@ -27,6 +27,7 @@ public class CustomerService {
     private LoanRepository loanRepository;
 
 
+    // find customer using id
     @Transactional
     public Customer getCustomerByID(int id) {
         Customer customer = customerRepository.findByAccountID(id);
@@ -37,6 +38,7 @@ public class CustomerService {
         return customer;
     }
 
+    // verify if the input account information matches the one in database
     @Transactional
     public void loginCustomer(Customer customerRequest) {
         Iterator<Customer> customers = customerRepository.findAll().iterator();
@@ -61,6 +63,7 @@ public class CustomerService {
         return customers;
     }
 
+    // create a non-duplicated customer
     @Transactional
     public Customer createCustomer(Customer customerRequest) {
         if (customerRepository.findByAccountID(customerRequest.getAccountID()) != null) {
@@ -75,6 +78,7 @@ public class CustomerService {
         return customer;
     }
 
+    // update the customer info using id to identiy
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
         if(customer == null){
@@ -92,6 +96,7 @@ public class CustomerService {
         return updatedCustomer;
     }
 
+    // delete a customer account by id
     @Transactional
     public void deleteCustomerByID(int id) {
         Customer customer = customerRepository.findByAccountID(id);
@@ -102,6 +107,7 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
+    // a convenient method to check if customer and loan exists
     private Customer checkLoanAndCustomer(int customerID, int loanID) {
         Customer customer = customerRepository.findByAccountID(customerID);
         if (customer == null) {
@@ -113,6 +119,7 @@ public class CustomerService {
         return customer;
     }
 
+    // add a created loan to the customer
     @Transactional
     public Customer addLoanToCustomer(int customerID, int loanID) {
         Customer customer = checkLoanAndCustomer(customerID, loanID);
@@ -122,6 +129,7 @@ public class CustomerService {
         return customer;
     }
 
+    // approve a loan of a customer by add the customer credit
     @Transactional
     public Customer approveLoanOfCustomer(int customerID, int loanID) {
         Customer customer = checkLoanAndCustomer(customerID, loanID);
@@ -136,6 +144,7 @@ public class CustomerService {
         return customer;
     }
 
+    // delete a loan's association from customer by removing it from customer's loan list
     @Transactional
     public Customer deleteLoanFromCustomer(int customerID, int loanID) {
         Customer customer = checkLoanAndCustomer(customerID, loanID);

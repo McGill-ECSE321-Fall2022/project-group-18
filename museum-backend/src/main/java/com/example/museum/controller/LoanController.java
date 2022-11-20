@@ -48,12 +48,14 @@ public class LoanController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
+    // return a map<loanID, customerID> for all loans belong to a customer
     @GetMapping("/loan/customer/all")
     public ResponseEntity<Map<String, Integer>> getAllCustomersAndLoans() {
         Map<String, Integer> allCustomersLoansMap = loanService.getAllCustomerLoans();
         return new ResponseEntity<Map<String, Integer>>(allCustomersLoansMap, HttpStatus.OK);
     }
 
+    // create a loan using a list of Artifact ID
     @GetMapping(value = {"/loan", "/loan/"})
     public ResponseEntity<Integer> createLoan(@RequestParam List<Integer> artifactIDList) {
 
@@ -61,6 +63,10 @@ public class LoanController {
         return new ResponseEntity<Integer>(loan.getRequestID(), HttpStatus.OK);
     }
 
+    // approve a loan to true
+    // this will 1. set loan status to true
+    //           2. set artifacts in loan to have a true loaned status
+    //           3. move all artifacts out of a room
     @GetMapping(value = {"/loan/update/approve", "/loan/update/approve/"})
     public ResponseEntity<Map<String, Object>> updateLoanApproval(@RequestParam int loanID) {
         loanService.setLoanApprovalToTrue(loanID); // set loan status to true, referring to an active loan

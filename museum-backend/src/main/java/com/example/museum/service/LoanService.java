@@ -30,6 +30,7 @@ public class LoanService {
     @Autowired
     CustomerRepository customerRepo;
 
+    // get Loan object from loan id
     @Transactional
     public Loan getLoanByID(int id) {
         if (!loanRepo.existsById(id)) {
@@ -39,15 +40,8 @@ public class LoanService {
         return loan;
     }
 
-//    @Transactional
-//    public List<Artifact> getArtifactsByLoanID(int loanID) {
-//        if (!loanRepo.existsById(loanID)) {
-//            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
-//        }
-//        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
-//        return loan.getRequestedArtifacts();
-//    }
 
+    // get all artifact in the loan by loan id
     @Transactional
     public List<Integer> getArtifactsIDByLoanID(int loanID) {
         if (!loanRepo.existsById(loanID)) {
@@ -61,6 +55,7 @@ public class LoanService {
         return artifactsIDList;
     }
 
+    // get a map<loansID, customerID> for all loans belonged to customers
     @Transactional
     public Map<String, Integer> getAllCustomerLoans() {
         Map<String, Integer> allCustomerLoansMap = new HashMap<>();
@@ -73,26 +68,20 @@ public class LoanService {
         return allCustomerLoansMap;
     }
 
-//    @Transactional
-//    public Loan createLoan(Loan loan) {
-//        if (loanRepo.findLoanRequestByRequestID((loan.getRequestID())) != null) {
-//            throw new DatabaseException(HttpStatus.CONFLICT, "This loan already exists");
-//        }
-//        loan = loanRepo.save(loan);
-//        return loan;
-//    }
 
+    // create a loan from a list of artifact id
     @Transactional
     public Loan createLoan(List<Integer> artifactIDList) {
+        // ensure a loan has no more than 5 artifacts
         if (artifactIDList.size() == 0 || artifactIDList.size() > 5) {
             throw new RequestException(HttpStatus.BAD_REQUEST, "Each loan can only contain maximum of 5 artifacts");
         }
         Loan loan = new Loan();
         int loanFee = 0;
-        loan.setApproved(false);
+        loan.setApproved(false); // default approval status false
         loan.setNewrequestedArtifactsList();
         for (int artifactID: artifactIDList) {
-            if (!artifactRepo.existsById(artifactID)) {
+            if (!artifactRepo.existsById(artifactID)) { // artifact should be created
                 throw new DatabaseException(HttpStatus.NOT_FOUND, "Artifact for Loan is not in database");
             }
             Artifact artifact = artifactRepo.findByArtID(artifactID);
@@ -103,15 +92,14 @@ public class LoanService {
                 throw new RequestException(HttpStatus.BAD_REQUEST, "Artifact for Loan must not be loaned");
             }
             loan.addRequestedArtifact(artifact);
-            loanFee += artifact.getLoanFee();
+            loanFee += artifact.getLoanFee(); // loan fee is automatically calculated
         }
         loan.setLoanFee(loanFee);
         loan = loanRepo.save(loan);
         return loan;
     }
 
-    // set loan to true
-    // move the loan out of the room
+    // set loan to true and move the loan's artifact out of their room
     @Transactional
     public Loan setLoanApprovalToTrue(int loanID) {
         if (!loanRepo.existsById(loanID)) {
@@ -123,6 +111,7 @@ public class LoanService {
         return loan;
     }
 
+    // set artifacts' loaned status to true
     @Transactional
     public Loan setArtifactsInLoanToLoaned(int loanID) {
         if (!loanRepo.existsById(loanID)) {
@@ -137,6 +126,7 @@ public class LoanService {
         return loan;
     }
 
+    // set artifacts' loaned status to false
     @Transactional
     public Loan setArtifactsInLoanToUnloaned(int loanID) {
         if (!loanRepo.existsById(loanID)) {
@@ -151,6 +141,7 @@ public class LoanService {
         return loan;
     }
 
+    // delete a loan, must be done after removed from customer's loan list first.
     @Transactional
     public void deleteLoan(int loanID) {
         if (!loanRepo.existsById(loanID)) {
@@ -159,20 +150,5 @@ public class LoanService {
         loanRepo.deleteById(loanID);
     }
 
-
-//    @Transactional
-//    public boolean setLoanFee(int loanID, int newLoanFee) {
-//        if (!loanRepo.existsById(loanID)) {
-//            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
-//        }
-//        Loan loan = loanRepo.findLoanRequestByRequestID(loanID);
-//        int currentLoanFee = loan.getLoanFee();
-//        if (currentLoanFee == newLoanFee) {
-//            return false;
-//        }
-//        loan.setLoanFee(newLoanFee);
-//        loanRepo.save(loan);
-//        return true;
-//    }
 
 }
