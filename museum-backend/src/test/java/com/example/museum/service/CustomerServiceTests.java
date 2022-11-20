@@ -172,6 +172,86 @@ public class CustomerServiceTests {
     }
 
     @Test
+    void testCreateAndModifyCustomer(){
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+        Customer updatedCustomer = customerService.modifyCustomerByID(customerID, "newCustomerName", "123456", "First2", "Last2");
+        assertNotNull(updatedCustomer);
+        assertEquals("newCustomerName", updatedCustomer.getUsername());
+        assertEquals("123456", updatedCustomer.getPassword());
+        assertEquals("First2", updatedCustomer.getFirstName());
+        assertEquals("Last2", updatedCustomer.getLastName());
+    }
+
+    @Test
+    void testCreateAndModifyCustomerWithInvalidID(){
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> null);
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> customerService.modifyCustomerByID(customerID, "newCustomerName", "123456", "First2", "Last2"));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+        assertEquals("Customer not found", ex.getMessage());
+    }
+
+    @Test
+    void testCreateAndDeleteCustomer() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> returnedCustomer);
+        customerService.deleteCustomerByID(returnedCustomer.getAccountID());
+        assertEquals(0, customerRepository.count());
+        assertFalse(customerRepository.existsById(returnedCustomer.getAccountID()));
+    }
+
+    @Test
+    void testCreateAndDeleteCustomerWithInvalidID() {
+        when(customerRepository.save(any(Customer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+        final int customerID = 1;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "First";
+        final String lastName = "Last";
+        final int credit = 5;
+        final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        Customer returnedCustomer = customerService.createCustomer(testCustomer);
+        when(customerRepository.findByAccountID(customerID)).thenAnswer((InvocationOnMock invocation) -> null);
+
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> customerService.deleteCustomerByID(returnedCustomer.getAccountID()));
+        assertEquals(HttpStatus.NOT_FOUND, ex.getStatus());
+        assertEquals("Customer not found", ex.getMessage());
+    }
+
+    @Test
     void testCreateConflictingUsername() {
         final int customerID = 1;
         final String username = "customer1";
@@ -300,8 +380,6 @@ public class CustomerServiceTests {
         final String lastName = "Last";
         final int credit = 5;
         final Customer testCustomer = new Customer(customerID, username, password, firstName, lastName, credit);
-
-
 
         Customer returnedCustomer = customerService.createCustomer(testCustomer);
 
