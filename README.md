@@ -45,6 +45,8 @@ No payments will be handled by the museum website.
 
 ## Deliverable 1
 
+For deliverable 1, members were asked to report on their individual contributions. See below.
+
 | Team Member | Deliverable 1 hours | Deliverable 1 Individual Efforts | 
 | --- | --- | ---------- |
 | Andrei Sandor | 20 | Creating requirements, creating use case with MSS and alternatives, helped for the domain model, created the folder structure (setting everything), did persistence layer and persistence testing for artifacts, donations and loan artifacts, created and edited the wiki  |
@@ -55,6 +57,8 @@ No payments will be handled by the museum website.
 | Mohammad Shaheer Bilal | 12 | Testing persistence of Employee and EmployeeHour classes, creating use case with MSS and alternative scenarios and helped with domain model. |
 
 ## Deliverable 2
+
+For deliverable 2, members agreed to log their hours in a shared Google sheet. Members were also asked to report on their individual contributions. See below.
 
 | Team Member | Deliverable 2 hours | Deliverable 2 Individual Efforts | 
 | --- | --- | ---------- |
