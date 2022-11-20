@@ -81,10 +81,25 @@ public class CustomerIntegrationTest {
     }
 
     @Test
+    public void testUpdateCustomerWithInvalidID() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        int id2 = createAnotherCustomer();
+        testUpdateWithInvalidID(id);
+    }
+
+    @Test
     public void testCreateGetDeleteCustomer() {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
         testDeleteCustomer(id);
+    }
+
+    @Test
+    public void testCreateDeleteCustomerWithInvalidID() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        testDeleteCustomerWithInvalidID(id+100);
     }
 
 
@@ -208,6 +223,19 @@ public class CustomerIntegrationTest {
         return response.getBody().getAccountID();
     }
 
+    private int createAnotherCustomer() {
+        final String username = "customer2";
+        final String password = "password";
+        final String firstName = "Customer123";
+        final String lastName = "Account123";
+        final int credit = 10;
+        final Customer customer = new Customer(0, username, password, firstName, lastName, credit);
+        final CustomerDto customerDto = new CustomerDto(customer);
+
+        ResponseEntity<CustomerDto> response = client.postForEntity("/customer", customerDto, CustomerDto.class);
+        return response.getBody().getAccountID();
+    }
+
     private void testLoginCustomer() {
         final String username = "customer1";
         final String password = "password";
@@ -233,6 +261,16 @@ public class CustomerIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(newFirstName, response.getBody().getFirstName());
+    }
+
+    private void testUpdateWithInvalidID(int id) {
+        Customer customer = customerRepository.findByAccountID(id);
+        customer.setUsername("customer2");
+        CustomerDto customerDto = new CustomerDto(customer);
+        ResponseEntity<String> response = client.postForEntity("/customer/"+id+"/update", customerDto, String.class);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("An customer with the given username already exists.", response.getBody());
     }
 
     private void testInvalidLoginCustomer() {
@@ -485,5 +523,12 @@ public class CustomerIntegrationTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Customer deleted successfully.", response.getBody());
+    }
+
+    private void testDeleteCustomerWithInvalidID(int id) {
+        ResponseEntity<String> response = client.getForEntity("/customer/"+id+"/delete", String.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Customer not found", response.getBody());
     }
 }
