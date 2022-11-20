@@ -45,7 +45,7 @@ No payments will be handled by the museum website.
 
 ## Deliverable 1
 
-For deliverable 1, members were asked to report on their individual contributions. See below.
+For deliverable 1, members were asked to report on their individual contributions in the table below.
 
 | Team Member | Deliverable 1 hours | Deliverable 1 Individual Efforts | 
 | --- | --- | ---------- |
@@ -58,7 +58,7 @@ For deliverable 1, members were asked to report on their individual contribution
 
 ## Deliverable 2
 
-For deliverable 2, members agreed to log their hours in a shared Google sheet. Members were also asked to report on their individual contributions. See below.
+For deliverable 2, members agreed to log their hours in a shared Google sheet. Members were also asked to write their individual contributions in the table below.
 
 | Team Member | Deliverable 2 hours | Deliverable 2 Individual Efforts | 
 | --- | --- | ---------- |
