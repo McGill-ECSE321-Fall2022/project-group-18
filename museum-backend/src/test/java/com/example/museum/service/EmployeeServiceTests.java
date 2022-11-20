@@ -4,7 +4,6 @@ import com.example.museum.exceptions.RequestException;
 import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.EmployeeHourRepository;
 import com.example.museum.repository.OwnerRepository;
-import org.hibernate.dialect.Database;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)

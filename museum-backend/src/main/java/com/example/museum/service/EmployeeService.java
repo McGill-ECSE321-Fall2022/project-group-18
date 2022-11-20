@@ -10,11 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 @Service
 public class EmployeeService {

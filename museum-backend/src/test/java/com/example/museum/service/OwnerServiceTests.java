@@ -7,7 +7,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.example.museum.service.utils.ServiceUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

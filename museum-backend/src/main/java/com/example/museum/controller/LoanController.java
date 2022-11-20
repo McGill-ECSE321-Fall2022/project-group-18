@@ -2,8 +2,7 @@ package com.example.museum.controller;
 
 
 
-import com.example.museum.dto.ArtifactDto;
-import com.example.museum.dto.LoanDto;
+
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;
