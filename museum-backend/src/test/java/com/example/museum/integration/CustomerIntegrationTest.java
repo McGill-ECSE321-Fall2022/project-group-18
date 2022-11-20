@@ -33,7 +33,9 @@ import com.example.museum.model.Ticket;
 import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,10 +75,16 @@ public class CustomerIntegrationTest {
         testGetCustomer(id);
         testGetCustomerTickets(id);
         testLoginCustomer();
-        Ticket ticket1 = createAnotherTicket();
-        testUpdateCustomer(id, ticket1);
+        testUpdateCustomer(id);
         testInvalidLoginCustomer();
         testCreateInvalidCustomer();
+    }
+
+    @Test
+    public void testCreateGetDeleteCustomer() {
+        Ticket ticket = createTicket();
+        int id = testCreateCustomer(ticket);
+        testDeleteCustomer(id);
     }
 
 
@@ -216,18 +224,15 @@ public class CustomerIntegrationTest {
         assertEquals("Successful login", response.getBody());
     }
 
-    private void testUpdateCustomer(int id, Ticket ticket1) {
+    private void testUpdateCustomer(int id) {
         Customer customer = customerRepository.findByAccountID(id);
-        customer.addCustomerTicket(ticket1);
+        String newFirstName = "aNewCustomerName";
+        customer.setFirstName(newFirstName);
         CustomerDto customerDto = new CustomerDto(customer);
         ResponseEntity<CustomerDto> response = client.postForEntity("/customer/"+id+"/update", customerDto, CustomerDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        List<Integer> ticketIDList = new ArrayList<>();
-        for (TicketDto ticketDto: response.getBody().getCustomerTickets()) {
-            ticketIDList.add(ticketDto.getTicketID());
-        }
-        assertTrue(ticketIDList.contains(ticket1.getTicketID()));
+        assertEquals(newFirstName, response.getBody().getFirstName());
     }
 
     private void testInvalidLoginCustomer() {
@@ -473,5 +478,12 @@ public class CustomerIntegrationTest {
         ResponseEntity<TicketDto> response = client.postForEntity("/ticket", ticketDto, TicketDto.class);
 
         return response.getBody().toModel();
+    }
+
+    private void testDeleteCustomer(int id) {
+        ResponseEntity<String> response = client.getForEntity("/customer/"+id+"/delete", String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Customer deleted successfully.", response.getBody());
     }
 }
