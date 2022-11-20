@@ -31,7 +31,14 @@ public class ArtifactService {
     @Transactional
     public Artifact createArtifact(Artifact artifact){
 
-//        checkNameConflict(artifact.getArtID(), artifact.getName());
+        List<Artifact> allArtifactList = (List<Artifact>) artifactRepo.findAll();
+        for (Artifact savedArtifact: allArtifactList) {
+            System.out.println(savedArtifact.getName());
+            System.out.println(savedArtifact.getType());
+            if (savedArtifact.getName().equals(artifact.getName()) && savedArtifact.getType().equals(artifact.getType())) {
+                throw new DatabaseException(HttpStatus.BAD_REQUEST, "Artifact with identical name and type exists in database");
+            }
+        }
         artifact = artifactRepo.save(artifact);
         return artifact;
     }

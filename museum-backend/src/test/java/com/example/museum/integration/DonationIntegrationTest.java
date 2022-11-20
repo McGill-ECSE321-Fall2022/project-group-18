@@ -5,6 +5,7 @@ import com.example.museum.dto.DonationDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.repository.ArtifactRepository;
 import com.example.museum.repository.DonationRepository;
+import com.example.museum.repository.RoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,19 @@ public class DonationIntegrationTest {
     @Autowired
     private DonationRepository donationRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private ArtifactRepository artifactRepository;
+
 
     @BeforeEach
     @AfterEach
     public void clearDatabase(){
         donationRepository.deleteAll();
+        roomRepository.deleteAll();
+        artifactRepository.deleteAll();
     }
 
     @Test
@@ -45,6 +54,14 @@ public class DonationIntegrationTest {
     }
 
     private int testCreateDonation() {
+        final String roomName = "Storage";
+        final int roomCapacity = -1;
+        String createRoomParam = "/room?roomName=";
+        createRoomParam += roomName;
+        createRoomParam += "&roomCapacity=";
+        createRoomParam += roomCapacity;
+        ResponseEntity<Integer> roomResponse = client.getForEntity(createRoomParam, Integer.class);
+
         final String name = "David";
         final Artifact.ArtType type = Artifact.ArtType.Painting;
         final boolean loanable = true;

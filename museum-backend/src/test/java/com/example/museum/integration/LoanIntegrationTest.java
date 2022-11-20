@@ -2,10 +2,13 @@ package com.example.museum.integration;
 
 
 import com.example.museum.dto.ArtifactDto;
+import com.example.museum.dto.CustomerDto;
 import com.example.museum.model.Artifact;
+import com.example.museum.model.Customer;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;
 import com.example.museum.repository.ArtifactRepository;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.LoanRepository;
 import com.example.museum.repository.RoomRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -38,11 +41,15 @@ public class LoanIntegrationTest {
     @Autowired
     private ArtifactRepository artifactRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @BeforeEach
     @AfterEach
-    public void clearDatabase() {
-        loanRepository.deleteAll();
+    public void clearDatabase() { // order matters here!
         roomRepository.deleteAll();
+        customerRepository.deleteAll();
+        loanRepository.deleteAll();
         artifactRepository.deleteAll();
     }
 
@@ -100,6 +107,16 @@ public class LoanIntegrationTest {
         int id = testCreateAndGetLoan(createArtifactList);
         testApproveLoan(id, room.getRoomID());
         testReturnLoanWithInvalidRoomName(id, room.getRoomID());
+    }
+
+    @Test
+    public void testCreateLoanAndAddToCustomerToGet() {
+        List<Artifact> createArtifactList = createArtifact();
+        Room room = createRoom();
+        room = addArtifactToRoom(room.getRoomID(), createArtifactList);
+        int id = testCreateAndGetLoan(createArtifactList);
+        Customer customer = createCustomerAndAddLoan(id);
+        testGetAllCustomersLoans(id, customer);
     }
 
     private List<Artifact> createArtifact() {
@@ -357,5 +374,34 @@ public class LoanIntegrationTest {
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("This room does not exist", response.getBody());
+    }
+
+    private Customer createCustomerAndAddLoan(int loanID) {
+        final int customerID = 123;
+        final String username = "customer1";
+        final String password = "password";
+        final String firstName = "Customer";
+        final String lastName = "Account";
+        final int credit = 10;
+        final Customer customer = new Customer(customerID, username, password, firstName, lastName, credit);
+
+        final CustomerDto customerDto = new CustomerDto(customer);
+
+        ResponseEntity<CustomerDto> response = client.postForEntity("/customer", customerDto, CustomerDto.class);
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        Customer returnedCustomer = response.getBody().toModel();
+        assertNotNull(returnedCustomer);
+        returnedCustomer.addLoan(loan);
+        returnedCustomer = customerRepository.save(returnedCustomer);
+        return returnedCustomer;
+    }
+
+    private void testGetAllCustomersLoans(int loanID, Customer customer) {
+        String loanGetAllParam = "/loan/customer/all";
+        ResponseEntity<Map> response = client.getForEntity(loanGetAllParam, Map.class);
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Map<String, Integer> allCustomersLoansMap = response.getBody();
+        assertEquals(customer.getAccountID(), allCustomersLoansMap.get(Integer.toString(loanID)));
     }
 }

@@ -24,8 +24,10 @@ public class CustomerService {
     private OwnerRepository ownerRepository;
 
     @Autowired
-    private LoanService loanService;
+    private LoanRepository loanRepository;
 
+
+    // find customer using id
     @Transactional
     public Customer getCustomerByID(int id) {
         Customer customer = customerRepository.findByAccountID(id);
@@ -36,6 +38,7 @@ public class CustomerService {
         return customer;
     }
 
+    // verify if the input account information matches the one in database
     @Transactional
     public void loginCustomer(Customer customerRequest) {
         Iterator<Customer> customers = customerRepository.findAll().iterator();
@@ -60,6 +63,7 @@ public class CustomerService {
         return customers;
     }
 
+    // create a non-duplicated customer
     @Transactional
     public Customer createCustomer(Customer customerRequest) {
         if (customerRepository.findByAccountID(customerRequest.getAccountID()) != null) {
@@ -74,6 +78,7 @@ public class CustomerService {
         return customer;
     }
 
+    // update the customer info using id to identiy
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
         if(customer == null){
@@ -91,6 +96,7 @@ public class CustomerService {
         return updatedCustomer;
     }
 
+    // delete a customer account by id
     @Transactional
     public void deleteCustomerByID(int id) {
         Customer customer = customerRepository.findByAccountID(id);
@@ -101,25 +107,51 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    @Transactional
-    public Customer addLoanToCustomer(int customerID, int loanID) {
+    // a convenient method to check if customer and loan exists
+    private Customer checkLoanAndCustomer(int customerID, int loanID) {
         Customer customer = customerRepository.findByAccountID(customerID);
         if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
         }
-        Loan loan = loanService.getLoanByID(loanID);
+        if (!loanRepository.existsById(loanID)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "Loan not found");
+        }
+        return customer;
+    }
+
+    // add a created loan to the customer
+    @Transactional
+    public Customer addLoanToCustomer(int customerID, int loanID) {
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
         customer.addLoan(loan);
         customer = customerRepository.save(customer);
         return customer;
     }
 
+    // approve a loan of a customer by add the customer credit
+    @Transactional
+    public Customer approveLoanOfCustomer(int customerID, int loanID) {
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        if (!customer.getLoans().contains(loan)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "This loan does not belong to this customer");
+        }
+        int customerCredit = customer.getCredit();
+        customerCredit += loan.getLoanFee();
+        customer.setCredit(customerCredit);
+        customer = customerRepository.save(customer);
+        return customer;
+    }
+
+    // delete a loan's association from customer by removing it from customer's loan list
     @Transactional
     public Customer deleteLoanFromCustomer(int customerID, int loanID) {
-        Customer customer = customerRepository.findByAccountID(customerID);
-        if (customer == null) {
-            throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
+        Customer customer = checkLoanAndCustomer(customerID, loanID);
+        Loan loan = loanRepository.findLoanRequestByRequestID(loanID);
+        if (!customer.getLoans().contains(loan)) {
+            throw new DatabaseException(HttpStatus.NOT_FOUND, "This loan does not belong to this customer");
         }
-        Loan loan = loanService.getLoanByID(loanID);
         customer.removeLoan(loan);
         customer = customerRepository.save(customer);
         return customer;
