@@ -66,7 +66,7 @@ For deliverable 2, members agreed to log their hours in a shared Google sheet. M
 | Feihong Chu | 51 | Implement the endpoints and their corressponding services methods for Loan and Room. Parts of Customer endpoints and service methods that containing the Loan are implemented. Services unit tests and integration tests on Loan, Room and a few parts of Customer's service class and endpoints. |
 | Matthew Litwiller | 53 | Organized meetings. Ideated all necessary endpoints to accomplish the use cases. Assigned the work associated to all team members (and managed the project + issues on GitHub). Provided a template for others by implementing and testing Business, BusinessHour, MuseumSetup Services, Controller. Implemented DTOs. Assisted in testing with other parts of the museum - most notably Employee services + unit testing. Provided code reviews to team members, and wrote the reports in the wiki |
 | Aymen Ouali | 31 | Created the DTOs, Controlller and Service for Customer, Owner and Employee. Made the Service tests for Customer, Owner and Employee. Did integration test on Customer and Owner, and contributed to the integration tests on Business and BusinessHour. |
-| Zachary Godden | 19 | - | Created Controller, dto and service for Ticket and created ServiceTest and IntegrationTest for Ticket. Also created getAll for artifacts
+| Zachary Godden | 19 | Created Controller, dto and service for Ticket and created ServiceTest and IntegrationTest for Ticket. Also created getAll for artifacts. |
 | Mohammad Shaheer Bilal | 16 | Creted Controller, dto, service, ServiceTest and integration test for EmployeeHour. Created Controller, Dto, Service and integraion test for Employee. |
 
 # Documentation 
