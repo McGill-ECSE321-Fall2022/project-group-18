@@ -59,7 +59,7 @@ No payments will be handled by the museum website.
 | Team Member | Deliverable 2 hours | Deliverable 2 Individual Efforts | 
 | --- | --- | ---------- |
 | Andrei Sandor | 40 | Worked on the endpoints, controller,service methods and the unit testing and the integration testing of the artifacts and donation. Helped at the begining to have our enpoints working. Also, created DTO's for the classes that I had to implement. Helped teammates for their bugs. |
-| Feihong Chu | 43.5 | - |
+| Feihong Chu | 49.5 | Implement the endpoints and their corressponding services methods for Loan and Room. Parts of Customer endpoints and service methods that containing the Loan are implemented. Services unit tests and integration tests on Loan, Room and part of Customer's service class and endpoints. |
 | Matthew Litwiller | 53 | Ideated all necessary endpoints to accomplish the use cases + helped assign the work associated to all team members. Implemented + tested all Business, BusinessHour, MuseumSetup Services, Controller, and DTOs (+ assisted in testing with other parts of the museum - most notably Employee services + unit testing). Provided code reviews to team members, and wrote the reports in the wiki |
 | Aymen Ouali | 31 | Created the DTOs, Controlller and Service for Customer, Owner and Employee. Made the Service tests for Customer, Owner and Employee. Did integration test on Customer and Owner, and contributed to the integration tests on Business and BusinessHour. |
 | Zachary Godden | 19 | - |
