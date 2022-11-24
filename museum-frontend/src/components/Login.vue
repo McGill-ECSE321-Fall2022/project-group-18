@@ -14,7 +14,7 @@
                             <input type="password" placeholder="Password" v-model="password" />
                         </div>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button v-bind:disabled="(!username) || (!password)" type="submit">Submit</button>
                 </form>
                 <h5 class="error" v-if="error">Wrong username/password!</h5>
                 <h6>You do not have an account? <a href="#/register">Register</a></h6>
@@ -25,7 +25,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios'
 
@@ -50,7 +50,7 @@ export default {
     }
 }
 </script>
-  
+
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
@@ -91,4 +91,3 @@ button {
     color: rgb(178, 24, 24);
 }
 </style>
-  
