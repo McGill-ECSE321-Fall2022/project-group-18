@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class CustomerController {
     @Autowired
@@ -59,8 +60,8 @@ public class CustomerController {
     @GetMapping("/customer/{id}/loans")
     public ResponseEntity<List<Integer>> getCustomerLoans(@PathVariable int id) {
         Customer customer = customerService.getCustomerByID(id);
-        List<Integer> loanIDList= new ArrayList<>();
-        for (Loan loan: customer.getLoans()) {
+        List<Integer> loanIDList = new ArrayList<>();
+        for (Loan loan : customer.getLoans()) {
             loanIDList.add(loan.getRequestID());
         }
         return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
@@ -71,7 +72,7 @@ public class CustomerController {
     public ResponseEntity<List<Integer>> addLoanToCustomer(@PathVariable int id, @RequestParam int loanID) {
         Customer customer = customerService.addLoanToCustomer(id, loanID);
         List<Integer> loanIDList = new ArrayList<>();
-        for (Loan loan: customer.getLoans()) {
+        for (Loan loan : customer.getLoans()) {
             loanIDList.add(loan.getRequestID());
         }
         return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
@@ -89,7 +90,7 @@ public class CustomerController {
     public ResponseEntity<List<Integer>> deleteLoanFromCustomer(@PathVariable int id, @RequestParam int loanID) {
         Customer customer = customerService.deleteLoanFromCustomer(id, loanID);
         List<Integer> loanIDList = new ArrayList<>();
-        for (Loan loan: customer.getLoans()) {
+        for (Loan loan : customer.getLoans()) {
             loanIDList.add(loan.getRequestID());
         }
         return new ResponseEntity<List<Integer>>(loanIDList, HttpStatus.OK);
