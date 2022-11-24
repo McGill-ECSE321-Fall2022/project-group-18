@@ -17,6 +17,14 @@
                         <b-dropdown-item href="#">Sign Out</b-dropdown-item>
                     </b-nav-item-dropdown> -->
                     <b-nav-item href="#/login">Login</b-nav-item>
+                    <!-- >
+                    TODO: these are only here because it makes it convenient.
+                    Later we will need to actually restrict access to only one view based on who logs in
+                    <!-->
+                    <b-nav-item href="#/owner">Owner</b-nav-item>
+                    <b-nav-item href="#/employee">Employee</b-nav-item>
+                    <b-nav-item href="#/customer">Customer</b-nav-item>
+
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
