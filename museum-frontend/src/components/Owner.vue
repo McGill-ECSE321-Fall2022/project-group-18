@@ -1,4 +1,5 @@
 <template>
+  <h1>Owner view</h1>
 
 </template>
 

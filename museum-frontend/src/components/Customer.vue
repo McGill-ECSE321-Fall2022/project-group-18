@@ -1,10 +1,16 @@
 <template>
+  <h1>Customer view</h1>
 
 </template>
 
 <script>
 export default {
-  name: "Customer"
+  name: "Customer",
+  data () {
+    return {
+      artifacts: []
+    }
+  }
 }
 </script>
 
