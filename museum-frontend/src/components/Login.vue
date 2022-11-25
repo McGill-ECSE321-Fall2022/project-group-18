@@ -41,10 +41,15 @@ export default {
     },
     methods: {
         submit() {
-            this.error=false;
+            this.error = false;
             axios.post(process.env.NODE_ENV === "development" ? 'http://localhost:8080/customer/login' : 'production_link',
                 { username: this.username, password: this.password })
-                .then(res => this.logged = true)
+                .then(res => {
+                    this.logged = true
+                    console.log(res)
+                    localStorage.setItem('uid', res.data)
+                    this.$router.push('/')
+                })
                 .catch(e => this.error = true)
         }
     }
@@ -87,6 +92,7 @@ button {
     color: rgb(65, 198, 38);
     font-weight: bold;
 }
+
 .error {
     color: rgb(178, 24, 24);
 }

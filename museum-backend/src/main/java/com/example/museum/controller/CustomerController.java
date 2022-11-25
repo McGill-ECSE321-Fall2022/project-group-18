@@ -32,10 +32,10 @@ public class CustomerController {
 
     // check if the input login information is correct
     @PostMapping("/customer/login")
-    public ResponseEntity<String> loginCustomer(@RequestBody CustomerDto request) {
+    public ResponseEntity<Integer> loginCustomer(@RequestBody CustomerDto request) {
         Customer customerToLogin = request.toModel();
-        customerService.loginCustomer(customerToLogin);
-        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+        int id = customerService.loginCustomer(customerToLogin);
+        return new ResponseEntity<Integer>(id, HttpStatus.OK);
     }
 
     // get the CustomerDto using account id

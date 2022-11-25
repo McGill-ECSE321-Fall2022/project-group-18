@@ -8,15 +8,15 @@
             <b-collapse id="nav-collapse" is-nav>
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
-                    <!-- <b-nav-item-dropdown right> -->
+                    <b-nav-item v-if="uid <= 0" href="#/login">Login</b-nav-item>
+                    <b-nav-item-dropdown v-else right>
                         <!-- Using 'button-content' slot -->
-                        <!-- <template #button-content>
+                        <template #button-content>
                             <em>User</em>
                         </template>
-                        <b-dropdown-item href="#">Profile</b-dropdown-item>
-                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
-                    </b-nav-item-dropdown> -->
-                    <b-nav-item href="#/login">Login</b-nav-item>
+                        <b-dropdown-item v-bind:href="'#/profile/' + uid">Profile</b-dropdown-item>
+                        <b-dropdown-item v-on:click="logOut" href="#">Sign Out</b-dropdown-item>
+                    </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -25,10 +25,17 @@
 
 <script>
 export default {
-  name: 'hello',
+  name: 'navbar',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      uid: localStorage.getItem('uid') || 0
+    }
+  },
+  methods: {
+    logOut () {
+        localStorage.removeItem('uid');
+        this.uid = 0;
     }
   }
 }

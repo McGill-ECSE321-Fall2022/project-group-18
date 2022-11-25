@@ -26,7 +26,6 @@ public class CustomerService {
     @Autowired
     private LoanRepository loanRepository;
 
-
     // find customer using id
     @Transactional
     public Customer getCustomerByID(int id) {
@@ -40,14 +39,14 @@ public class CustomerService {
 
     // verify if the input account information matches the one in database
     @Transactional
-    public void loginCustomer(Customer customerRequest) {
+    public int loginCustomer(Customer customerRequest) {
         Iterator<Customer> customers = customerRepository.findAll().iterator();
 
         while (customers.hasNext()) {
             Customer customer = customers.next();
             if (customer.getUsername().equals(customerRequest.getUsername())) {
                 if (customer.getPassword().equals(customerRequest.getPassword())) {
-                    return;
+                    return customer.getAccountID();
                 } else {
                     throw new RequestException(HttpStatus.BAD_REQUEST, "Wrong password");
                 }
@@ -70,7 +69,8 @@ public class CustomerService {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given id already exists.");
         }
 
-        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRequest.getAccountID(), customerRepository, employeeRepository,
+        if (ServiceUtils.conflictingUsername(customerRequest.getUsername(), customerRequest.getAccountID(),
+                customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A customer with the given username already exists.");
         }
@@ -81,7 +81,7 @@ public class CustomerService {
     // update the customer info using id to identiy
     public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
         Customer customer = customerRepository.findByAccountID(id);
-        if(customer == null){
+        if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
         }
         if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
@@ -144,7 +144,8 @@ public class CustomerService {
         return customer;
     }
 
-    // delete a loan's association from customer by removing it from customer's loan list
+    // delete a loan's association from customer by removing it from customer's loan
+    // list
     @Transactional
     public Customer deleteLoanFromCustomer(int customerID, int loanID) {
         Customer customer = checkLoanAndCustomer(customerID, loanID);

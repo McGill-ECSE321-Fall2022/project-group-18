@@ -1,6 +1,5 @@
 package com.example.museum.integration;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,7 +53,6 @@ public class CustomerIntegrationTest {
     @Autowired
     private TicketRepository ticketRepository;
 
-
     @Autowired
     private ArtifactRepository artifactRepository;
 
@@ -99,9 +97,8 @@ public class CustomerIntegrationTest {
     public void testCreateDeleteCustomerWithInvalidID() {
         Ticket ticket = createTicket();
         int id = testCreateCustomer(ticket);
-        testDeleteCustomerWithInvalidID(id+100);
+        testDeleteCustomerWithInvalidID(id + 100);
     }
-
 
     @Test
     public void testCreateCustomerAndLoan() {
@@ -121,7 +118,7 @@ public class CustomerIntegrationTest {
         int id = testCreateCustomer(ticket);
         List<Artifact> createArtifactList = createArtifact();
         Loan loan = createLoan(createArtifactList);
-        testAddInvalidLoanToCustomer(id, loan.getRequestID()+1);
+        testAddInvalidLoanToCustomer(id, loan.getRequestID() + 1);
     }
 
     @Test
@@ -144,8 +141,6 @@ public class CustomerIntegrationTest {
         testGetLoansFromCustomer(id, loan);
         testApproveInvalidLoansForCustomer(id, loan);
     }
-
-
 
     private Ticket createTicket() {
         final Date day = Date.valueOf("2022-11-08");
@@ -192,7 +187,6 @@ public class CustomerIntegrationTest {
         artifactList.add(response2.getBody().toModel());
         return artifactList;
     }
-
 
     private int testCreateCustomer(Ticket ticket) {
         final String username = "customer1";
@@ -249,7 +243,7 @@ public class CustomerIntegrationTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Successful login", response.getBody());
+        assertEquals(1, response.getBody());
     }
 
     private void testUpdateCustomer(int id) {
@@ -257,7 +251,8 @@ public class CustomerIntegrationTest {
         String newFirstName = "aNewCustomerName";
         customer.setFirstName(newFirstName);
         CustomerDto customerDto = new CustomerDto(customer);
-        ResponseEntity<CustomerDto> response = client.postForEntity("/customer/"+id+"/update", customerDto, CustomerDto.class);
+        ResponseEntity<CustomerDto> response = client.postForEntity("/customer/" + id + "/update", customerDto,
+                CustomerDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(newFirstName, response.getBody().getFirstName());
@@ -267,7 +262,8 @@ public class CustomerIntegrationTest {
         Customer customer = customerRepository.findByAccountID(id);
         customer.setUsername("customer2");
         CustomerDto customerDto = new CustomerDto(customer);
-        ResponseEntity<String> response = client.postForEntity("/customer/"+id+"/update", customerDto, String.class);
+        ResponseEntity<String> response = client.postForEntity("/customer/" + id + "/update", customerDto,
+                String.class);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("An customer with the given username already exists.", response.getBody());
@@ -346,7 +342,6 @@ public class CustomerIntegrationTest {
         }
     }
 
-
     private List<Artifact> createArtifact() {
         final String name1 = "Mona Lisa";
         final Artifact.ArtType type1 = Artifact.ArtType.Painting;
@@ -384,13 +379,13 @@ public class CustomerIntegrationTest {
 
     private Loan createLoan(List<Artifact> artifactList) {
         List<Integer> artifactIDList = new ArrayList<>();
-        for (Artifact artifact: artifactList) {
+        for (Artifact artifact : artifactList) {
             artifactIDList.add(artifact.getArtID());
         }
         String artifactIDStr = "?artifactIDList=";
         for (int i = 0; i < artifactIDList.size(); i++) {
             artifactIDStr = artifactIDStr + artifactIDList.get(i).toString();
-            if (i == artifactIDList.size()-1) {
+            if (i == artifactIDList.size() - 1) {
                 continue;
             }
             artifactIDStr = artifactIDStr + ",";
@@ -445,6 +440,7 @@ public class CustomerIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Loan not found", response.getBody());
     }
+
     @Test
     void testGetCustomerEmptyDonationLists() {
         Donation donation1 = new Donation();
@@ -485,7 +481,6 @@ public class CustomerIntegrationTest {
         assertEquals(returnedDonation2.getDonationID(), response.get(1).getDonationID());
         assertEquals(returnedDonation2.getDonatedArtifacts().size(), response.get(1).getArtifactList().size());
 
-
     }
 
     private void testApproveLoansForCustomer(int customerID, Loan loan) {
@@ -519,14 +514,14 @@ public class CustomerIntegrationTest {
     }
 
     private void testDeleteCustomer(int id) {
-        ResponseEntity<String> response = client.getForEntity("/customer/"+id+"/delete", String.class);
+        ResponseEntity<String> response = client.getForEntity("/customer/" + id + "/delete", String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Customer deleted successfully.", response.getBody());
     }
 
     private void testDeleteCustomerWithInvalidID(int id) {
-        ResponseEntity<String> response = client.getForEntity("/customer/"+id+"/delete", String.class);
+        ResponseEntity<String> response = client.getForEntity("/customer/" + id + "/delete", String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Customer not found", response.getBody());
