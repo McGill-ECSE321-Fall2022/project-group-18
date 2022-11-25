@@ -7,7 +7,7 @@
           <b-button size="lg" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form>
     <b-list-group class="art-container">
-      <b-list-item v-for="art in mockArtifacts.filter(a => filter ? a.name.toLowerCase().includes(filter.toLowerCase()) : a)">
+      <b-list-item v-for="art in artifacts.filter(a => filter ? a.name.toLowerCase().includes(filter.toLowerCase()) : a)">
         <div class="card">
           <h5>{{art.name}}</h5>
         </div>
@@ -17,8 +17,16 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'hello',
+  mounted() {
+        axios.get(process.env.NODE_ENV === "development"
+            ? 'http://localhost:8080/artifact/all' : 'production_link')
+            .then(res => this.artifacts = res.data)
+            .catch(e => console.log(e))
+    },
   data() {
     return {
       filter: '',
@@ -28,7 +36,8 @@ export default {
         { name: "The Starry Night" },
         { name: "Girl with a Pearl Earring" },
         { name: "The Last Supper" }
-      ]
+      ],
+      artifacts: []
     }
   }
 }
