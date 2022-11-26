@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class EmployeeController {
     @Autowired
@@ -37,7 +38,7 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeByID(id);
         return new ResponseEntity<EmployeeDto>(new EmployeeDto(employee), HttpStatus.OK);
     }
-    
+
     @GetMapping("/employee/{id}/employeeHours")
     public ResponseEntity<List<EmployeeHourDto>> getEmployeeEmployeeHours(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeByID(id);
@@ -56,7 +57,8 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 
-    //not best practice to make it a POST, but allows the integration tests to work seemlessly
+    // not best practice to make it a POST, but allows the integration tests to work
+    // seemlessly
     @PostMapping("/employee/delete/{id}")
     public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
         employeeService.deleteEmployeeByID(id);

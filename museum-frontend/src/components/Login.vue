@@ -5,6 +5,12 @@
             <div>
                 <form @submit.prevent="submit">
                     <div>
+                        <label for="type">I am a</label>
+                        <select v-model="type" id="type" name="type">
+                            <option value="customer">Customer</option>
+                            <option value="employee">Employee</option>
+                            <option value="owner">Owner</option>
+                        </select>
                         <div>
                             <label>Username</label>
                             <input type="text" placeholder="Username" v-model="username" />
@@ -35,6 +41,7 @@ export default {
         return {
             username: '',
             password: '',
+            type: 'customer',
             logged: false,
             error: false,
         }
@@ -42,12 +49,13 @@ export default {
     methods: {
         submit() {
             this.error = false;
-            axios.post(process.env.NODE_ENV === "development" ? 'http://localhost:8080/customer/login' : 'production_link',
+            axios.post(process.env.NODE_ENV === "development" ? `http://localhost:8080/${this.type}/login` : 'production_link',
                 { username: this.username, password: this.password })
                 .then(res => {
                     this.logged = true
                     console.log(res)
                     localStorage.setItem('uid', res.data)
+                    localStorage.setItem('utype', this.type)
                     this.$router.push('/')
                 })
                 .catch(e => this.error = true)
@@ -86,6 +94,11 @@ input {
 button {
     border-radius: 7px;
     padding: 5px;
+}
+
+select {
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .sucess {
