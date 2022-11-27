@@ -27,10 +27,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/login")
-    public ResponseEntity<String> loginEmployee(@RequestBody EmployeeDto request) {
+    public ResponseEntity<Integer> loginEmployee(@RequestBody EmployeeDto request) {
         Employee employeeToLogin = request.toModel();
-        employeeService.loginEmployee(employeeToLogin);
-        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+        int id = employeeService.loginEmployee(employeeToLogin);
+        return new ResponseEntity<Integer>(id, HttpStatus.OK);
     }
 
     @GetMapping("/employee/{id}")

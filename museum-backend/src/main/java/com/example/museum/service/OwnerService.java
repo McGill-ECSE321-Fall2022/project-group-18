@@ -34,14 +34,14 @@ public class OwnerService {
     }
 
     @Transactional
-    public void loginOwner(Owner ownerRequest) {
+    public int loginOwner(Owner ownerRequest) {
         Iterator<Owner> owners = ownerRepository.findAll().iterator();
 
         while (owners.hasNext()) {
             Owner owner = owners.next();
             if (owner.getUsername().equals(ownerRequest.getUsername())) {
                 if (owner.getPassword().equals(ownerRequest.getPassword())) {
-                    return;
+                    return owner.getAccountID();
                 } else {
                     throw new RequestException(HttpStatus.BAD_REQUEST, "Wrong password");
                 }
@@ -54,7 +54,8 @@ public class OwnerService {
     public Owner createOwner(Owner ownerRequest) {
         if (ownerRepository.findByAccountID(ownerRequest.getAccountID()) != null) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An owner with the given id already exists.");
-        }else if(ServiceUtils.conflictingUsername(ownerRequest.getUsername(), ownerRequest.getAccountID(), customerRepository, employeeRepository,
+        } else if (ServiceUtils.conflictingUsername(ownerRequest.getUsername(), ownerRequest.getAccountID(),
+                customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An owner with the given username already exists.");
         }
@@ -66,7 +67,8 @@ public class OwnerService {
         Owner owner = ownerRepository.findByAccountID(id);
         if (owner == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Owner not found");
-        }else if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository, ownerRepository)) {
+        } else if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
+                ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "A user with the given username already exists.");
         }
         owner.setUsername(username);

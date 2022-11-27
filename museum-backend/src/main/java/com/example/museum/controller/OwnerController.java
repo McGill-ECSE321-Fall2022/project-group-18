@@ -23,10 +23,10 @@ public class OwnerController {
     }
 
     @PostMapping("/owner/login")
-    public ResponseEntity<String> loginOwner(@RequestBody OwnerDto request) {
+    public ResponseEntity<Integer> loginOwner(@RequestBody OwnerDto request) {
         Owner ownerToLogin = request.toModel();
-        ownerService.loginOwner(ownerToLogin);
-        return new ResponseEntity<String>("Successful login", HttpStatus.OK);
+        int id = ownerService.loginOwner(ownerToLogin);
+        return new ResponseEntity<Integer>(id, HttpStatus.OK);
     }
 
     @GetMapping("/owner/{id}")
