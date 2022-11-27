@@ -51,12 +51,12 @@
                 <input type="checkbox" v-model="art.loaned">
               </div>
             </div>
-            <h6 v-if="utype === 'customer'">Loan fee: {{ art.loanFee }}</h6>
+            <h6 v-if="!utype || utype === 'customer'">Loan fee: {{ art.loanFee }}</h6>
             <div v-else>
               <label>Loan fee: </label>
               <input type="number" v-model="art.loanFee">
             </div>
-            <button @click="(e) => handleUpdateArtifact(e, art)"
+            <button v-if="utype === 'employee' || utype === 'owner'" @click="(e) => handleUpdateArtifact(e, art)"
               class="px-2 py-2 w-25 align-self-end rounded-lg bg-white">Edit</button>
           </div>
         </div>
