@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class BusinessHourController {
 
@@ -44,10 +45,10 @@ public class BusinessHourController {
     }
 
     @GetMapping("/businessHour/all")
-    public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours(){
+    public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours() {
         List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();
         List<BusinessHourDto> businessHourDtoList = new ArrayList<>();
-        for(BusinessHour bh : businessHours){
+        for (BusinessHour bh : businessHours) {
             BusinessHourDto bhDto = new BusinessHourDto(bh);
             businessHourDtoList.add(bhDto);
         }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class BusinessController {
 
@@ -15,7 +16,7 @@ public class BusinessController {
     BusinessService businessService;
 
     @PostMapping("/business")
-    public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto request){
+    public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto request) {
         Business businessToCreate = request.toModel();
         Business createdBusiness = businessService.createBusiness(businessToCreate);
         BusinessDto response = new BusinessDto(createdBusiness);
@@ -23,15 +24,17 @@ public class BusinessController {
     }
 
     @GetMapping("/business/{id}")
-    public ResponseEntity<BusinessDto> getBusinessByBusinessID(@PathVariable int id){
+    public ResponseEntity<BusinessDto> getBusinessByBusinessID(@PathVariable int id) {
         Business business = businessService.getBusinessByID(id);
         return new ResponseEntity<BusinessDto>(new BusinessDto(business), HttpStatus.OK);
     }
 
-    //TODO: TEST
+    // TODO: TEST
     @PostMapping("/business/update/{id}")
-    public ResponseEntity<BusinessDto> updateBusiness(@PathVariable int id, @RequestBody BusinessDto request){
-        Business updatedBusiness = businessService.modifyBusinessById(id, request.getTicketFee(), request.getBusinessHours());
+    public ResponseEntity<BusinessDto> updateBusiness(@PathVariable int id, @RequestBody BusinessDto request) {
+        Business updatedBusiness = businessService.modifyBusinessById(id, request.getTicketFee(),
+                request.getBusinessHours());
         BusinessDto response = new BusinessDto(updatedBusiness);
-        return new ResponseEntity<BusinessDto>(response, HttpStatus.OK);}
+        return new ResponseEntity<BusinessDto>(response, HttpStatus.OK);
+    }
 }

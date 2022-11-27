@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 
 public class EmployeeHourController {
@@ -19,7 +20,7 @@ public class EmployeeHourController {
     @Autowired
     EmployeeHourService employeeHourService;
 
-    //tested
+    // tested
     @PostMapping("/employeeHour")
     public ResponseEntity<EmployeeHourDto> createEmployeeHour(@RequestBody EmployeeHourDto request) {
         EmployeeHour employeeHourToCreate = request.toModel();
@@ -28,10 +29,12 @@ public class EmployeeHourController {
         return new ResponseEntity<EmployeeHourDto>(response, HttpStatus.CREATED);
     }
 
-    //tested
+    // tested
     @PostMapping("/employeeHour/update/{id}")
-    public ResponseEntity<EmployeeHourDto> updateEmployeeHour(@PathVariable int id, @RequestBody EmployeeHourDto request){
-        EmployeeHour updateEmployeeHour = employeeHourService.modifyEmployeeHourById(id, request.getDay(), request.getStartTime(), request.getEndTime());
+    public ResponseEntity<EmployeeHourDto> updateEmployeeHour(@PathVariable int id,
+            @RequestBody EmployeeHourDto request) {
+        EmployeeHour updateEmployeeHour = employeeHourService.modifyEmployeeHourById(id, request.getDay(),
+                request.getStartTime(), request.getEndTime());
         EmployeeHourDto response = new EmployeeHourDto(updateEmployeeHour);
         return new ResponseEntity<EmployeeHourDto>(response, HttpStatus.OK);
     }
@@ -43,10 +46,10 @@ public class EmployeeHourController {
     }
 
     @GetMapping("/employeeHour/all")
-    public ResponseEntity<List<EmployeeHourDto>> getAllEmployeeHours(){
+    public ResponseEntity<List<EmployeeHourDto>> getAllEmployeeHours() {
         List<EmployeeHour> employeeHours = employeeHourService.getAllEmployeeHours();
         List<EmployeeHourDto> employeeHourDtoList = new ArrayList<>();
-        for(EmployeeHour eh : employeeHours){
+        for (EmployeeHour eh : employeeHours) {
             EmployeeHourDto ehDto = new EmployeeHourDto(eh);
             employeeHourDtoList.add(ehDto);
         }

@@ -1,8 +1,5 @@
 package com.example.museum.controller;
 
-
-
-
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;
@@ -19,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://127.0.0.1:8087")
 @RestController
 public class LoanController {
 
@@ -31,8 +29,9 @@ public class LoanController {
     @Autowired
     RoomService roomService;
 
-    // return a loan dto containing loan ID, loan fee, approval status, list of artifact
-    @GetMapping(value = {"/loan/{loanID}", "/loan/{loanID}/" })
+    // return a loan dto containing loan ID, loan fee, approval status, list of
+    // artifact
+    @GetMapping(value = { "/loan/{loanID}", "/loan/{loanID}/" })
     public ResponseEntity<Map<String, Object>> getLoanByLoanID(@PathVariable int loanID) {
         Loan loan = loanService.getLoanByID(loanID);
         Map<String, Object> response = new HashMap<>();
@@ -40,7 +39,7 @@ public class LoanController {
         response.put("loanFee", loan.getLoanFee());
         response.put("loanStatus", loan.getApproved());
         List<Integer> artifactIDList = new ArrayList<>();
-        for (Artifact artifact: loan.getRequestedArtifacts()) {
+        for (Artifact artifact : loan.getRequestedArtifacts()) {
             artifactIDList.add(artifact.getArtID());
         }
         response.put("loanArtifactIDList", artifactIDList);
@@ -55,7 +54,7 @@ public class LoanController {
     }
 
     // create a loan using a list of Artifact ID
-    @GetMapping(value = {"/loan", "/loan/"})
+    @GetMapping(value = { "/loan", "/loan/" })
     public ResponseEntity<Integer> createLoan(@RequestParam List<Integer> artifactIDList) {
 
         Loan loan = loanService.createLoan(artifactIDList);
@@ -64,9 +63,9 @@ public class LoanController {
 
     // approve a loan to true
     // this will 1. set loan status to true
-    //           2. set artifacts in loan to have a true loaned status
-    //           3. move all artifacts out of a room
-    @GetMapping(value = {"/loan/update/approve", "/loan/update/approve/"})
+    // 2. set artifacts in loan to have a true loaned status
+    // 3. move all artifacts out of a room
+    @GetMapping(value = { "/loan/update/approve", "/loan/update/approve/" })
     public ResponseEntity<Map<String, Object>> updateLoanApproval(@RequestParam int loanID) {
         loanService.setLoanApprovalToTrue(loanID); // set loan status to true, referring to an active loan
         loanService.setArtifactsInLoanToLoaned(loanID); // set status of all artifacts belonged to true
@@ -74,7 +73,7 @@ public class LoanController {
         // remove all artifacts from rooms
         List<Room> roomList = roomService.removeArtifactsFromRooms(artifactList);
         List<Integer> roomIDList = new ArrayList<>();
-        for (Room room: roomList) {
+        for (Room room : roomList) {
             roomIDList.add(room.getRoomID());
         }
 
@@ -84,7 +83,7 @@ public class LoanController {
         response.put("loanFee", loan.getLoanFee());
         response.put("loanStatus", loan.getApproved());
         List<Integer> artifactIDList = new ArrayList<>();
-        for (Artifact artifact: loan.getRequestedArtifacts()) {
+        for (Artifact artifact : loan.getRequestedArtifacts()) {
             artifactIDList.add(artifact.getArtID());
         }
         response.put("loanArtifactIDList", artifactIDList);
@@ -93,12 +92,13 @@ public class LoanController {
     }
 
     // remove a loan when 1. employee reject the loan
-    @GetMapping(value = {"/loan/update/remove", "/loan/update/remove/"})
+    @GetMapping(value = { "/loan/update/remove", "/loan/update/remove/" })
     public ResponseEntity<List<Integer>> updateLoanRemove(@RequestParam int loanID) {
-        // if rejected, simply delete the loan object, since artifacts are still in the room
+        // if rejected, simply delete the loan object, since artifacts are still in the
+        // room
         List<Integer> artifactIDList = new ArrayList<>();
         Loan loan = loanService.getLoanByID(loanID);
-        for (Artifact artifact: loan.getRequestedArtifacts()) {
+        for (Artifact artifact : loan.getRequestedArtifacts()) {
             artifactIDList.add(artifact.getArtID());
         }
 
@@ -107,11 +107,11 @@ public class LoanController {
         return new ResponseEntity<List<Integer>>(artifactIDList, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/loan/update/return", "/loan/update/return/"})
+    @GetMapping(value = { "/loan/update/return", "/loan/update/return/" })
     public ResponseEntity<List<Integer>> updateLoanReturn(@RequestParam int loanID) {
         // when a loan is returned, 1. artifacts set loaned status to false
-        //                          2. artifacts go to storage room
-        //                          3. loan object is deleted
+        // 2. artifacts go to storage room
+        // 3. loan object is deleted
 
         List<Integer> artifactIDList = loanService.getArtifactsIDByLoanID(loanID);
         loanService.setArtifactsInLoanToUnloaned(loanID);
