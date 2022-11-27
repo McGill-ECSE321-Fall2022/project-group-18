@@ -23,7 +23,7 @@
                             <input type="text" placeholder="Last Name" v-model="lastName" />
                         </div>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button :disabled="!username || !password || !firstName || !lastName" type="submit">Register</button>
                 </form>
             </div>
         </div>

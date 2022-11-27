@@ -20,7 +20,7 @@
                             <input type="password" placeholder="Password" v-model="password" />
                         </div>
                     </div>
-                    <button type="submit">Submit</button>
+                    <button :disabled="!username || !password" type="submit">Login</button>
                 </form>
                 <h5 class="error" v-if="error">Wrong username/password!</h5>
                 <h6>You do not have an account? <a href="#/register">Register</a></h6>
