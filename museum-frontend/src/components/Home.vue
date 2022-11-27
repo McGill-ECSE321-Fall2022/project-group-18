@@ -13,7 +13,7 @@
         <div class="row mx-xl-4">
           <div class="">
             <label>From: </label>
-            <input v-model="fromPrice" type="number">
+            <input min="0" v-model="fromPrice" type="number">
           </div>
           <div class="">
             <label>To: </label>
@@ -31,7 +31,7 @@
     </b-list-group> -->
     <h5 class="m-lg-4 text-danger" v-if="loanError">There was an error when processing your loan request. (One of the
       artifacts you requested might already be loaned)</h5>
-      <h5 class="m-lg-4 text-danger" v-if="updateArtifactError">There was an error when updatig the Artifact</h5>
+    <h5 class="m-lg-4 text-danger" v-if="updateArtifactError">There was an error when updating the Artifact</h5>
     <div class="container">
       <div class="grid-container">
         <div v-for="art in filteredArtifacts">
@@ -54,7 +54,12 @@
             <h6 v-if="!utype || utype === 'customer'">Loan fee: {{ art.loanFee }}</h6>
             <div v-else>
               <label>Loan fee: </label>
-              <input type="number" v-model="art.loanFee">
+              <input min="0" type="number" v-model="art.loanFee">
+            </div>
+            <div v-if="utype === 'employee' || utype === 'owner'">
+              <label>Room:</label>
+              <input type="number" min="1" max="11" @change="handleArtifactToRoom"
+                v-model.number="artifactToRoom[art.artID]">
             </div>
             <button v-if="utype === 'employee' || utype === 'owner'" @click="(e) => handleUpdateArtifact(e, art)"
               class="px-2 py-2 w-25 align-self-end rounded-lg bg-white">Edit</button>
@@ -90,6 +95,14 @@ export default {
         this.artifacts = res.data
       })
       .catch(e => console.log(e))
+
+    axios.get(process.env.NODE_ENV === "development"
+      ? 'http://localhost:8080/room/all/artifacts' : 'production_link')
+      .then(res => {
+        this.initArtifactToRoom = { ...res.data };
+        this.artifactToRoom = res.data;
+      })
+      .catch(e => console.log(e))
   },
   data() {
     return {
@@ -110,6 +123,8 @@ export default {
       selectedArtifacts: [],
       loanError: false,
       updateArtifactError: false,
+      initArtifactToRoom: {},
+      artifactToRoom: {},
     }
   },
   methods: {
@@ -142,6 +157,21 @@ export default {
       })
         .catch(e => this.updateArtifactError = true)
         .then(res => console.log(res))
+
+      // Check if room number was changed.
+      if (this.artifactToRoom[art.artID] !== this.initArtifactToRoom[art.artID]) {
+        let srcRoomID = '?srcRoomID=' + this.initArtifactToRoom[art.artID]
+        let destRoomID = '&destRoomID=' + this.artifactToRoom[art.artID]
+        let artifactID = '&artifactID=' + art.artID
+        let transferParam = srcRoomID + destRoomID + artifactID
+        axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/room/artifacts/move${transferParam}` : 'production_link')
+          .catch(e => this.updateArtifactError = true)
+          .then(this.initArtifactToRoom = {...this.artifactToRoom})
+      }
+    },
+    handleArtifactToRoom: function (e) {
+      console.log('init', this.initArtifactToRoom)
+      console.log('new', this.artifactToRoom)
     }
   },
   watch: {
@@ -155,7 +185,6 @@ export default {
       this.filteredArtifacts = this.artifacts.filter(a => val === true ? a.loanable === true : a)
     },
     fromPrice: function (val) {
-      if (val <= 0) this.fromPrice = 0
       if (val >= this.toPrice) this.fromPrice = this.toPrice
       this.filteredArtifacts = this.artifacts.filter(a => a.loanFee >= val)
     },
