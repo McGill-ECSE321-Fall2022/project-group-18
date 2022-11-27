@@ -85,11 +85,11 @@ public class OwnerIntegrationTest {
         final OwnerDto ownerDto = new OwnerDto(
                 new Owner(0, username, password, business, firstName, lastName));
 
-        ResponseEntity<String> response = client.postForEntity("/owner/login", ownerDto, String.class);
+        ResponseEntity<Integer> response = client.postForEntity("/owner/login", ownerDto, Integer.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Successful login", response.getBody());
+        assertTrue(response.getBody() > 0);
     }
 
     private void testInvalidLoginOwner(Business business) {
@@ -142,7 +142,7 @@ public class OwnerIntegrationTest {
         }
     }
 
-    void testUpdateInvalidOwner(){
+    void testUpdateInvalidOwner() {
         final int id = Integer.MAX_VALUE;
         final String username = "owner1";
         final String password = "password";
@@ -161,10 +161,9 @@ public class OwnerIntegrationTest {
             assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         }
 
-
     }
 
-    void testUpdateOwner(int ownerId){
+    void testUpdateOwner(int ownerId) {
         final int id = ownerId;
         final String username = "owner123";
         final String password = "password123";

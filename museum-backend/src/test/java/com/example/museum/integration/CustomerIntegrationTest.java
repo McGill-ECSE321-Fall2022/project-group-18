@@ -239,11 +239,11 @@ public class CustomerIntegrationTest {
         final CustomerDto customerDto = new CustomerDto(
                 new Customer(0, username, password, firstName, lastName, credit));
 
-        ResponseEntity<String> response = client.postForEntity("/customer/login", customerDto, String.class);
+        ResponseEntity<Integer> response = client.postForEntity("/customer/login", customerDto, Integer.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(1, response.getBody());
+        assertTrue(response.getBody() > 0);
     }
 
     private void testUpdateCustomer(int id) {

@@ -50,7 +50,7 @@ public class EmployeeIntegrationTest {
         testInvalidLoginEmployee();
         testCreateInvalidEmployee();
         testUpdateInvalidEmployee();
-//        testUpdateEmployee(id);
+        // testUpdateEmployee(id);
         testDeleteInvalidEmployee();
         testDeleteEmployee(id);
     }
@@ -60,7 +60,8 @@ public class EmployeeIntegrationTest {
         final Time startTime = Time.valueOf("08:30:00");
         final Time endTime = Time.valueOf("17:30:00");
         final EmployeeHour employeeHourDto = new EmployeeHour(0, day, startTime, endTime);
-        ResponseEntity<EmployeeHourDto> response = client.postForEntity("/employeeHour", employeeHourDto, EmployeeHourDto.class);
+        ResponseEntity<EmployeeHourDto> response = client.postForEntity("/employeeHour", employeeHourDto,
+                EmployeeHourDto.class);
 
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -87,7 +88,8 @@ public class EmployeeIntegrationTest {
         assertEquals(firstName, response.getBody().getFirstName());
         assertEquals(lastName, response.getBody().getLastName());
         assertEquals(1, response.getBody().getEmployeeHours().size());
-        assertEquals(employeeHour.getEmployeeHourID(), response.getBody().getEmployeeHours().get(0).getEmployeeHourID());
+        assertEquals(employeeHour.getEmployeeHourID(),
+                response.getBody().getEmployeeHours().get(0).getEmployeeHourID());
         assertEquals(employeeHour.getDay(), response.getBody().getEmployeeHours().get(0).getDay());
         assertEquals(employeeHour.getStartTime(), response.getBody().getEmployeeHours().get(0).getStartTime());
         assertEquals(employeeHour.getEndTime(), response.getBody().getEmployeeHours().get(0).getEndTime());
@@ -103,11 +105,11 @@ public class EmployeeIntegrationTest {
         final EmployeeDto employeeDto = new EmployeeDto(
                 new Employee(0, username, password, firstName, lastName));
 
-        ResponseEntity<String> response = client.postForEntity("/employee/login", employeeDto, String.class);
+        ResponseEntity<Integer> response = client.postForEntity("/employee/login", employeeDto, Integer.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("Successful login", response.getBody());
+        assertTrue(response.getBody() > 0);
     }
 
     private void testInvalidLoginEmployee() {
@@ -181,7 +183,7 @@ public class EmployeeIntegrationTest {
         }
     }
 
-   private void testUpdateInvalidEmployee(){
+    private void testUpdateInvalidEmployee() {
         int id = Integer.MAX_VALUE;
         EmployeeHour hour = new EmployeeHour();
         Employee employee = new Employee();
@@ -190,7 +192,8 @@ public class EmployeeIntegrationTest {
         employee.addEmployeeHour(hour);
         EmployeeDto employeeDto = new EmployeeDto(employee);
         try {
-            ResponseEntity<Boolean> response = client.postForEntity("/employee/update/" + id, employeeDto, Boolean.class);
+            ResponseEntity<Boolean> response = client.postForEntity("/employee/update/" + id, employeeDto,
+                    Boolean.class);
             assertEquals(1, 2);
         } catch (Exception e) {
             ResponseEntity<String> response = client.postForEntity("/employee/update/" + id, employeeDto, String.class);
@@ -205,7 +208,7 @@ public class EmployeeIntegrationTest {
         EmployeeDto employeeDto = testCreateAndUpdateEmployee();
     }
 
-    private EmployeeDto testCreateAndUpdateEmployee(){
+    private EmployeeDto testCreateAndUpdateEmployee() {
         final String username = "employee1";
         final String password = "password";
         final String firstName = "Employee";
@@ -221,25 +224,27 @@ public class EmployeeIntegrationTest {
         employee.setPassword("mr");
         employee.addEmployeeHour(hour);
         EmployeeDto employeeDto = new EmployeeDto(employee);
-        ResponseEntity<EmployeeDto> response = client.postForEntity("/employee/update/" + id, employeeDto, EmployeeDto.class);
+        ResponseEntity<EmployeeDto> response = client.postForEntity("/employee/update/" + id, employeeDto,
+                EmployeeDto.class);
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(id, response.getBody().getAccountID());
         assertEquals("krab", response.getBody().getUsername());
         assertEquals("mr", response.getBody().getPassword());
-        //checking employee hour
+        // checking employee hour
         assertEquals(1, response.getBody().getEmployeeHours().size());
         assertEquals(day, response.getBody().getEmployeeHours().get(0).getDay());
         assertNotEquals(0, response.getBody().getEmployeeHours().get(0).getEmployeeHourID());
         return response.getBody();
     }
 
-    private void testDeleteInvalidEmployee(){
+    private void testDeleteInvalidEmployee() {
         int id = Integer.MAX_VALUE;
         EmployeeDto employeeDto = new EmployeeDto();
         try {
-            ResponseEntity<Boolean> response = client.postForEntity("/employee/delete/" + id, employeeDto, Boolean.class);
+            ResponseEntity<Boolean> response = client.postForEntity("/employee/delete/" + id, employeeDto,
+                    Boolean.class);
             assertEquals(1, 2);
         } catch (Exception e) {
             ResponseEntity<String> response = client.postForEntity("/employee/delete/" + id, employeeDto, String.class);
@@ -248,7 +253,7 @@ public class EmployeeIntegrationTest {
         }
     }
 
-    private void testDeleteEmployee(int employeeID){
+    private void testDeleteEmployee(int employeeID) {
         int id = employeeID;
         EmployeeDto employeeDto = new EmployeeDto();
         ResponseEntity<String> response = client.postForEntity("/employee/delete/" + id, employeeDto, String.class);
@@ -257,4 +262,3 @@ public class EmployeeIntegrationTest {
         assertNull(employeeRepository.findByAccountID(id));
     }
 }
-
