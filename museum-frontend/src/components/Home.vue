@@ -3,6 +3,7 @@
     <h1>Welcome to the museum app!</h1>
     <h2>Artifacts</h2>
     <b-nav-form>
+      <BIconSearch class="h4 mb-2 mr-2" />
       <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="Search"></b-form-input>
       <div>
         <label class="ml-lg">Loanable: </label>
@@ -11,11 +12,11 @@
       <div>
         <label>Price range: </label>
         <div class="row mx-xl-4">
-          <div class="">
+          <div>
             <label>From: </label>
             <input min="0" v-model="fromPrice" type="number">
           </div>
-          <div class="">
+          <div>
             <label>To: </label>
             <input v-model="toPrice" type="number">
           </div>
@@ -58,8 +59,8 @@
             </div>
             <div v-if="utype === 'employee' || utype === 'owner'">
               <label>Room:</label>
-              <input :disabled="!initArtifactToRoom[art.artID]" type="number" min="1" max="11" @change="handleArtifactToRoom"
-                v-model.number="artifactToRoom[art.artID]">
+              <input :disabled="!initArtifactToRoom[art.artID]" type="number" min="1" max="11"
+                @change="handleArtifactToRoom" v-model.number="artifactToRoom[art.artID]">
             </div>
             <button v-if="utype === 'employee' || utype === 'owner'" @click="(e) => handleUpdateArtifact(e, art)"
               class="px-2 py-2 w-25 align-self-end rounded-lg bg-white">Edit</button>
@@ -67,7 +68,11 @@
         </div>
       </div>
       <div v-if="selectedArtifacts.length > 0">
-        <h4>Selected artifacts ({{ selectedArtifacts.length }} / 5)</h4>
+        <div class="row">
+          <h4>Selected artifacts ({{ selectedArtifacts.length }} / 5)</h4>
+          <BIconCartFill class="h3 mb-2" v-if="selectedArtifacts.length < 5" />
+          <BIconCartCheckFill color="green" class="h3 mb-2" v-else />
+        </div>
         <button @click="handleLoan" class="rounded-lg bg-white px-4 py-2">
           <h4>Loan</h4>
         </button>
@@ -85,8 +90,14 @@
 
 <script>
 import axios from 'axios';
+import { BIconCartCheckFill, BIconCartFill, BIconSearch } from 'bootstrap-vue';
 
 export default {
+  components: {
+    BIconCartCheckFill,
+    BIconCartFill,
+    BIconSearch
+  },
   name: 'hello',
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
@@ -166,7 +177,7 @@ export default {
         let transferParam = srcRoomID + destRoomID + artifactID
         axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/room/artifacts/move${transferParam}` : 'production_link')
           .catch(e => this.updateArtifactError = true)
-          .then(this.initArtifactToRoom = {...this.artifactToRoom})
+          .then(this.initArtifactToRoom = { ...this.artifactToRoom })
       }
     },
     handleArtifactToRoom: function (e) {
@@ -182,7 +193,7 @@ export default {
       this.filteredArtifacts = artifacts
     },
     loanableFilter: function (val, prevVal) {
-      this.filteredArtifacts = this.artifacts.filter(a => val === true ? a.loanable === true : a)
+      this.filteredArtifacts = this.artifacts.filter(a => val === true ? a.loanable === true && a.loaned === false : a)
     },
     fromPrice: function (val) {
       if (val >= this.toPrice) this.fromPrice = this.toPrice
