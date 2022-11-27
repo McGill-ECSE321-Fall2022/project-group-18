@@ -20,6 +20,7 @@
         </div>
       </b-list-item>
     </b-list-group> -->
+    <h5 class="m-lg-4 text-danger" v-if="loanError">There was an error when processing your loan request. (One of the artifacts you requested might already be loaned)</h5>
     <div class="container">
       <div class="grid-container">
         <div v-for="art in filteredArtifacts">
@@ -33,10 +34,12 @@
         </div>
       </div>
       <div v-if="selectedArtifacts.length > 0">
+        <h4>Selected artifacts ({{selectedArtifacts.length}} / 5)</h4>
+        <button @click="handleLoan" class="rounded-lg bg-white px-4 py-2"><h4>Loan</h4></button>
         <div class="art-container">
           <div v-for="art in selectedArtifacts">
             <div class="card">
-              <h5>{{ art }}</h5>
+              <h5>{{ artifacts.find(a => a.artID === art).name }}</h5>
             </div>
           </div>
         </div>
@@ -74,13 +77,27 @@ export default {
       fromPrice: 0,
       toPrice: 100,
       utype: localStorage.utype,
-      selectedArtifacts: []
+      selectedArtifacts: [],
+      loanError: false,
     }
   },
   methods: {
     handleSelect: function (e) {
-      console.log(e.target.value)
-      console.log(this.selectedArtifacts)
+      // console.log(e.target.value)
+      // console.log(this.selectedArtifacts)
+    },
+    handleLoan: function(e) {
+      this.loanError = false;
+      let artifactIDStr = "?artifactIDList="
+      for (let i = 0; i < this.selectedArtifacts.length; i++) {
+        artifactIDStr = artifactIDStr + this.selectedArtifacts[i];
+        if (i == this.selectedArtifacts.length - 1) continue
+        artifactIDStr = artifactIDStr + ','
+      }
+      console.log(artifactIDStr)
+      axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan${artifactIDStr}` : 'production_link')
+            .catch(e => this.loanError = true)
+            .then(this.selectedArtifacts = [])
     }
   },
   watch: {
@@ -135,9 +152,8 @@ a {
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto;
+  margin: auto;
   padding: 10px;
-  max-width: 60%;
-  max-height: 10%;
 }
 
 .card {

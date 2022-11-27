@@ -47,6 +47,8 @@ export default {
   methods: {
     logOut() {
       localStorage.removeItem('uid');
+      localStorage.removeItem('utype')
+      this.$router.go()
       this.uid = 0;
     }
   }

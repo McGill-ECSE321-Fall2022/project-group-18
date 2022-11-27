@@ -37,6 +37,9 @@ import axios from 'axios'
 
 export default {
     name: 'login',
+    mounted() {
+        if (localStorage.getItem('uid') && localStorage.getItem('utype')) this.logged = true;
+    },
     data() {
         return {
             username: '',
@@ -56,7 +59,7 @@ export default {
                     console.log(res)
                     localStorage.setItem('uid', res.data)
                     localStorage.setItem('utype', this.type)
-                    this.$router.push('/')
+                    this.$router.go(0)
                 })
                 .catch(e => this.error = true)
         }
