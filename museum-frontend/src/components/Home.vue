@@ -58,7 +58,7 @@
             </div>
             <div v-if="utype === 'employee' || utype === 'owner'">
               <label>Room:</label>
-              <input type="number" min="1" max="11" @change="handleArtifactToRoom"
+              <input :disabled="!initArtifactToRoom[art.artID]" type="number" min="1" max="11" @change="handleArtifactToRoom"
                 v-model.number="artifactToRoom[art.artID]">
             </div>
             <button v-if="utype === 'employee' || utype === 'owner'" @click="(e) => handleUpdateArtifact(e, art)"
