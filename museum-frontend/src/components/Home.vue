@@ -4,14 +4,23 @@
     <h2>Artifacts</h2>
     <b-nav-form>
       <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="Search"></b-form-input>
-      <b-button size="lg" class="my-2 my-sm-0" type="submit">Search</b-button>
-      <label class="ml-lg">Loanable: </label>
-      <input type="checkbox" v-model="loanableFilter">
-      <label>Price range: </label>
-      <label>From: </label>
-      <input v-model="fromPrice" type="number">
-      <label>To: </label>
-      <input v-model="toPrice" type="number">
+      <div>
+        <label class="ml-lg">Loanable: </label>
+        <input type="checkbox" v-model="loanableFilter">
+      </div>
+      <div>
+        <label>Price range: </label>
+        <div class="row mx-xl-4">
+          <div class="">
+            <label>From: </label>
+            <input v-model="fromPrice" type="number">
+          </div>
+          <div class="">
+            <label>To: </label>
+            <input v-model="toPrice" type="number">
+          </div>
+        </div>
+      </div>
     </b-nav-form>
     <!-- <b-list-group class="art-container">
       <b-list-item v-for="art in artifacts.filter(a => filter ? a.name.toLowerCase().includes(filter.toLowerCase()) : a)">
@@ -20,22 +29,43 @@
         </div>
       </b-list-item>
     </b-list-group> -->
-    <h5 class="m-lg-4 text-danger" v-if="loanError">There was an error when processing your loan request. (One of the artifacts you requested might already be loaned)</h5>
+    <h5 class="m-lg-4 text-danger" v-if="loanError">There was an error when processing your loan request. (One of the
+      artifacts you requested might already be loaned)</h5>
+      <h5 class="m-lg-4 text-danger" v-if="updateArtifactError">There was an error when updatig the Artifact</h5>
     <div class="container">
       <div class="grid-container">
         <div v-for="art in filteredArtifacts">
           <div class="card">
-            <input :disabled="selectedArtifacts.length >= 5 && !selectedArtifacts.includes(art.artID)" v-if="utype === 'customer'" :value="art.artID" id="art.artID" v-model="selectedArtifacts"
+            <input :disabled="selectedArtifacts.length >= 5 && !selectedArtifacts.includes(art.artID)"
+              v-if="utype === 'customer'" :value="art.artID" id="art.artID" v-model="selectedArtifacts"
               @change="handleSelect($event)" class="mr-auto" type="checkbox">
             <h5>{{ art.name }}</h5>
             <h6>Type: {{ art.type }}</h6>
-            <h6>Loan fee: {{ art.loanFee }}</h6>
+            <div v-if="utype === 'employee'">
+              <div>
+                <label>Loanable: </label>
+                <input type="checkbox" v-model="art.loanable">
+              </div>
+              <div>
+                <label>Loaned: </label>
+                <input type="checkbox" v-model="art.loaned">
+              </div>
+            </div>
+            <h6 v-if="utype === 'customer'">Loan fee: {{ art.loanFee }}</h6>
+            <div v-else>
+              <label>Loan fee: </label>
+              <input type="number" v-model="art.loanFee">
+            </div>
+            <button @click="(e) => handleUpdateArtifact(e, art)"
+              class="px-2 py-2 w-25 align-self-end rounded-lg bg-white">Edit</button>
           </div>
         </div>
       </div>
       <div v-if="selectedArtifacts.length > 0">
-        <h4>Selected artifacts ({{selectedArtifacts.length}} / 5)</h4>
-        <button @click="handleLoan" class="rounded-lg bg-white px-4 py-2"><h4>Loan</h4></button>
+        <h4>Selected artifacts ({{ selectedArtifacts.length }} / 5)</h4>
+        <button @click="handleLoan" class="rounded-lg bg-white px-4 py-2">
+          <h4>Loan</h4>
+        </button>
         <div class="art-container">
           <div v-for="art in selectedArtifacts">
             <div class="card">
@@ -79,6 +109,7 @@ export default {
       utype: localStorage.utype,
       selectedArtifacts: [],
       loanError: false,
+      updateArtifactError: false,
     }
   },
   methods: {
@@ -86,7 +117,7 @@ export default {
       // console.log(e.target.value)
       // console.log(this.selectedArtifacts)
     },
-    handleLoan: function(e) {
+    handleLoan: function (e) {
       this.loanError = false;
       let artifactIDStr = "?artifactIDList="
       for (let i = 0; i < this.selectedArtifacts.length; i++) {
@@ -96,8 +127,21 @@ export default {
       }
       console.log(artifactIDStr)
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan${artifactIDStr}` : 'production_link')
-            .catch(e => this.loanError = true)
-            .then(this.selectedArtifacts = [])
+        .catch(e => this.loanError = true)
+        .then(this.selectedArtifacts = [])
+    },
+    handleUpdateArtifact: function (e, art) {
+      this.updateArtifactError = false;
+      axios.post(process.env.NODE_ENV === "development" ? `http://localhost:8080/artifact/update/${art.artID}` : 'production_link', {
+        "artID": art.artID,
+        "name": art.name,
+        "type": art.type,
+        "loanable": art.loanable,
+        "loaned": art.loaned,
+        "loanFee": art.loanFee
+      })
+        .catch(e => this.updateArtifactError = true)
+        .then(res => console.log(res))
     }
   },
   watch: {
