@@ -1,8 +1,10 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.model.Business;
 import com.example.museum.model.Owner;
 import com.example.museum.model.Room;
+import com.example.museum.repository.BusinessRepository;
 import com.example.museum.repository.OwnerRepository;
 import com.example.museum.repository.RoomRepository;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,8 @@ public class MuseumSetupServiceTests {
     RoomRepository roomRepository;
     @Mock
     OwnerRepository ownerRepository;
+    @Mock
+    BusinessRepository businessRepository;
 
     @InjectMocks
     MuseumSetupService museumSetupService;
@@ -96,5 +100,32 @@ public class MuseumSetupServiceTests {
 
         DatabaseException ex = assertThrows(DatabaseException.class, () -> museumSetupService.createOwner());
         verify(ownerRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testCreateBusiness(){
+        when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> new ArrayList<>());
+        when(businessRepository.save(any(Business.class))).thenAnswer((InvocationOnMock invocation) -> invocation.getArgument(0));
+
+        Business business = museumSetupService.createBusiness();
+
+        assertNotNull(business);
+        assertEquals(10, business.getTicketFee());
+
+        verify(businessRepository, times(1)).save(any(Business.class));
+    }
+
+    @Test
+    public void testBusinessAlreadyExists(){
+        Business business = new Business();
+        List<Business> existingBusinessList = new ArrayList<>();
+        existingBusinessList.add(business);
+        when(businessRepository.findAll()).thenAnswer((InvocationOnMock invocation) -> existingBusinessList);
+
+        DatabaseException ex = assertThrows(DatabaseException.class, () -> museumSetupService.createBusiness());
+        assertNotNull(ex);
+        assertEquals("Business already exists in the database", ex.getMessage());
+        verify(businessRepository, times(1)).findAll();
+
     }
 }

@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Profile from '@/components/Profile'
+import Business from '@/components/Business'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/profile/:id',
       name: 'Profile',
       component: Profile
+    },
+    {
+      path: '/business',
+      name: 'Business',
+      component: Business
     }
   ]
 })

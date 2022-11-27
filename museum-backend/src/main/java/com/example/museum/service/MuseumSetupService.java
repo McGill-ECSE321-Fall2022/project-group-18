@@ -1,8 +1,10 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
+import com.example.museum.model.Business;
 import com.example.museum.model.Owner;
 import com.example.museum.model.Room;
+import com.example.museum.repository.BusinessRepository;
 import com.example.museum.repository.OwnerRepository;
 import com.example.museum.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ public class MuseumSetupService {
     RoomRepository roomRepository;
     @Autowired
     OwnerRepository ownerRepository;
+    @Autowired
+    BusinessRepository businessRepository;
 
     public List<Room> createRooms(){
         if(roomRepository.findAll().iterator().hasNext()){
@@ -71,5 +75,17 @@ public class MuseumSetupService {
         }
         Owner returnedOwner = ownerRepository.save(owner);
         return returnedOwner;
+    }
+
+    //creates a business with a ticket fee of 10
+    public Business createBusiness(){
+        Business business = new Business();
+        business.setTicketFee(10);
+
+        if(businessRepository.findAll().iterator().hasNext()){
+            throw new DatabaseException(HttpStatus.CONFLICT, "Business already exists in the database");
+        }
+        Business returnedBusiness = businessRepository.save(business);
+        return returnedBusiness;
     }
 }
