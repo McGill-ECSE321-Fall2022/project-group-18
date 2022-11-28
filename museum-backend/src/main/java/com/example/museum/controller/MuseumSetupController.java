@@ -1,9 +1,7 @@
 package com.example.museum.controller;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.Business;
-import com.example.museum.model.Owner;
-import com.example.museum.model.Room;
+import com.example.museum.model.*;
 import com.example.museum.service.MuseumSetupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +22,7 @@ public class MuseumSetupController {
             Owner createdOwner = museumSetupService.createOwner();
             List<Room> createdRooms = museumSetupService.createRooms();
             Business createdBusiness = museumSetupService.createBusiness();
+            Customer createCustomer = museumSetupService.createCustomer();
         }catch(DatabaseException e){
             return new ResponseEntity<Boolean>(Boolean.FALSE, e.getStatus());
         }

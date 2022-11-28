@@ -2,9 +2,11 @@ package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.model.Business;
+import com.example.museum.model.Customer;
 import com.example.museum.model.Owner;
 import com.example.museum.model.Room;
 import com.example.museum.repository.BusinessRepository;
+import com.example.museum.repository.CustomerRepository;
 import com.example.museum.repository.OwnerRepository;
 import com.example.museum.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class MuseumSetupService {
     RoomRepository roomRepository;
     @Autowired
     OwnerRepository ownerRepository;
+    @Autowired
+    CustomerRepository customerRepository;
     @Autowired
     BusinessRepository businessRepository;
 
@@ -75,6 +79,20 @@ public class MuseumSetupService {
         }
         Owner returnedOwner = ownerRepository.save(owner);
         return returnedOwner;
+    }
+    public Customer createCustomer(){
+        Customer customer = new Customer();
+        customer.setUsername("customer321");
+        customer.setPassword("321");
+        customer.setFirstName("A");
+        customer.setLastName("B");
+
+        if(customerRepository.findAll().iterator().hasNext()){
+            throw new DatabaseException(HttpStatus.CONFLICT,"Customer already exists in the database");
+        }
+
+        Customer returnedCustomer = customerRepository.save(customer);
+        return returnedCustomer;
     }
 
     //creates a business with a ticket fee of 10
