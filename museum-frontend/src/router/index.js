@@ -7,6 +7,8 @@ import Profile from '@/components/Profile'
 import Business from '@/components/Business'
 import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
+import Scheduling from '@/components/Scheduling'
+import EmployeeHours from '@/components/EmployeeHours'
 
 Vue.use(Router)
 
@@ -47,6 +49,16 @@ export default new Router({
       path: '/managing',
       name: 'Managing',
       component: Managing
+    },
+    {
+      path: '/scheduling',
+      name: 'Scheduling',
+      component: Scheduling
+    },
+    {
+      path: '/employeeHours',
+      name: 'EmployeeHours',
+      component: EmployeeHours
     }
   ]
 })
