@@ -90,13 +90,14 @@
 
 <script>
 import axios from 'axios';
-import { BIconCartCheckFill, BIconCartFill, BIconSearch } from 'bootstrap-vue';
+import {BForm, BIconCartCheckFill, BIconCartFill, BIconSearch} from 'bootstrap-vue';
 
 export default {
   components: {
     BIconCartCheckFill,
     BIconCartFill,
-    BIconSearch
+    BIconSearch,
+    BForm
   },
   name: 'hello',
   mounted() {
@@ -131,6 +132,7 @@ export default {
       fromPrice: 0,
       toPrice: 100,
       utype: localStorage.utype,
+      uid: localStorage.uid,
       selectedArtifacts: [],
       loanError: false,
       updateArtifactError: false,
@@ -143,16 +145,26 @@ export default {
       // console.log(e.target.value)
       // console.log(this.selectedArtifacts)
     },
-    handleLoan: function (e) {
+    handleLoan: async function (e) {
+      let newLoanID = -1;
       this.loanError = false;
       let artifactIDStr = "?artifactIDList="
+      let loanCustomerStr = "?loanID="
       for (let i = 0; i < this.selectedArtifacts.length; i++) {
         artifactIDStr = artifactIDStr + this.selectedArtifacts[i];
         if (i == this.selectedArtifacts.length - 1) continue
         artifactIDStr = artifactIDStr + ','
       }
       console.log(artifactIDStr)
-      axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan${artifactIDStr}` : 'production_link')
+      await axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan${artifactIDStr}` : 'production_link')
+        .catch(e => this.loanError = true)
+        .then(res => {
+          console.log("loan ID: " + res.data)
+          newLoanID = res.data;
+        })
+      loanCustomerStr = loanCustomerStr + newLoanID
+      console.log("loan add to customer:" + loanCustomerStr)
+      axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${this.uid}/loans/add${loanCustomerStr}` : 'production_link')
         .catch(e => this.loanError = true)
         .then(this.selectedArtifacts = [])
     },

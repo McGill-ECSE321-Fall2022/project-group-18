@@ -7,6 +7,7 @@ import Profile from '@/components/Profile'
 import Business from '@/components/Business'
 import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
+import Loan from '@/components/Loan'
 
 Vue.use(Router)
 
@@ -47,6 +48,11 @@ export default new Router({
       path: '/managing',
       name: 'Managing',
       component: Managing
+    },
+    {
+      path: '/loans',
+      name: 'Loan',
+      component: Loan
     }
   ]
 })
