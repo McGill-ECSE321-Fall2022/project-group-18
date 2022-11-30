@@ -57,7 +57,22 @@
   </b-container>
 
 </template>
-<script>
+<script src="./TicketScript.js">
+export default {
+  data() {
+    return {
+      value: '',
+      context: null
+    }
+  },
+  created: function () {
+  },
+  methods: {
+    onContext(ctx) {
+      this.context = ctx
+    }
+  }
+}
 </script>
 <style>
 p1 {
