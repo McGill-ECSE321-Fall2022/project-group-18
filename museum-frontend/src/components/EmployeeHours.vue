@@ -2,12 +2,16 @@
     <div id = 'employeeHours'>
         <h1>Search Employee Hours</h1>
     <div>
-        <label>From</label>
-        <input type="text" placeholder="Date" v-model="date" />
+        <b-nav-form>
+          <BIconSearch class="h4 mb-2 mr-2" />
+          <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="From"></b-form-input>
+        </b-nav-form>
     </div>
     <div>
-        <label>To</label>
-        <input type="text" placeholder="Date" v-model="date2" />
+      <b-nav-form>
+        <BIconSearch class="h4 mb-2 mr-2" />
+        <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="To"></b-form-input>
+      </b-nav-form>
     </div>
     <div id="view-employee-hours">
       <b-table striped hover :items="employeeHours"> Employee Hours </b-table>
@@ -19,8 +23,11 @@
 
 <script>
 export default {
+  components: 
+  BIconSearch,
   data(){
     return {
+        filter: '',
         startTime: '',
         endTime: '',
         date: '',
