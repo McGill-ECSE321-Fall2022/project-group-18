@@ -100,6 +100,9 @@ export default {
   },
 
   methods: {
+    onContext(ctx) {
+      this.context = ctx
+    }
     /*
     async createEmployeeHour(date, openHour, openMin, closeHour, closeMin) {
       console.log("CREATING EMPLOYEE HOUR")
