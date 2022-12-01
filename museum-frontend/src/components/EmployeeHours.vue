@@ -23,8 +23,6 @@
 
 <script>
 export default {
-  components: 
-  BIconSearch,
   data(){
     return {
         filter: '',
