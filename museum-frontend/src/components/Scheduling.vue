@@ -16,7 +16,7 @@
                 <b-calendar v-model="date" @context="onContext" locale="en-US"></b-calendar>
             </div>
             </b-col>
-            <b-col>Sent Emloyee Starting Time
+            <b-col>Set Emloyee Starting Time
             <div id="Emloyee-hour-start-hour">
                 <!--element which is going to render the TextBox-->
                 <input v-model ="startHour"
