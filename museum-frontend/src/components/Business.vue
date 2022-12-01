@@ -77,7 +77,8 @@
     </b-container>
     </div>
     <div id="create-business-hour-btn">
-      <b-button :disabled="!year || !month || !day || !openHour || !openMin || !closeHour || !closeMin" type="submit">
+      <b-button :disabled="!year || !month || !day || !openHour || !openMin || !closeHour || !closeMin" type="submit"
+      @click="createBusinessHour(year, month, day, openHour, openMin, closeHour, closeMin)">
         Create Business Hour
       </b-button>
     </div>
@@ -88,6 +89,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   data() {
     return {
@@ -98,12 +101,42 @@ export default {
       openMin: '',
       closeHour: '',
       closeMin: '',
-
-      businessHours: [
-        { date: '2022-10-10', open_time: '08:00:00', close_time: '13:00:00' },
-        { date: '2022-11-19', open_time: '09:00:00', close_time: '14:00:00' },
-        { date: '2022-12-04', open_time: '10:00:00', close_time: '15:00:00' }
-      ]
+      businessHours: []
+    }
+  },
+  mounted() {
+    axios.get('http://localhost:8080/businessHour/all')
+    .then(response => {
+      this.businessHours = response.data;
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+  },
+  methods: {
+    /*
+     create a business hour for the business
+     constraints: year >= 22
+     month: [1,12]
+     day: [1,31] (no checks for smaller months)
+     openHour, closeHour: [0, 23]
+     openMin, closeMin: [0, 59]
+     opening time must be before closing time
+     */
+    async createBusinessHour(year, month, day, openHour, openMin, closeHour, closeMin) {
+      console.log("CREATING BUSINESS HOUR")
+      if (year >= 22 && month <= 12 && month >= 1 && day <= 31 && day >= 1 && openHour <= 23 && openHour >= 0 && closeHour <= 23 && closeHour >= 0 && openMin <= 59 && openMin >= 0 && closeMin <= 59 && closeMin >= 0 && (openHour < closeHour || (openHour == closeHour && openMin < closeMin))) {
+        await axios.post('http://localhost:8080/businessHour', {
+          day: "20" + year + "-" + month + "-" + day,
+          openTime: openHour + ":" + openMin + ":" + "00",
+          closeTime: closeHour + ":" + closeMin + ":" + "00"
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }else{
+        console.log("Invalid business hour parameters")
+      }
     }
   }
 }
