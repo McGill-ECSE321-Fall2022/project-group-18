@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,6 +32,16 @@ public class EmployeeService {
         }
 
         return employee;
+    }
+
+    public List<Employee> getAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        Iterator<Employee> emp = employeeRepository.findAll().iterator();
+        while (emp.hasNext()) {
+            Employee e = emp.next();
+            employees.add(e);
+        }
+        return employees;
     }
 
     public int loginEmployee(Employee employeeRequest) {

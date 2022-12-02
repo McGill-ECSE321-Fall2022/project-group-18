@@ -1,5 +1,6 @@
 package com.example.museum.integration;
 
+import com.example.museum.dto.ArtifactDto;
 import com.example.museum.repository.EmployeeHourRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +46,7 @@ public class EmployeeIntegrationTest {
         EmployeeHour employeeHour = createEmployeeHour();
         int id = testCreateEmployee(employeeHour);
         testGetEmployee(id);
+        testGetAllEmployees(id);
         testGetEmployeeHours(id);
         testLoginEmployee();
         testInvalidLoginEmployee();
@@ -141,6 +143,22 @@ public class EmployeeIntegrationTest {
         assertEquals(password, response.getBody().getPassword());
         assertEquals(firstName, response.getBody().getFirstName());
         assertEquals(lastName, response.getBody().getLastName());
+    }
+
+    private void testGetAllEmployees(int id) {
+        final String username = "employee1";
+        final String password = "password";
+        final String firstName = "Employee";
+        final String lastName = "Account";
+        ResponseEntity<List<EmployeeDto>> response = client.exchange("/employee/all", HttpMethod.GET, null, new ParameterizedTypeReference<List<EmployeeDto>>() {});
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(id, response.getBody().get(0).getAccountID());
+        assertEquals(username, response.getBody().get(0).getUsername());
+        assertEquals(password, response.getBody().get(0).getPassword());
+        assertEquals(firstName, response.getBody().get(0).getFirstName());
+        assertEquals(lastName, response.getBody().get(0).getLastName());
     }
 
     private void testGetEmployeeHours(int id) {
