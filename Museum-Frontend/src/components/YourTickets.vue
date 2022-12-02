@@ -73,7 +73,7 @@
   </b-container>
 
 </template>
-<script src="./TicketScript.js">
+<script>
 </script>
 <style>
 p1 {

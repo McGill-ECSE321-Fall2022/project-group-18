@@ -9,14 +9,9 @@
         <b-col md="auto">
           <b-calendar v-model="value" @context="onContext" locale="en-US"></b-calendar>
         </b-col>
-        <b-col>
-          <p>Value: <b>'{{ value }}'</b></p>
-          <p class="mb-0">Context:</p>
-          <pre class="small">{{ context }}</pre>
-        </b-col>
       </b-col>
       <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
-        <h1>DD-MM-YYYY</h1>
+        <h1>{{ value }}</h1>
         <div class="box1">
           <b-row>
             <b-col>
@@ -28,32 +23,52 @@
             </b-col>
             <b-col>
               <b-input-group prepend="$" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 115px;">
-                <b-form-input id="inline-form-input-username" placeholder="Price"></b-form-input>
+                <b-form-input v-model="price" id="inline-form-input-username" placeholder="Price"></b-form-input>
               </b-input-group>
             </b-col>
+            <b-row>
+              <b-col>
+                <b-button style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
+              </b-col>
+            </b-row>
           </b-row>
-          <b-row>
-            <b-col>
-              <p2 style="font-size: 25px;text-align-all: center">Quantity:</p2>
-            </b-col>
-            <b-col>
-              <div>
-                <label for="sb-inline"></label>
-                <b-form-spinbutton id="sb-inline" v-model="value" inline></b-form-spinbutton>
-              </div>
-            </b-col>
-          </b-row>
+          <b-row><p1>{{created}}</p1></b-row>
         </div>
       </b-col>
     </b-row>
   </b-container>
 
 </template>
-<script src="./TicketScript.js">
+<script>
+import axios from 'axios'
+
+function TicketDto(date, price) {
+  this.date = date
+  this.price = price
+}
+
 export default {
+  name: 'CreateTicket',
   data() {
     return {
-      value: 50
+      price: '',
+      value: '',
+      tickets: [],
+      newTicket: '',
+      errorTicket: '',
+      created: false
+    }
+  },
+  methods: {
+    createTicket() {
+      axios.post(process.env.NODE_ENV === "development"
+          ? 'http://localhost:8080/ticket' : 'production_link',
+        {
+          date: this.value,
+          price: this.price
+        })
+        .catch(e => console.log(e))
+      this.created = true
     }
   }
 }
