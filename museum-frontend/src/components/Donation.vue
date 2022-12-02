@@ -13,19 +13,34 @@
       <label for="painting">Painting</label>
     </form>
 
-    <button :disabled="!nameDonatedArtifact || (!typePaintingDonated && !typeSculptureDonated)" >Donate</button>
+    <button :disabled="!nameDonatedArtifact || (!typePaintingDonated && !typeSculptureDonated)"
+    @click="createDonation(nameDonatedArtifact,typeSculptureDonated,typePaintingDonated)">Donate</button>
 
   </div>
 
 </template>
 <script>
+
+import axios from 'axios'
+
 export default {
   data(){
     return {
       nameDonatedArtifact: '',
       typeSculptureDonated: '',
       typePaintingDonated: '',
+      donatedArtifacts : []
+    }
+  },
+  methods: {
+    createDonation(nameDonatedArtifact, typeSculptureDonated, typePaintingDonated){
+      if(typeSculptureDonated != ''){
+        axios.post('http://localhost:8080/donation', JSON.stringify([{name: nameDonatedArtifact, type: "Sculpture", loanable: false, loaned: false, loanFee: 0}]),{headers:{"Content-Type":"application/json"}}).catch(error => console.log(error))
+      }
+      else{
+        axios.post('http://localhost:8080/donation', JSON.stringify([{name: nameDonatedArtifact, type: "Painting", loanable: false, loaned: false, loanFee: 0}]), {headers:{"Content-Type":"application/json"}}).catch(error => console.log(error))
 
+      }
     }
   }
 }
