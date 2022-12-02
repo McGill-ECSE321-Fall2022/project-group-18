@@ -16,13 +16,15 @@ public class MuseumSetupController {
     @Autowired
     MuseumSetupService museumSetupService;
 
+    //setup the museum with all rooms, a business, and one of each user type
     @PostMapping("/setup")
     public ResponseEntity<Boolean> setupMuseum(){
         try{
             Owner createdOwner = museumSetupService.createOwner();
             List<Room> createdRooms = museumSetupService.createRooms();
             Business createdBusiness = museumSetupService.createBusiness();
-            Customer createCustomer = museumSetupService.createCustomer();
+            Customer createdCustomer = museumSetupService.createCustomer();
+            Employee createdEmployee = museumSetupService.createEmployee();
         }catch(DatabaseException e){
             return new ResponseEntity<Boolean>(Boolean.FALSE, e.getStatus());
         }

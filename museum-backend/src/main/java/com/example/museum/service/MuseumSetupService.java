@@ -1,14 +1,8 @@
 package com.example.museum.service;
 
 import com.example.museum.exceptions.DatabaseException;
-import com.example.museum.model.Business;
-import com.example.museum.model.Customer;
-import com.example.museum.model.Owner;
-import com.example.museum.model.Room;
-import com.example.museum.repository.BusinessRepository;
-import com.example.museum.repository.CustomerRepository;
-import com.example.museum.repository.OwnerRepository;
-import com.example.museum.repository.RoomRepository;
+import com.example.museum.model.*;
+import com.example.museum.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +23,8 @@ public class MuseumSetupService {
     CustomerRepository customerRepository;
     @Autowired
     BusinessRepository businessRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     public List<Room> createRooms(){
         if(roomRepository.findAll().iterator().hasNext()){
@@ -80,6 +76,8 @@ public class MuseumSetupService {
         Owner returnedOwner = ownerRepository.save(owner);
         return returnedOwner;
     }
+
+    //create a customer in the museum system
     public Customer createCustomer(){
         Customer customer = new Customer();
         customer.setUsername("customer321");
@@ -87,12 +85,26 @@ public class MuseumSetupService {
         customer.setFirstName("A");
         customer.setLastName("B");
 
-        if(customerRepository.findAll().iterator().hasNext()){
-            throw new DatabaseException(HttpStatus.CONFLICT,"Customer already exists in the database");
-        }
+        //the following code is not good since we can have multiple customers in the database...
+        // to be thorough we should check if the customer already exists in the database by checking its fields, but this is too much work...
+//        if(customerRepository.findAll().iterator().hasNext()){
+//            throw new DatabaseException(HttpStatus.CONFLICT,"Customer already exists in the database");
+//        }
 
         Customer returnedCustomer = customerRepository.save(customer);
         return returnedCustomer;
+    }
+
+    //create an employee in the museum system
+    public Employee createEmployee(){
+        Employee employee = new Employee();
+        employee.setUsername("employee321");
+        employee.setPassword("321");
+        employee.setFirstName("C");
+        employee.setLastName("D");
+
+        Employee returnedEmployee = employeeRepository.save(employee);
+        return returnedEmployee;
     }
 
     //creates a business with a ticket fee of 10
