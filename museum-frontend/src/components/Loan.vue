@@ -9,6 +9,9 @@
         Loan Fee: {{ loan.loanFee }}
       </b-card-text>
       <b-card-text>
+        {{ loan.loanStatus ? 'Loan Approved' : 'Loan Not Approved' }}
+      </b-card-text>
+      <b-card-text>
         <b-list-group>
           <b-list-group-item v-for="n in loansArtifactList[index].length">
             <h4> {{ loansArtifactList[index][n-1].name }} </h4>
@@ -24,7 +27,7 @@
           </b-list-group-item>
         </b-list-group>
       </b-card-text>
-      <b-button variant="primary">Approve</b-button>
+      <b-button variant="primary" @click="loanApprove(loan)">Approve</b-button>
       <b-button variant="danger">Reject</b-button>
     </b-card>
     <b-button @click="handleLoanOutput">Button</b-button>
@@ -40,11 +43,13 @@ export default {
     ? 'http://localhost:8080/loan/customer/all' : 'production_link')
       .then(res => {
         this.loansIDList = Object.keys(res.data)
+        this.loanCustomerIDList = Object.entries(res.data)
       })
       .catch(e => console.log(e))
   },
   data() {
     return {
+      loanCustomerIDList: [],
       loansIDList: [],
       loansDetailList:[],
       loansArtifactList:[],
@@ -52,8 +57,21 @@ export default {
     }
   },
   methods: {
-    handleLoanArtifactDisplay: function () {
-      return
+    loanApprove(loan) {
+      let loanID = loan.loanID
+      axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan/update/approve?loanID=${loanID}` : 'production_link')
+      this.addLoanToCustomer(loanID)
+      this.handleLoanInfoUpdate()
+    },
+    addLoanToCustomer(loanID) {
+      let customerID
+      for (const [key, value] of this.loanCustomerIDList) {
+        if (key === loanID) {
+          customerID = value
+          break
+        }
+      }
+      axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${customerID}/loans/approve?loanID=${loanID}` : 'production_link')
     },
     handleLoanOutput: function () {
       console.log(this.loansIDList)
@@ -62,6 +80,8 @@ export default {
       console.log(this.loansDetailList[1].loanArtifactDetailList)
     },
     handleLoanInfoUpdate: async function () {
+      this.loansDetailList = []
+      this.loansArtifactList = []
       for (let i = 0; i < this.loansIDList.length; i++) {
         let retrievedLoanID = this.loansIDList[i]
         let loanArtifactIDList = []
@@ -90,7 +110,7 @@ export default {
     }
   },
   watch: {
-    loansIDList() {
+    loanCustomerIDList() {
       this.handleLoanInfoUpdate()
     }
   }
