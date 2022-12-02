@@ -137,6 +137,8 @@ export default {
       }else{
         console.log("Invalid business hour parameters")
       }
+      //reload the window to make the changes displayed on the page
+      window.location.reload();
     }
   }
 }
