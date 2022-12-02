@@ -1,10 +1,14 @@
 <template>
   <div>
     <h1>Loan Approval List</h1>
+    <h3 v-if="noLoanExist">No Loan Request</h3>
     <b-card class="mt-3 mx-auto text-center" style="width: 40rem;" v-for="(loan, index) in loansDetailList" :key="loan.loanID">
       <b-card-title>
         Loan {{ loan.loanID }}
       </b-card-title>
+      <b-card-text>
+        Loan Status: {{ loan.loanStatus ? 'Approved' : 'Not Approved' }}
+      </b-card-text>
       <b-card-text>
         Loan Fee: {{ loan.loanFee }}
       </b-card-text>
