@@ -131,9 +131,9 @@ export default {
                console.log("http://localhost:8080/employee/delete/" + this.employees[i].accountID)
              })
          }
-         this.employees = []
-       }
 
+       }
+      this.employees = []
 
       window.location.reload();
      }
