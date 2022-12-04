@@ -1,7 +1,7 @@
 <template>
   <b-container class="bv-example-row">
     <b-row>
-      <h1>Buy a Ticket</h1>
+      <h1>Create a Ticket</h1>
     </b-row>
 
     <b-row>
@@ -17,22 +17,25 @@
             <!--            <h1 v-show="initialShow">Please Select a Date</h1>-->
           </b-row>
           <b-row>
+            <p1 style="font-size: 25px;text-align-all: center" v-show="promptShow">{{ noDatePrompt }}</p1>
+          </b-row>
+          <b-row>
             <b-col>
               <div class="col">
                 <div class="row-xs-0 my-auto">
-                  <p style="font-size: 25px;text-align-all: center" v-show="!initialShow">Ticket Price:</p>
+                  <p style="font-size: 25px;text-align-all: center" v-show="!show">Ticket Price:</p>
                 </div>
               </div>
             </b-col>
             <b-col>
-              <b-input-group prepend="$" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 115px;" v-show="!initialShow">
-                <b-form-input v-show="!initialShow" v-model="price" id="inline-form-input-username" placeholder="Price"></b-form-input>
+              <b-input-group prepend="$" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 115px;" v-show="!show">
+                <b-form-input v-show="!show" v-model="price" id="inline-form-input-username" placeholder="Price"></b-form-input>
               </b-input-group>
             </b-col>
           </b-row>
           <b-row>
             <b-col>
-              <b-button v-show="!initialShow" style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
+              <b-button v-show="!show" style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
             </b-col>
           </b-row>
         </div>
@@ -59,9 +62,15 @@ export default {
         this.tickets = Object.keys(res.data)
       })
       .catch(e => console.log(e))
+
+    this.getAllowedDates()
+    console.log(this.show)
   },
   data() {
     return {
+      show: true,
+      promptShow: true,
+      noDatePrompt: '',
       price: '',
       value: '',
       tickets: [],
@@ -71,10 +80,31 @@ export default {
       newDate: '',
       initialShow: false,
       varD: false,
-      created: false
+      created: false,
+      allowedDates: []
     }
   },
   methods: {
+    checkDate() {
+      console.log(this.tickets[0].day)
+      for (let i = 0; i < this.allowedDates.length; i++) {
+        if (String(this.value) === String(this.allowedDates[i])) {
+
+          this.show = true
+          this.promptShow = true
+          this.noDatePrompt = "A Ticket Already Exists For This Date"
+          return 1
+        }
+      }
+      this.show = false
+      this.promptShow = false
+      },
+    getAllowedDates() {
+      this.getTickets()
+      for (let i = 0; i < this.tickets.length; i++) {
+        this.allowedDates[i] = String(this.tickets[i].day)
+      }
+    },
     createTicket() {
       this.date = String(this.value);
       axios.post(process.env.NODE_ENV === "development"
@@ -85,19 +115,23 @@ export default {
         })
         .then()
         .catch(e => console.log(e))
+      console.log(this.tickets[0].day)
     },
     getTickets() {
-      axios.get('http://localhost:8080/ticket/all').then(response => {
-        this.tickets = response.data
-      }).catch(e => {
-        this.errorTicket = e
-      })
+      axios.get(process.env.NODE_ENV === "development"
+        ? 'http://localhost:8080/ticket/all' : 'production_link')
+        .then(res => {
+          this.tickets = Object.keys(res.data)
+        })
+        .catch(e => console.log(e))
     },
     onContext() {
-      // if(this.varD = true){
-      //   // this.initialShow = false
-      // }
-      // this.varD = true
+      if(this.varD){
+        this.getAllowedDates()
+        this.checkDate()
+      }else{
+        this.varD = true
+      }
     }
   }
 }

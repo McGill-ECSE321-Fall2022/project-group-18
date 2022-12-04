@@ -111,7 +111,7 @@ export default {
       }
       this.show = true
       for (let i = 0; i < this.user.tickets; i++) {
-        if (String(this.allowedDates[i]) === String(this.user.customerTickets)) {
+        if (String(this.value) === String(this.user.customerTickets[i].day)) {
           this.noDatePrompt = "You Have Already Purchased a Ticket For This Date"
           return 1
         }

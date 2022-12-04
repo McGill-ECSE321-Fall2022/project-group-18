@@ -11,7 +11,7 @@
               <h1>{{ user.customerTickets[currTicketNumber].day }}</h1>
             </b-row>
             <b-row>
-              <p2 style="font-size: 25px;text-align-all: center">8:00am to 5:00pm</p2>
+              <p2 style="font-size: 25px;text-align-all: center">{{ open }} to {{ close }}</p2>
             </b-row>
           </b-col>
         </b-row>
@@ -57,7 +57,14 @@ export default {
       .then(console.log(this.user))
       .catch(e => console.log(e))
 
-    console.log(this.user)
+    axios.get(process.env.NODE_ENV === "development"
+      ? 'http://localhost:8080/businessHour/all' : 'production_link')
+      .then(res => {
+        this.businessHours = Object.keys(res.data)
+      })
+      .catch(e => console.log(e))
+
+    this.findBusinessHour()
   },
   data() {
     return {
@@ -66,20 +73,34 @@ export default {
       customerTickets: [],
       currTicket: {},
       currDay: '',
+      businessHours: [],
+      open: '',
+      close:'',
       currTicketNumber: 0
     }
   },
   methods: {
+    findBusinessHour(day){
+      for(let i=0; i<this.businessHours.length; i++){
+        if(day === this.businessHours[i]){
+          this.open = this.businessHours.openTime
+          this.close = this.businessHours.closeTime
+          return
+        }
+      }
+    },
     prev() {
       if (this.currTicketNumber != 0) {
         this.currTicketNumber--
         this.currTicket = this.user.customerTickets[this.currTicketNumber]
+        this.findBusinessHour()
       }
     },
     next() {
       if (this.currTicketNumber != (this.user.customerTickets.length - 1)) {
         this.currTicketNumber++
         this.currTicket = this.user.customerTickets[this.currTicketNumber]
+        this.findBusinessHour()
       }
     }
   }
