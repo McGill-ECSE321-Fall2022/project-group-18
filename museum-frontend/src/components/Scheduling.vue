@@ -3,8 +3,8 @@
         <h1>Hours</h1>
     <div>
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
-            <b-dropdown-item v-for="employee in employees">
-              {{employee}}
+            <b-dropdown-item v-for="employee in employees" @click="()=>this.selectedEmployee = employee">
+              {{(employee.aFirstName +''+employee.aLastName)}}
             </b-dropdown-item>
         </b-dropdown>
     </div>
@@ -16,7 +16,7 @@
                 <b-calendar v-model="date" @context="onContext" locale="en-US"></b-calendar>
             </div>
             </b-col>
-            <b-col>Set Emloyee Starting Time
+            <b-col>Set Employee Starting Time
             <div id="Emloyee-hour-start-hour">
                 <!--element which is going to render the TextBox-->
                 <input v-model ="startHour"
@@ -83,8 +83,8 @@ export default {
         endMin: '',
         allowedDated: [],
         employeeHours: [],
-/*
-        employee:[
+
+        /*emp:[
             {name:"Employee1"},
             {name: "Employee2"},
             {name: "Employee3"}
@@ -115,7 +115,6 @@ export default {
       this.context = ctx
     },
     getAllowedDates() {
-      //AXIOS.get('/events').then(response => {this.employeeHours = response.data}).catch(e => {this.errorTicket = e})
       for(i=0;i<this.employeeHours.length;i++){
         this.allowedDates[i] = this.employeeHour[i].getDay()
       }
@@ -123,7 +122,7 @@ export default {
     
     async createEmployeeHour(date, openHour, openMin, closeHour, closeMin) {
       console.log("CREATING EMPLOYEE HOUR")
-      if (value == this.allowedDates[i].toString() && startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
+      if (date == this.allowedDates[i].toString() && startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
         await axios.post('http://localhost:8080/employeeHour', {
           day: date,
           openTime: openHour + ":" + openMin + ":" + "00",
