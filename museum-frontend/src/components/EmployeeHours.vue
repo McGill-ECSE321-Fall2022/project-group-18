@@ -23,15 +23,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
       ? `http://localhost:8080/employee/${localStorage.getItem('uid')}` : 'production_link')
-      .then(res => {
-        this.employee = res.data
-        console.log(res.data)
-      })
+      .then(res => 
+        this.employee =res.data)
       .catch(e => console.log(e))
 
     },
