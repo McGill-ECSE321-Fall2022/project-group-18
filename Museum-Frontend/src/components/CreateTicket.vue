@@ -17,7 +17,7 @@
             <b-col>
               <div class="col">
                 <div class="row-xs-0 my-auto">
-                  <p1 style="font-size: 25px;text-align-all: center">Ticket Price:</p1>
+                  <p style="font-size: 25px;text-align-all: center">Ticket Price:</p>
                 </div>
               </div>
             </b-col>
@@ -32,7 +32,7 @@
               </b-col>
             </b-row>
           </b-row>
-          <b-row><p1>{{created}}</p1></b-row>
+          <b-row><p>{{created}}</p></b-row>
         </div>
       </b-col>
     </b-row>
@@ -49,6 +49,15 @@ function TicketDto(date, price) {
 
 export default {
   name: 'CreateTicket',
+  mounted() {
+    // get the ticket id list first
+    axios.get(process.env.NODE_ENV === "development"
+      ? 'http://localhost:8080/ticket/all' : 'production_link')
+      .then(res => {
+        this.tickets = Object.keys(res.data)
+      })
+      .catch(e => console.log(e))
+  },
   data() {
     return {
       price: '',
@@ -56,19 +65,31 @@ export default {
       tickets: [],
       newTicket: '',
       errorTicket: '',
+      date: '',
+      newDate: '',
       created: false
     }
   },
   methods: {
     createTicket() {
+      this.date = String(this.value);
       axios.post(process.env.NODE_ENV === "development"
           ? 'http://localhost:8080/ticket' : 'production_link',
         {
-          date: this.value,
+          day: this.date,
           price: this.price
         })
+        .then()
         .catch(e => console.log(e))
-      this.created = true
+    },
+    getTickets() {
+      axios.get('http://localhost:8080/ticket/all').then(response => {
+        this.tickets = response.data
+      }).catch(e => {
+        this.errorTicket = e
+      })
+    },
+    onContext() {
     }
   }
 }
@@ -77,10 +98,12 @@ export default {
 p1 {
   text-align: center;
 }
+
 .box1 {
   height: 100px;
   width: 500px;
 }
+
 .box2 {
   height: 200px;
   width: 500px;

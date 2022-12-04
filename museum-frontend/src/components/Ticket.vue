@@ -7,10 +7,10 @@
     <b-row>
       <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
         <b-col md="auto">
-          <b-calendar v-model="value" @context="onContext" locale="en-US" @click="getAllowedDates"></b-calendar>
+          <b-calendar v-model="value" locale="en-US" @context="checkDate"></b-calendar>
         </b-col>
       </b-col>
-      <b-overlay :show="show" rounded="sm">
+      <b-overlay :show="show" rounded="sm" >
         <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
           <h1>{{ value }}</h1>
           <div class="box1">
@@ -55,9 +55,12 @@
     </b-row>
     <b-row>
       <b-row>
-        <p3 style="font-weight: bold; font-size: 40px">{{tickets}}</p3>
+        <p3 style="font-weight: bold; font-size: 40px">{{ this.allowedDates }}</p3>
       </b-row>
 
+    </b-row>
+    <b-row>
+      <b-button style="font-size: 40px" variant="primary" class="p-1" @click="checkDate">REF</b-button>
     </b-row>
     <b-row>
       <b-button style="font-size: 40px" variant="primary" class="p-1" @click="getAllowedDates">REF</b-button>
@@ -97,20 +100,29 @@ export default {
     }
   },
   methods: {
-    onContext() {
-      for (i = 0; i < this.allowedDates.length; i++) {
-        if (value == this.allowedDates[i].toString()) {
-          for (i = 0; i < this.tickets.length; i++) {
-            this.currentTicket = this.tickets[i]
-            this.price = this.currentTicket.price
-          }
+    checkDate() {
+      this.ticketNotFound = true
+      for (let i = 0; i < this.allowedDates.length; i++) {
+        if (String(this.value) === String(this.allowedDates[i])) {
+          this.currentTicket = this.tickets[i]
+          this.price = this.currentTicket.price
+          this.show = false
+          return 1
         }
       }
+      this.show = true
+    },
+    getTickets() {
+      axios.get('http://localhost:8080/ticket/all').then(response => {
+        this.tickets = response.data
+      }).catch(e => {
+        this.errorTicket = e
+      })
     },
     getAllowedDates() {
-      AXIOS.get('/events').then(response => {this.tickets = response.data}).catch(e => {this.errorTicket = e})
-      for(i=0;i<this.tickets.length;i++){
-        this.allowedDates[i] = this.tickets[i].getDate()
+      this.getTickets()
+      for (let i = 0; i < this.tickets.length; i++) {
+        this.allowedDates[i] = String(this.tickets[i].day)
       }
     }
   }
