@@ -9,6 +9,7 @@ import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
 import Scheduling from '@/components/Scheduling'
 import EmployeeHours from '@/components/EmployeeHours'
+import Ticket from '@/components/Ticket'
 
 Vue.use(Router)
 
@@ -59,6 +60,11 @@ export default new Router({
       path: '/employeeHours',
       name: 'EmployeeHours',
       component: EmployeeHours
+    },
+    {
+      path: '/ticket',
+      name: 'Ticket',
+      component: Ticket
     }
   ]
 })

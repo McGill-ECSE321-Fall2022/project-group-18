@@ -2,10 +2,8 @@
     <div id ='scheduling'>
         <h1>Hours</h1>
     <div>
-        <b-dropdown id="dropdown-left" text="Employee" variant="primary" class="m-2">
-            <b-dropdown-item href="#">Employee</b-dropdown-item>
-            <b-dropdown-item href="#">Employee1 </b-dropdown-item>
-            <b-dropdown-item href="#">Employee2 </b-dropdown-item>
+        <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
+            {{employees}}
         </b-dropdown>
     </div>
     <div>
@@ -36,7 +34,7 @@
                 />
             </div>
             </b-col>
-            <b-col>Set Emloyee Ending Time
+            <b-col>Set Employee Ending Time
             <div id="Emloyee-hour-end-hour">
                 <!--element which is going to render the TextBox-->
                 <input v-model ="endHour"
@@ -75,18 +73,20 @@
 export default {
   data(){
     return {
+        employees: [],
         date: '',
         startHour: '',
         startMin: '',
         endHour: '',
         endMin: '',
+        allowedDated: [],
         employeeHours: [],
-
+/*
         employee:[
             {name:"Employee1"},
             {name: "Employee2"},
             {name: "Employee3"}
-        ]
+        ]*/
     }
   },
   mounted(){
@@ -97,18 +97,33 @@ export default {
     .catch(error =>{
       console.log(error)
     })
+
+    axios.get(process.env.NODE_ENV === "development"
+    ? 'http://localhost:8080/employee/all' : 'production_link')
+      .then(res => {
+        this.employees = res.data
+      })
+      .catch(e => console.log(e))
   },
+
+
 
   methods: {
     onContext(ctx) {
       this.context = ctx
-    }
-    /*
+    },
+    getAllowedDates() {
+      //AXIOS.get('/events').then(response => {this.employeeHours = response.data}).catch(e => {this.errorTicket = e})
+      for(i=0;i<this.employeeHours.length;i++){
+        this.allowedDates[i] = this.employeeHour[i].getDay()
+      }
+    },
+    
     async createEmployeeHour(date, openHour, openMin, closeHour, closeMin) {
       console.log("CREATING EMPLOYEE HOUR")
-      if (date && day <= 31 && day >= 1 && openHour <= 23 && openHour >= 0 && closeHour <= 23 && closeHour >= 0 && openMin <= 59 && openMin >= 0 && closeMin <= 59 && closeMin >= 0 && (openHour < closeHour || (openHour == closeHour && openMin < closeMin))) {
-        await axios.post('http://localhost:8080/businessHour', {
-          day: "20" + year + "-" + month + "-" + day,
+      if (value == this.allowedDates[i].toString() && startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
+        await axios.post('http://localhost:8080/employeeHour', {
+          day: date,
           openTime: openHour + ":" + openMin + ":" + "00",
           closeTime: closeHour + ":" + closeMin + ":" + "00"
         })
@@ -118,7 +133,7 @@ export default {
       }else{
         console.log("Invalid employee hour parameters")
       }
-    }*/
+    }
 
   }
 }
