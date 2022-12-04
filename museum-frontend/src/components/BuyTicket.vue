@@ -11,11 +11,7 @@
         </b-col>
       </b-col>
       <b-col>
-        <b-overlay :show="checkoutShow"
-                   spinner-variant="primary"
-                   spinner-type="grow"
-                   spinner-small
-                   rounded="sm">
+        <b-overlay :show="checkoutShow" spinner-variant="primary" spinner-type="grow" spinner-small rounded="sm">
           <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
             <p v-show="!dateShow" style="color: #42b983">Thanks for your purchase!</p>
             <h1 v-show="dateShow">{{ value }}</h1>
@@ -24,7 +20,8 @@
                 <p1 style="font-size: 25px;text-align-all: center" v-show="promptShow">{{ noDatePrompt }}</p1>
               </b-row>
               <b-row>
-                <p1 style="font-size: 25px;text-align-all: center; color: rebeccapurple" v-show="!show">Please Enter Your Payment Information To Confirm Your Purchase:</p1>
+                <p1 style="font-size: 25px;text-align-all: center; color: rebeccapurple" v-show="!show">Please Enter
+                  Your Payment Information To Confirm Your Purchase:</p1>
               </b-row>
             </div>
             <b-row>
@@ -32,14 +29,14 @@
                 <b-form inline>
                   <label class="sr-only" for="inline-form-input-name" v-show="!show">Name</label>
                   <b-input-group prepend="Name" class="p-2 mb-2 mr-sm-2 mb-sm-0" v-show="!show">
-                    <b-form-input id="inline-form-input-username"
-                                  placeholder="Name on card" v-show="!show"></b-form-input>
+                    <b-form-input id="inline-form-input-username" placeholder="Name on card"
+                      v-show="!show"></b-form-input>
                   </b-input-group>
 
                   <label class="sr-only" for="inline-form-input-username" v-show="!show">Username</label>
                   <b-input-group prepend="Credit Card" class="p-2 mb-2 mr-sm-2 mb-sm-0" v-show="!show">
                     <b-form-input id="inline-form-input-username" placeholder="Credit Card Number"
-                                  v-show="!show"></b-form-input>
+                      v-show="!show"></b-form-input>
                   </b-input-group>
 
                   <b-input-group prepend="CVV" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 130px;" v-show="!show">
@@ -51,7 +48,7 @@
             <b-row>
               <b-col class="pb-3">
                 <p3 class="shadow p-3 my-3 mx-1 bg-white rounded" style="font-weight: bold; font-size: 40px"
-                    v-show="!show">
+                  v-show="!show">
                   ${{ price }}
                 </p3>
               </b-col>
@@ -70,6 +67,7 @@
 </template>
 <script>
 import axios from 'axios'
+import { BIconHandThumbsDown } from 'bootstrap-vue'
 import router from '../router'
 
 export default {
@@ -77,10 +75,8 @@ export default {
   mounted() {
     // get the ticket id list first
     axios.get(process.env.NODE_ENV === "development"
-      ? 'http://localhost:8080/customer/' + localStorage.getItem('uid') || 0 : 'production_link')
+      ? 'http://localhost:8080/customer/' + localStorage.getItem('uid') : 'production_link')
       .then(res => this.user = res.data)
-      .then(console.log(this.user))
-
       .catch(e => console.log(e))
   },
   data() {
@@ -154,20 +150,22 @@ export default {
         this.promptShow = false
       }, 1000);
     },
-    customerBuyTicket(){
-      let url = "http://localhost:8080/customer/" +localStorage.getItem('uid') + "/update";
-      console.log(this.user.firstName)
-      let data = this.user.customerTickets.push(Object(this.currentTicket));
-      console.log(url)
-      console.log(data)
+    customerBuyTicket() {
+      let url = "http://localhost:8080/customer/" + localStorage.getItem('uid') + "/update";
+      console.log('ticcket when buy~~', this.currentTicket)
+      console.log('user when buy~~', this.user)
+      let data = {
+        ...this.user, customerTickets: this.user.customerTickets ?
+          [...this.user.customerTickets, this.currentTicket] : [this.currentTicket]
+      }
+      console.log('url buy~~', url)
+      console.log('data buy~~', data)
 
-      axios.post(url, {
-        customerTickets: data
-      })
+      axios.post(url, data)
         .then(response => {
           console.log(response);
         })
-        .catch((error) => console.log( error.response.request._response ) )
+        .catch((error) => console.log(error))
     }
   }
 }
