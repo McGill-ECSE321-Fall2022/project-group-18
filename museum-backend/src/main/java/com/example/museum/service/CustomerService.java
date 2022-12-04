@@ -1,5 +1,9 @@
 package com.example.museum.service;
 
+import com.example.museum.dto.CustomerDto;
+import com.example.museum.dto.DonationDto;
+import com.example.museum.dto.LoanDto;
+import com.example.museum.dto.TicketDto;
 import com.example.museum.exceptions.DatabaseException;
 import com.example.museum.exceptions.RequestException;
 import com.example.museum.model.*;
@@ -79,19 +83,35 @@ public class CustomerService {
     }
 
     // update the customer info using id to identiy
-    public Customer modifyCustomerByID(int id, String username, String password, String firstName, String lastName) {
+    public Customer modifyCustomerByID(int id, CustomerDto customerDto) {
         Customer customer = customerRepository.findByAccountID(id);
         if (customer == null) {
             throw new DatabaseException(HttpStatus.NOT_FOUND, "Customer not found");
         }
-        if (ServiceUtils.conflictingUsername(username, id, customerRepository, employeeRepository,
+        if (ServiceUtils.conflictingUsername(customerDto.getUsername(), id, customerRepository, employeeRepository,
                 ownerRepository)) {
             throw new DatabaseException(HttpStatus.CONFLICT, "An customer with the given username already exists.");
         }
-        customer.setUsername(username);
-        customer.setPassword(password);
-        customer.setFirstName(firstName);
-        customer.setLastName(lastName);
+        customer.setUsername(customerDto.getUsername());
+        customer.setPassword(customerDto.getPassword());
+        customer.setFirstName(customerDto.getFirstName());
+        customer.setLastName(customerDto.getLastName());
+        customer.setCustomerDonatedArtifactsList();
+        customer.setCustomerTicketsList();
+        customer.setLoansList();
+
+        for (DonationDto don : customerDto.getCustomerDonatedArtifacts()) {
+            customer.addCustomerDonatedArtifact(don.toModel());
+        }
+
+        for (LoanDto lo : customerDto.getLoans()) {
+            customer.addLoan(lo.toModel());
+        }
+
+        for (TicketDto ti : customerDto.getCustomerTickets()) {
+            customer.addCustomerTicket(ti.toModel());
+        }
+
         Customer updatedCustomer = customerRepository.save(customer);
         return updatedCustomer;
     }

@@ -52,7 +52,7 @@ export default new Router({
       component: BuyTicket
     },
     {
-      path: '/tickets',
+      path: '/yourTickets',
       name: 'Tickets',
       component: ViewTickets
     },

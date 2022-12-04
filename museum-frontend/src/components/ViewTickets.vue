@@ -8,7 +8,7 @@
         <b-row class="shadow p-3 my-3 mx-1 bg-white rounded">
           <b-col>
             <b-row>
-              <h1>{{ currTicket }}</h1>
+              <h1>{{ user.customerTickets[currTicketNumber].day }}</h1>
             </b-row>
             <b-row>
               <p2 style="font-size: 25px;text-align-all: center">8:00am to 5:00pm</p2>
@@ -57,28 +57,29 @@ export default {
       .then(console.log(this.user))
       .catch(e => console.log(e))
 
-    this.currTicket = this.customerTickets[0]
+    console.log(this.user)
   },
   data() {
     return {
       user: {},
       uid: localStorage.getItem('uid') || 0,
-      customerTickets: [1, 2, 3, 4, 5, 6, 7, 8],
-      currTicket: '',
+      customerTickets: [],
+      currTicket: {},
+      currDay: '',
       currTicketNumber: 0
     }
   },
   methods: {
-    prev(){
-      if(this.currTicketNumber != 0){
-        this.currTicketNumber --
-        this.currTicket = this.customerTickets[this.currTicketNumber]
+    prev() {
+      if (this.currTicketNumber != 0) {
+        this.currTicketNumber--
+        this.currTicket = this.user.customerTickets[this.currTicketNumber]
       }
     },
-    next(){
-      if(this.currTicketNumber != (this.customerTickets.length -1)){
-        this.currTicketNumber ++
-        this.currTicket = this.customerTickets[this.currTicketNumber]
+    next() {
+      if (this.currTicketNumber != (this.user.customerTickets.length - 1)) {
+        this.currTicketNumber++
+        this.currTicket = this.user.customerTickets[this.currTicketNumber]
       }
     }
   }
