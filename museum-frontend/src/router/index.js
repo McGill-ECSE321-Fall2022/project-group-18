@@ -9,12 +9,9 @@ import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
 import BuyTicket from "../components/BuyTicket";
 import CreateTicket from "../components/CreateTicket";
+import ViewTickets from "../components/ViewTickets";
 
 Vue.use(Router)
-
-function ViewTickets() {
-
-}
 
 export default new Router({
   routes: [
@@ -55,8 +52,8 @@ export default new Router({
       component: BuyTicket
     },
     {
-      path: '/yourTickets',
-      name: 'YourTickets',
+      path: '/tickets',
+      name: 'Tickets',
       component: ViewTickets
     },
     {

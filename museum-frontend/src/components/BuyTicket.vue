@@ -155,7 +155,7 @@ export default {
       }, 1000);
     },
     customerBuyTicket(){
-      let url = "http://localhost:8080/customer/" +localStorage.getItem('uid') + "/update";
+      let url = "http://localhost:8080/customer/" + localStorage.getItem('uid') || 0 + "/update";
       console.log(this.user.firstName)
       let data = this.user.customerTickets.push(Object(this.currentTicket));
       console.log(url)
