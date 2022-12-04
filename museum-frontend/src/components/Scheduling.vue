@@ -3,8 +3,8 @@
         <h1>Hours</h1>
     <div>
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
-            <b-dropdown-item v-for="employee in employees" @click="()=>this.selectedEmployee = employee">
-              {{(employee.aFirstName +''+employee.aLastName +''+employee.accountID)}}
+            <b-dropdown-item v-for="employee in employees" @click="handleSelectEmployee(employee)">
+              {{(employee.firstName +''+employee.lastName +''+employee.accountID)}}
             </b-dropdown-item>
         </b-dropdown>
     </div>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data(){
     return {
@@ -81,7 +83,7 @@ export default {
         startMin: '',
         endHour: '',
         endMin: '',
-        allowedDated: [],
+        allowedDates: [],
         employeeHours: [],
 
         /*emp:[
@@ -114,6 +116,10 @@ export default {
     onContext(ctx) {
       this.context = ctx
     },
+    handleSelectEmployee(employee) {
+      console.log(employee)
+      this.selectedEmployee = employee
+    },
     getAllowedDates() {
       for(i=0;i<this.employeeHours.length;i++){
         this.allowedDates[i] = this.employeeHour[i].getDay()
@@ -127,13 +133,22 @@ export default {
          }
     }*/
     
-    async createEmployeeHour(date, openHour, openMin, closeHour, closeMin) {
-      console.log("CREATING EMPLOYEE HOUR")
-      if (date == this.allowedDates[i].toString() && startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
-        await axios.post('http://localhost:8080/employeeHour', {
+    createEmployeeHour(date, startHour, startMin, endHour, endMin) {
+      console.log("CREATING EMPLOYEE HOUR", date, startHour, startMin, endHour, endMin)
+      if (startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
+        axios.post('http://localhost:8080/employeeHour', {
           day: date,
-          openTime: openHour + ":" + openMin + ":" + "00",
-          closeTime: closeHour + ":" + closeMin + ":" + "00"
+          startTime: startHour + ":" + startMin + ":" + "00",
+          endTime: endHour + ":" + endMin + ":" + "00"
+        })
+        .then(res => {
+          const updatedEmployee = {...this.selectedEmployee, employeeHours: this.selectedEmployee.employeeHours ?
+            [...this.selectedEmployee.employeeHours, res.data]
+            : [res.data]
+          }
+
+          axios.post('http://localhost:8080/employee/update/' + this.selectedEmployee.accountID, updatedEmployee)
+          .then(res => console.log(res.data))
         })
         .catch(error => {
           console.log(error)

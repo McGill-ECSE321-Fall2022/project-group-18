@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-      <h1>{{ employee.firstName }} {{ employee.fastName }}</h1>
+      <h1>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <h1><i>{{ employee.username }}</i></h1>
       <div class="Employee Hours">
         <h3>Your Hours</h3>
@@ -11,7 +11,9 @@
         <b-list-group >
           <b-list-item v-for="hours in employee.employeeHours.sort((a, b) => new Date(a.day) - new Date(b.day))">
             <div class="card">
-              <h5> Date: {{ hours.date }}</h5>
+              <h5> Date: {{ hours.day }}</h5>
+              <h6> Start: {{ hours.startTime }}</h6>
+              <h6> End: {{ hours.endTime }}</h6>
             </div>
           </b-list-item>
         </b-list-group> 
@@ -30,7 +32,7 @@ export default {
     axios.get(process.env.NODE_ENV === "development"
       ? `http://localhost:8080/employee/${localStorage.getItem('uid')}` : 'production_link')
       .then(res => 
-        this.employee =res.data)
+        this.employee = res.data)
       .catch(e => console.log(e))
 
     },
