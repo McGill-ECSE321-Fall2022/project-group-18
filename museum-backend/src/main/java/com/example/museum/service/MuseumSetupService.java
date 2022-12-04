@@ -82,8 +82,8 @@ public class MuseumSetupService {
         Customer customer = new Customer();
         customer.setUsername("customer321");
         customer.setPassword("321");
-        customer.setFirstName("A");
-        customer.setLastName("B");
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
 
         //the following code is not good since we can have multiple customers in the database...
         // to be thorough we should check if the customer already exists in the database by checking its fields, but this is too much work...
@@ -100,8 +100,8 @@ public class MuseumSetupService {
         Employee employee = new Employee();
         employee.setUsername("employee321");
         employee.setPassword("321");
-        employee.setFirstName("C");
-        employee.setLastName("D");
+        employee.setFirstName("Jim");
+        employee.setLastName("Halpert");
 
         Employee returnedEmployee = employeeRepository.save(employee);
         return returnedEmployee;
