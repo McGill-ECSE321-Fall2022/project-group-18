@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="/"><BIconHouseFill class="h2 mb-2" color="white" /></b-navbar-brand>
-      <b-navbar-brand href="/" class="text-monospace font-weight-bolder my-2">Museum Website</b-navbar-brand>
+      <b-navbar-brand href="/" class="font-weight-bolder my-2">Museum Website</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
