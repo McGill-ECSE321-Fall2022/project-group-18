@@ -3,7 +3,9 @@
         <h1>Hours</h1>
     <div>
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
-            {{employees}}
+            <b-dropdown-item v-for="employee in employees">
+              {{employee}}
+            </b-dropdown-item>
         </b-dropdown>
     </div>
     <div>
