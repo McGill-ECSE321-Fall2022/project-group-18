@@ -16,7 +16,7 @@
           <b-nav-item v-if="utype === 'customer'" href="#/donate">Donate</b-nav-item>
           <b-nav-item v-if="utype === 'customer'" href="#/tickets">Tickets</b-nav-item>
           <b-nav-item v-if="utype === 'employee' || utype === 'owner'" href="#/requests">Requests</b-nav-item>
-          <b-nav-item v-if="utype === 'employee'" href="#/tickets">Hours</b-nav-item>
+          <b-nav-item v-if="utype === 'employee'" href="#/eticket">Hours</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/scheduling">Scheduling</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/managing">Managing</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/business">Business</b-nav-item>

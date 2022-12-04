@@ -5,6 +5,9 @@ import Home from "../components/Home";
 import Ticket from "../components/Ticket";
 import YourTickets from "../components/YourTickets";
 import CreateTicket from "../components/CreateTicket";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import Profile from "../components/Profile";
 
 Vue.use(Router)
 
@@ -21,18 +24,33 @@ export default new Router({
       component: Home
     },
     {
-      path: '/BuyTicket',
+      path: '/buyTicket',
       name: 'Ticket',
       component: Ticket
     },
     {
-      path: '/YourTickets',
-      name: 'YourTickets',
+      path: '/tickets',
+      name: 'tickets',
       component: YourTickets
     },
     {
-      path: '/CreateTicket',
-      name: 'CreateTicket',
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },
+    {
+      path: '/profile/:id',
+      name: 'Profile',
+      component: Profile
+    },
+    {
+      path: '/eticket',
+      name: 'eticket',
       component: CreateTicket
     }
   ]

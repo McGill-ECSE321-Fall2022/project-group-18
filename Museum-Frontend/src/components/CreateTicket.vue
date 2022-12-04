@@ -11,28 +11,30 @@
         </b-col>
       </b-col>
       <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
-        <h1>{{ value }}</h1>
+        <h1 v-show="!initialShow">{{ value }}</h1>
         <div class="box1">
+          <b-row>
+<!--            <h1 v-show="initialShow">Please Select a Date</h1>-->
+          </b-row>
           <b-row>
             <b-col>
               <div class="col">
                 <div class="row-xs-0 my-auto">
-                  <p style="font-size: 25px;text-align-all: center">Ticket Price:</p>
+                  <p style="font-size: 25px;text-align-all: center" v-show="!initialShow">Ticket Price:</p>
                 </div>
               </div>
             </b-col>
             <b-col>
-              <b-input-group prepend="$" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 115px;">
-                <b-form-input v-model="price" id="inline-form-input-username" placeholder="Price"></b-form-input>
+              <b-input-group prepend="$" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 115px;" v-show="!initialShow">
+                <b-form-input v-show="!initialShow" v-model="price" id="inline-form-input-username" placeholder="Price"></b-form-input>
               </b-input-group>
             </b-col>
-            <b-row>
-              <b-col>
-                <b-button style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
-              </b-col>
-            </b-row>
           </b-row>
-          <b-row><p>{{created}}</p></b-row>
+          <b-row>
+            <b-col>
+              <b-button v-show="!initialShow" style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
+            </b-col>
+          </b-row>
         </div>
       </b-col>
     </b-row>
@@ -67,6 +69,8 @@ export default {
       errorTicket: '',
       date: '',
       newDate: '',
+      initialShow: false,
+      varD: false,
       created: false
     }
   },
@@ -90,6 +94,10 @@ export default {
       })
     },
     onContext() {
+      // if(this.varD = true){
+      //   // this.initialShow = false
+      // }
+      // this.varD = true
     }
   }
 }
