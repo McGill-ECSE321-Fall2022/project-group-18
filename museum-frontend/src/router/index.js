@@ -7,8 +7,14 @@ import Profile from '@/components/Profile'
 import Business from '@/components/Business'
 import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
+import BuyTicket from "../components/BuyTicket";
+import CreateTicket from "../components/CreateTicket";
 
 Vue.use(Router)
+
+function ViewTickets() {
+
+}
 
 export default new Router({
   routes: [
@@ -42,6 +48,21 @@ export default new Router({
       path: '/donate',
       name: 'Donation',
       component: Donation
+    },
+    {
+      path: '/buyTicket',
+      name: 'BuyTicket',
+      component: BuyTicket
+    },
+    {
+      path: '/yourTickets',
+      name: 'YourTickets',
+      component: ViewTickets
+    },
+    {
+      path: '/createTicket',
+      name: 'CreateTicket',
+      component: CreateTicket
     },
     {
       path: '/managing',

@@ -1,0 +1,20 @@
+{
+  "name": "project-group-18",
+  "version": "1.0.0",
+  "description": "# Project Scope The museum in a small town needs help managing their inventory and has hired our engineering team to design and implement a museum website.  The website will allow customers, employees, and the museum owner to access the website.  All employees of the museum will be able to move artifacts around from one room to another.  Customers will be able to view artifacts on display, make loan requests, and donate new artifacts to the museum.  The museum owner will be able to perform any employee action, but will also be able to perform additional administrative tasks. No payments will be handled by the museum website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/McGill-ECSE321-Fall2022/project-group-18.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/McGill-ECSE321-Fall2022/project-group-18/issues"
+  },
+  "homepage": "https://github.com/McGill-ECSE321-Fall2022/project-group-18#readme"
+}
