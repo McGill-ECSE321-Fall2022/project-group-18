@@ -4,7 +4,7 @@
     <div>
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
             <b-dropdown-item v-for="employee in employees" @click="()=>this.selectedEmployee = employee">
-              {{(employee.aFirstName +''+employee.aLastName)}}
+              {{(employee.aFirstName +''+employee.aLastName +''+employee.accountID)}}
             </b-dropdown-item>
         </b-dropdown>
     </div>
@@ -119,6 +119,13 @@ export default {
         this.allowedDates[i] = this.employeeHour[i].getDay()
       }
     },
+
+   /* getselectedEmployee(){
+      for(let i = 0; i < this.employees.length; i++){
+         if(this.employees[i].get == this.selectedEmployee){
+
+         }
+    }*/
     
     async createEmployeeHour(date, openHour, openMin, closeHour, closeMin) {
       console.log("CREATING EMPLOYEE HOUR")

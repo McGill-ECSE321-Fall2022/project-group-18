@@ -1,20 +1,23 @@
 <template>
-    <div id = 'employeeHours'>
-      <h1>Search Employee Hours</h1>
-    <div>
-    <div>
-      <label>From: </label>
-      <input min="0" v-model="fromDate" type="number">
-    </div>
-    <div>
-      <label>To: </label>
-      <input v-model="toDate" type="number">
-    </div>
-    </div>
-    <div id="view-employee-hours">
-      <b-table striped hover :items="filter"> Employee Hours </b-table>
-    </div>
-    </div>
+  <div class="home">
+      <h1>{{ employee.aFirstName }} {{ employee.aLastName }}</h1>
+      <h1><i>{{ employee.aUsername }}</i></h1>
+      <div class="Employee Hours">
+        <h3>Your Hours</h3>
+          <!-- <b-nav-form>
+          <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button size="lg" class="my-2 my-sm-0" type="submit">Search</b-button>
+      </b-nav-form> -->
+        <b-list-group >
+          <b-list-item v-for="hours in employee.employeeHours.sort((a, b) => new Date(a.day) - new Date(b.day))">
+            <div class="card">
+              <h5> Date: {{ hours.date }}</h5>
+            </div>
+          </b-list-item>
+        </b-list-group> 
+      </div> 
+               
+  </div>
 
 
 </template>
@@ -24,21 +27,18 @@
 export default {
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
-      ? 'http://localhost:8080/employeeHour/all' : 'production_link')
+      ? 'http://localhost:8080/employee/{id}/employeeHours' + localStorage.getItem('uid') : 'production_link')
       .then(res => {
-        this.employeeHours = res.data
+        this.employee = res.data
       })
       .catch(e => console.log(e))
 
     },
   data(){
     return {
-        employeeHours: [],
-        filteredHours: [],
-        startTime: '',
-        endTime: '',
-        date: '',
-        date1: '',
+        employee: '',
+        employeeHour: [],
+        hours: ''
         /*employeeHours: [
         { date: '2022-12-12', open_time: '08:00:00', close_time: '17:00:00' },
         { date: '2022-12-14', open_time: '09:30:00', close_time: '14:30:00' },
@@ -47,25 +47,7 @@ export default {
 
 
     }
-  },
-
-watch:{
-  filter: function (filter, prevFilter) {
-      this.filteredHours = this.employeeHours.filter(a => filter ? a.name.toLowerCase().includes(filter.toLowerCase()) : a)
-  },
-  employeeHours: function (employeeHours, prevemployeeHours) {
-    this.filteredHours = employeeHours
-  },
-  fromDate: function (val) {
-    if (val >= this.toDate) this.fromDate = this.toDate
-    this.filteredArtifacts = this.employeeHours.filter(a => a.loanFee >= val)
-  },
-  toDate: function (val) {
-    if (val <= this.fromDate) this.toDate = this.fromDate
-    this.filteredHours = this.employeeHours.filter(a => a.loanFee <= val)
-  },
-  
-}
+  }
 }
 
 </script>
