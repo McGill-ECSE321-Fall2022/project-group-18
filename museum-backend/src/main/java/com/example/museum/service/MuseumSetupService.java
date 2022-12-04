@@ -26,14 +26,14 @@ public class MuseumSetupService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public List<Room> createRooms(){
-        if(roomRepository.findAll().iterator().hasNext()){
+    public List<Room> createRooms() {
+        if (roomRepository.findAll().iterator().hasNext()) {
             throw new DatabaseException(HttpStatus.CONFLICT, "Rooms already exist in the database");
         }
         List<Room> roomList = new ArrayList<>();
 
-        //small rooms
-        for(int i = 1; i <= 5; i ++){
+        // small rooms
+        for (int i = 1; i <= 5; i++) {
             Room room = new Room();
             room.setCapacity(200);
             room.setNewRoomArtifactsList();
@@ -42,8 +42,8 @@ public class MuseumSetupService {
             roomList.add(createdRoom);
         }
 
-        //large rooms
-        for(int i = 1; i <= 5; i++){
+        // large rooms
+        for (int i = 1; i <= 5; i++) {
             Room room = new Room();
             room.setCapacity(300);
             room.setNewRoomArtifactsList();
@@ -52,7 +52,7 @@ public class MuseumSetupService {
             roomList.add(createdRoom);
         }
 
-        //storage
+        // storage
         Room storage = new Room();
         storage.setCapacity(MAX_VALUE);
         storage.setNewRoomArtifactsList();
@@ -63,56 +63,59 @@ public class MuseumSetupService {
         return roomList;
     }
 
-    public Owner createOwner(){
+    public Owner createOwner() {
         Owner owner = new Owner();
         owner.setUsername("owner321");
         owner.setPassword("ecse321");
         owner.setFirstName("Marwan");
         owner.setLastName("Kanaan");
 
-        if(ownerRepository.findAll().iterator().hasNext()){
+        if (ownerRepository.findAll().iterator().hasNext()) {
             throw new DatabaseException(HttpStatus.CONFLICT, "Owner already exists in the database");
         }
         Owner returnedOwner = ownerRepository.save(owner);
         return returnedOwner;
     }
 
-    //create a customer in the museum system
-    public Customer createCustomer(){
+    // create a customer in the museum system
+    public Customer createCustomer() {
         Customer customer = new Customer();
         customer.setUsername("customer321");
         customer.setPassword("321");
-        customer.setFirstName("A");
-        customer.setLastName("B");
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
 
-        //the following code is not good since we can have multiple customers in the database...
-        // to be thorough we should check if the customer already exists in the database by checking its fields, but this is too much work...
-//        if(customerRepository.findAll().iterator().hasNext()){
-//            throw new DatabaseException(HttpStatus.CONFLICT,"Customer already exists in the database");
-//        }
+        // the following code is not good since we can have multiple customers in the
+        // database...
+        // to be thorough we should check if the customer already exists in the database
+        // by checking its fields, but this is too much work...
+        // if(customerRepository.findAll().iterator().hasNext()){
+        // throw new DatabaseException(HttpStatus.CONFLICT,"Customer already exists in
+        // the database");
+        // }
 
         Customer returnedCustomer = customerRepository.save(customer);
         return returnedCustomer;
     }
 
-    //create an employee in the museum system
-    public Employee createEmployee(){
+    // create an employee in the museum system
+    public Employee createEmployee() {
         Employee employee = new Employee();
         employee.setUsername("employee321");
         employee.setPassword("321");
-        employee.setFirstName("C");
-        employee.setLastName("D");
+        employee.setFirstName("Jim");
+        employee.setLastName("Halpert");
 
         Employee returnedEmployee = employeeRepository.save(employee);
         return returnedEmployee;
     }
 
-    //creates a business with a ticket fee of 10
-    public Business createBusiness(){
+    // creates a business with a ticket fee of 10
+    public Business createBusiness() {
         Business business = new Business();
         business.setTicketFee(10);
 
-        if(businessRepository.findAll().iterator().hasNext()){
+        if (businessRepository.findAll().iterator().hasNext()) {
             throw new DatabaseException(HttpStatus.CONFLICT, "Business already exists in the database");
         }
         Business returnedBusiness = businessRepository.save(business);
