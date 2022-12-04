@@ -14,13 +14,14 @@
         </b-navbar-nav>
         <b-navbar-nav v-else class="ml-auto">
           <b-nav-item v-if="utype === 'customer'" href="#/donate">Donate</b-nav-item>
-          <b-nav-item v-if="utype === 'customer'" href="#/tickets">Tickets</b-nav-item>
+          <b-nav-item v-if="utype === 'customer'" href="#/buyTicket">Buy Tickets</b-nav-item>
+          <b-nav-item v-if="utype === 'customer'" href="#/yourTickets">Your Tickets</b-nav-item>
           <b-nav-item v-if="utype === 'employee' || utype === 'owner'" href="#/requests">Requests</b-nav-item>
           <b-nav-item v-if="utype === 'employee'" href="#/tickets">Hours</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/scheduling">Scheduling</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/managing">Managing</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/business">Business</b-nav-item>
-          <b-nav-item v-if="utype === 'owner'" href="#/create-tickets">Create Tickets</b-nav-item>
+          <b-nav-item v-if="utype === 'owner'" href="#/createTicket">Create Tickets</b-nav-item>
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template #button-content>
