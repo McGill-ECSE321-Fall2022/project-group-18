@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-      <h1>{{ employee.aFirstName }} {{ employee.aLastName }}</h1>
-      <h1><i>{{ employee.aUsername }}</i></h1>
+      <h1>{{ employee.firstName }} {{ employee.fastName }}</h1>
+      <h1><i>{{ employee.username }}</i></h1>
       <div class="Employee Hours">
         <h3>Your Hours</h3>
           <!-- <b-nav-form>
@@ -27,9 +27,10 @@
 export default {
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
-      ? 'http://localhost:8080/employee/{id}/employeeHours' + localStorage.getItem('uid') : 'production_link')
+      ? `http://localhost:8080/employee/${localStorage.getItem('uid')}` : 'production_link')
       .then(res => {
         this.employee = res.data
+        console.log(res.data)
       })
       .catch(e => console.log(e))
 
@@ -37,7 +38,6 @@ export default {
   data(){
     return {
         employee: '',
-        employeeHour: [],
         hours: ''
         /*employeeHours: [
         { date: '2022-12-12', open_time: '08:00:00', close_time: '17:00:00' },
