@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="utype === 'employee' || utype === 'owner'">
     <h1>Loan Approval List</h1>
     <b-card class="mt-3 mx-auto text-center" style="width: 40rem;" v-if="checkLoanExist">
       <b-card-title>
@@ -37,6 +37,9 @@
       <b-button v-else variant="primary" @click="loanReturn(loan)">Return</b-button>
     </b-card>
   </div>
+  <div v-else>
+    <h1>Cannot access this page!</h1>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -54,10 +57,14 @@ export default {
   data() {
     return {
       loansIDList: [],
-      loansDetailList:[]
+      loansDetailList:[],
+      utype: localStorage.getItem('utype') || ''
     }
   },
   methods: {
+    // checkUserLevel() {
+    //   return this.utype === 'employee' || this.utype === 'owner';
+    // },
     rejectButton(loan) {
       return loan.loanStatus === false;
     },
