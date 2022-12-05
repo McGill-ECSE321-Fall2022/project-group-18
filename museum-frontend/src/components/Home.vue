@@ -145,6 +145,7 @@ export default {
       .then(res => {
         this.artifacts = res.data.map(art => {
           console.log(art.type)
+          // Setting random images to each artifact
           return {
             ...art,
             image: art.type == 'Painting' ?
@@ -172,7 +173,7 @@ export default {
     return {
       filter: '',
       msg: 'Welcome to Your Vue.js App',
-      mockArtifacts: [
+      mockArtifacts: [ // Used for debugging purposes
         { name: "Mona Lisa" },
         { name: "The Starry Night" },
         { name: "Girl with a Pearl Earring" },
@@ -209,6 +210,7 @@ export default {
         artifactIDStr = artifactIDStr + ','
       }
       console.log(artifactIDStr)
+      // Creating a loan object
       await axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan${artifactIDStr}` : 'production_link')
         .catch(e => this.loanError = true)
         .then(res => {
@@ -217,6 +219,7 @@ export default {
         })
       loanCustomerStr = loanCustomerStr + newLoanID
       console.log("loan add to customer:" + loanCustomerStr)
+      // Then adding the loan to the user using the same id string
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${this.uid}/loans/add${loanCustomerStr}` : 'production_link')
         .catch(e => this.loanError = true)
         .then(this.selectedArtifacts = [])
@@ -231,7 +234,7 @@ export default {
         "loaned": art.loaned,
         "loanFee": art.loanFee
       })
-        .catch(e => this.updateArtifactError = true)
+        .catch(e => this.updateArtifactError = true) // This will display an error message on the page
         .then(res => console.log(res))
 
       // Check if room number was changed.
@@ -269,6 +272,7 @@ export default {
       this.filteredArtifacts = this.artifacts.filter(a => a.loanFee <= val)
     },
     selectedArtifacts: function (selectedArtifacts) {
+      // Calculating total loan fee when we update the selected artifacts
       let sum = 0;
       const selectedArtifactsObjects = this.artifacts.filter(art => selectedArtifacts.includes(art.artID))
       console.log(selectedArtifactsObjects)

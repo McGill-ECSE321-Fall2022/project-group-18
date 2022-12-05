@@ -52,6 +52,7 @@ export default {
     methods: {
         submit() {
             this.error = false;
+            // Call the login endpoint for the corresponding user type
             axios.post(process.env.NODE_ENV === "development" ? `http://localhost:8080/${this.type}/login` : 'production_link',
                 { username: this.username, password: this.password })
                 .then(res => {
@@ -61,7 +62,7 @@ export default {
                     localStorage.setItem('utype', this.type)
                     this.$router.go(0)
                 })
-                .catch(e => this.error = true)
+                .catch(e => this.error = true) // Check if there was an error when loggin in (wrong credentials)
         }
     }
 }
