@@ -75,7 +75,7 @@ export default {
       axios.get(process.env.NODE_ENV === "development"
         ? 'http://localhost:8080/loan/customer/all' : 'production_link')
         .then(res => {
-          this.loansIDList = Object.keys(res.data)
+          this.loansIDList.concat(Object.keys(res.data))
         })
         .catch(e => console.log(e))
     },
@@ -85,9 +85,7 @@ export default {
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${customerID}/loans/delete?loanID=${loanID}` : 'production_link')
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan/update/return?loanID=${loanID}` : 'production_link')
       this.handleLoanIDUpdate()
-      this.handleLoanInfoUpdate()
-      this.approveButton()
-      this.rejectButton()
+      window.location.reload()
     },
     loanReject(loan) {
       let loanID = loan.loanID
@@ -95,9 +93,7 @@ export default {
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${customerID}/loans/delete?loanID=${loanID}` : 'production_link')
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan/update/remove?loanID=${loanID}` : 'production_link')
       this.handleLoanIDUpdate()
-      this.handleLoanInfoUpdate()
-      this.approveButton()
-      this.rejectButton()
+      window.location.reload()
     },
     loanApprove(loan) {
       let loanID = loan.loanID
@@ -105,12 +101,13 @@ export default {
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan/update/approve?loanID=${loanID}` : 'production_link')
       axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/customer/${customerID}/loans/approve?loanID=${loanID}` : 'production_link')
       this.handleLoanInfoUpdate()
-      this.approveButton()
-      this.rejectButton()
+      window.location.reload()
     },
 
     handleLoanInfoUpdate: function () {
-      this.loansDetailList = []
+      for (let i = 0; i < this.loansDetailList.length; i++) {
+        this.loansDetailList.pop()
+      }
       for (let i = 0; i < this.loansIDList.length; i++) {
         let retrievedLoanID = this.loansIDList[i]
           axios.get(process.env.NODE_ENV === "development" ? `http://localhost:8080/loan/${retrievedLoanID}` : 'production_link')
@@ -120,7 +117,6 @@ export default {
             this.loansDetailList.push(res.data)
           })
       }
-      // now the list
     }
   },
   watch: {
