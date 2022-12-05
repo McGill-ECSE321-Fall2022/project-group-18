@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand href="/"><BIconHouseFill class="h2 mb-2" color="white" /></b-navbar-brand>
-      <b-navbar-brand href="/" class="text-monospace font-weight-bolder my-2">Museum Website</b-navbar-brand>
+      <b-navbar-brand href="/" class="font-weight-bolder my-2">Museum Website</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -17,7 +17,7 @@
           <b-nav-item v-if="utype === 'customer'" href="#/buyTicket">Buy Tickets</b-nav-item>
           <b-nav-item v-if="utype === 'customer'" href="#/yourTickets">Your Tickets</b-nav-item>
           <b-nav-item v-if="utype === 'employee' || utype === 'owner'" href="#/requests">Requests</b-nav-item>
-          <b-nav-item v-if="utype === 'employee'" href="#/tickets">Hours</b-nav-item>
+          <b-nav-item v-if="utype === 'employee'" href="#/employeeHours">Hours</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/scheduling">Scheduling</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/managing">Managing</b-nav-item>
           <b-nav-item v-if="utype === 'owner'" href="#/business">Business</b-nav-item>

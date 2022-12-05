@@ -1,24 +1,25 @@
 <template>
   <div class="home">
-    <h1>Welcome to the museum app!</h1>
+    <h1 class="text-uppercase font-weight-bold">Welcome to the museum app!</h1>
     <h2>Artifacts</h2>
     <b-nav-form>
       <BIconSearch class="h4 mb-2 mr-2" />
       <b-form-input v-model="filter" size="lg" class="mr-sm-2" placeholder="Search"></b-form-input>
-      <div>
-        <label class="ml-lg">Loanable: </label>
+      <div class="d-inline-flex">
+        <label>Loanable: </label>
         <input type="checkbox" v-model="loanableFilter">
       </div>
-      <div>
-        <label>Price range: </label>
-        <div class="row mx-xl-4">
-          <div>
+      <div class="mx-3">
+        <label class="">Price range: </label>
+        <div class="w-25">
+
+          <div class="d-inline-flex">
             <label>From: </label>
-            <input min="0" v-model="fromPrice" type="number">
+            <input class="rounded-lg" min="0" v-model="fromPrice" type="number">
           </div>
-          <div>
+          <div class="d-inline-flex">
             <label>To: </label>
-            <input v-model="toPrice" type="number">
+            <input class="rounded-lg" v-model="toPrice" type="number">
           </div>
         </div>
       </div>
@@ -40,6 +41,9 @@
             <input :disabled="selectedArtifacts.length >= 5 && !selectedArtifacts.includes(art.artID)"
               v-if="utype === 'customer'" :value="art.artID" id="art.artID" v-model="selectedArtifacts"
               @change="handleSelect($event)" class="mr-auto" type="checkbox">
+            <div class="image-container">
+              <img v-bind:src="art.image" />
+            </div>
             <h5>{{ art.name }}</h5>
             <h6>Type: {{ art.type }}</h6>
             <div v-if="utype === 'employee'">
@@ -73,8 +77,9 @@
           <BIconCartFill class="h3 mb-2" v-if="selectedArtifacts.length < 5" />
           <BIconCartCheckFill color="green" class="h3 mb-2" v-else />
         </div>
-        <button @click="handleLoan" class="rounded-lg bg-white px-4 py-2">
-          <h4>Loan</h4>
+        <button @click="handleLoan"
+          class="text-uppercase font-weight-bold bg-success rounded-lg bg-white px-4 py-2 justify-content-center">
+          Loan
         </button>
         <div class="art-container">
           <div v-for="art in selectedArtifacts">
@@ -100,12 +105,41 @@ export default {
   },
   name: 'hello',
   mounted() {
+    const getRandomInt = function (max) {
+      return Math.floor(Math.random() * max);
+    }
+
+    const mockImagesPaintings = [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/1200px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/1200px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg',
+      'https://www.neh.gov/sites/default/files/2022-09/Fall_2022_web-images_Picasso_32.jpg',
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/1665_Girl_with_a_Pearl_Earring.jpg/800px-1665_Girl_with_a_Pearl_Earring.jpg'
+
+    ]
+    const mockImagesSculptures = [
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/%27David%27_by_Michelangelo_Fir_JBU005_denoised.jpg/800px-%27David%27_by_Michelangelo_Fir_JBU005_denoised.jpg',
+      'https://artincontext.org/wp-content/uploads/2021/01/Michelangelo-Pieta-848x530.jpg'
+    ]
+
     axios.get(process.env.NODE_ENV === "development"
       ? 'http://localhost:8080/artifact/all' : 'production_link')
       .then(res => {
-        this.artifacts = res.data
+        this.artifacts = res.data.map(art => {
+          console.log(art.type)
+          return {
+            ...art,
+            image: art.type == 'Painting' ?
+              mockImagesPaintings[getRandomInt(mockImagesPaintings.length)] :
+              mockImagesSculptures[getRandomInt(mockImagesSculptures.length)]
+          }
+        })
       })
+      .then(
+        console.log(this.artifacts)
+      )
       .catch(e => console.log(e))
+
+
 
     axios.get(process.env.NODE_ENV === "development"
       ? 'http://localhost:8080/room/all/artifacts' : 'production_link')
@@ -238,6 +272,7 @@ a {
   grid-template-columns: auto auto auto;
   margin: auto;
   padding: 10px;
+  column-gap: 30px;
 }
 
 .card {
@@ -247,11 +282,42 @@ a {
   padding: 10px;
   border-radius: 8px;
   border-color: black;
+  transition: 0.2s;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+    0 2px 2px rgba(0, 0, 0, 0.12),
+    0 4px 4px rgba(0, 0, 0, 0.12),
+    0 8px 8px rgba(0, 0, 0, 0.12),
+    0 16px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+button {
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.1);
 }
 
 .container {
   width: 150%;
   display: flex;
   flex-direction: row;
+}
+
+.image-container {
+  width: 250px;
+  height: 250px;
+  margin: auto;
+}
+
+img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
 }
 </style>

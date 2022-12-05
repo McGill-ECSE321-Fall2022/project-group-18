@@ -59,7 +59,8 @@ export default {
     axios.get(process.env.NODE_ENV === "development"
       ? 'http://localhost:8080/ticket/all' : 'production_link')
       .then(res => {
-        this.tickets = Object.keys(res.data)
+        console.log(res.data)
+        this.tickets = res.data
       })
       .catch(e => console.log(e))
 
@@ -86,7 +87,6 @@ export default {
   },
   methods: {
     checkDate() {
-      console.log(this.tickets[0].day)
       for (let i = 0; i < this.allowedDates.length; i++) {
         if (String(this.value) === String(this.allowedDates[i])) {
 
@@ -115,7 +115,6 @@ export default {
         })
         .then()
         .catch(e => console.log(e))
-      console.log(this.tickets[0].day)
     },
     getTickets() {
       axios.get(process.env.NODE_ENV === "development"

@@ -7,9 +7,12 @@ import Profile from '@/components/Profile'
 import Business from '@/components/Business'
 import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
-import BuyTicket from "../components/BuyTicket";
-import CreateTicket from "../components/CreateTicket";
-import ViewTickets from "../components/ViewTickets";
+import BuyTicket from "@/components/BuyTicket";
+import CreateTicket from "@/components/CreateTicket";
+import ViewTickets from "@/components/ViewTickets";
+import Scheduling from '@/components/Scheduling'
+import EmployeeHours from '@/components/EmployeeHours'
+import Ticket from '@/components/Ticket'
 
 Vue.use(Router)
 
@@ -65,6 +68,21 @@ export default new Router({
       path: '/managing',
       name: 'Managing',
       component: Managing
+    },
+    {
+      path: '/scheduling',
+      name: 'Scheduling',
+      component: Scheduling
+    },
+    {
+      path: '/employeeHours',
+      name: 'EmployeeHours',
+      component: EmployeeHours
+    },
+    {
+      path: '/ticket',
+      name: 'Ticket',
+      component: Ticket
     }
   ]
 })
