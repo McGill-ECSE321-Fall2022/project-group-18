@@ -110,8 +110,7 @@ public class CustomerController {
     // update information for customer of tickets and donations
     @PostMapping("/customer/{id}/update")
     public ResponseEntity<CustomerDto> updatedCustomer(@PathVariable int id, @RequestBody CustomerDto request) {
-        Customer updatedCustomer = customerService.modifyCustomerByID(id, request.getUsername(), request.getPassword(),
-                request.getFirstName(), request.getLastName());
+        Customer updatedCustomer = customerService.modifyCustomerByID(id, request);
         CustomerDto response = new CustomerDto(updatedCustomer);
         return new ResponseEntity<CustomerDto>(response, HttpStatus.OK);
     }

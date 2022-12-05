@@ -7,6 +7,9 @@ import Profile from '@/components/Profile'
 import Business from '@/components/Business'
 import Donation from '@/components/Donation'
 import Managing from '@/components/Managing'
+import BuyTicket from "@/components/BuyTicket";
+import CreateTicket from "@/components/CreateTicket";
+import ViewTickets from "@/components/ViewTickets";
 import Scheduling from '@/components/Scheduling'
 import EmployeeHours from '@/components/EmployeeHours'
 import Ticket from '@/components/Ticket'
@@ -45,6 +48,21 @@ export default new Router({
       path: '/donate',
       name: 'Donation',
       component: Donation
+    },
+    {
+      path: '/buyTicket',
+      name: 'BuyTicket',
+      component: BuyTicket
+    },
+    {
+      path: '/yourTickets',
+      name: 'Tickets',
+      component: ViewTickets
+    },
+    {
+      path: '/createTicket',
+      name: 'CreateTicket',
+      component: CreateTicket
     },
     {
       path: '/managing',
