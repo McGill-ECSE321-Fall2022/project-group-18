@@ -3,6 +3,7 @@
     <div id ='scheduling'>
         <h1>Hours</h1>
     <div>
+        //drop down to select employee
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
             <b-dropdown-item v-for="employee in employees" @click="handleSelectEmployee(employee)">
               {{(employee.firstName +''+employee.lastName +''+employee.accountID)}}
@@ -12,6 +13,7 @@
     <div>
         <b-container class="bv-example-row">
         <b-row>
+            //select date on calendar and Input hours for selecte employee
             <b-col>Select Schedule Date
             <div>
                 <b-calendar v-model="date" @context="onContext" locale="en-US"></b-calendar>
@@ -67,6 +69,7 @@
         Create Employee Hour
       </b-button>
     </div>
+    //view all hours of employees
     <div id="view-employee-hours">
       <b-table striped hover :items="employeeHours"> Employee Hours </b-table>
     </div>
@@ -96,6 +99,7 @@ export default {
     }
   },
   mounted(){
+  //retrireve hours and all employees 
     axios.get('http://localhost:8080/employeeHour/all')
     .then(response => {
       this.employeeHours = response.data;
@@ -115,9 +119,11 @@ export default {
 
 
   methods: {
+  
     onContext(ctx) {
       this.context = ctx
     },
+    //method that handles the employee that is selected by dropdown 
     handleSelectEmployee(employee) {
       console.log(employee)
       this.selectedEmployee = employee
@@ -134,7 +140,7 @@ export default {
 
          }
     }*/
-
+    //creates the employee hour for selected employee and sets the date and time for given employee 
     createEmployeeHour(date, startHour, startMin, endHour, endMin) {
       console.log("CREATING EMPLOYEE HOUR", date, startHour, startMin, endHour, endMin)
       if (startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {
