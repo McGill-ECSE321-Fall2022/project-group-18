@@ -13,6 +13,7 @@ import ViewTickets from "@/components/ViewTickets";
 import Scheduling from '@/components/Scheduling'
 import EmployeeHours from '@/components/EmployeeHours'
 import Ticket from '@/components/Ticket'
+import Loan from '@/components/Loan'
 
 Vue.use(Router)
 
@@ -70,6 +71,7 @@ export default new Router({
       component: Managing
     },
     {
+
       path: '/scheduling',
       name: 'Scheduling',
       component: Scheduling
@@ -83,6 +85,12 @@ export default new Router({
       path: '/ticket',
       name: 'Ticket',
       component: Ticket
+    },
+    {
+      path: '/loans',
+      name: 'Loan',
+      component: Loan
+
     }
   ]
 })

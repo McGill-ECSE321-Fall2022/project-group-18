@@ -29,7 +29,7 @@ public class Loan
     private boolean approved;
 
     //Loan Associations
-    @OneToMany
+    @ManyToMany
     private List<Artifact> requestedArtifacts;
 
     //------------------------

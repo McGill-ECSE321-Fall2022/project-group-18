@@ -1,5 +1,6 @@
 package com.example.museum.controller;
 
+import com.example.museum.dto.ArtifactDto;
 import com.example.museum.model.Artifact;
 import com.example.museum.model.Loan;
 import com.example.museum.model.Room;
@@ -39,10 +40,14 @@ public class LoanController {
         response.put("loanFee", loan.getLoanFee());
         response.put("loanStatus", loan.getApproved());
         List<Integer> artifactIDList = new ArrayList<>();
+        List<ArtifactDto> artifactDtoList = new ArrayList<>();
         for (Artifact artifact : loan.getRequestedArtifacts()) {
             artifactIDList.add(artifact.getArtID());
+            artifactDtoList.add(new ArtifactDto(artifact));
         }
         response.put("loanArtifactIDList", artifactIDList);
+        response.put("loanArtifactList", artifactDtoList);
+        response.put("customerID", loanService.getAllCustomerLoans().get(Integer.toString(loanID)));
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
 
