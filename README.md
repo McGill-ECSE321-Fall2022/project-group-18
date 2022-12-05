@@ -69,6 +69,20 @@ For deliverable 2, members agreed to log their hours in a shared Google sheet. M
 | Zachary Godden | 19 | Created Controller, dto and service for Ticket and created ServiceTest and IntegrationTest for Ticket. Also created getAll for artifacts. |
 | Mohammad Shaheer Bilal | 16 | Creted Controller, dto, service, ServiceTest and integration test for EmployeeHour. Created Controller, Dto, Service and integraion test for Employee. |
 
+
+## Deliverable 3
+
+For deliverable 3, members agreed to log their hours in a shared Google sheet. Members were also asked to write their individual contributions in the table below.
+
+| Team Member | Deliverable 3 hours | Deliverable 3 Individual Efforts | 
+| --- | --- | ---------- |
+| Andrei Sandor |  |  |
+| Feihong Chu |  |  |
+| Matthew Litwiller | |  |
+| Aymen Ouali |  | |
+| Zachary Godden |  |  |
+| Mohammad Shaheer Bilal |  |  |
+
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
 [Deliverable 2](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-2) <br/>
