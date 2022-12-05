@@ -18,7 +18,7 @@ public class BusinessHourController {
     @Autowired
     BusinessHourService businessHourService;
 
-    // tested
+    // create a business hour with a business dto
     @PostMapping("/businessHour")
     public ResponseEntity<BusinessHourDto> createBusinessHour(@RequestBody BusinessHourDto request) {
         BusinessHour businessHourToCreate = request.toModel();
@@ -27,7 +27,7 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.CREATED);
     }
 
-    // tested
+    // update a business hour by id and input the updated business hour as a dto
     @PostMapping("/businessHour/update/{id}")
     public ResponseEntity<BusinessHourDto> updateBusinessHour(@PathVariable int id,
             @RequestBody BusinessHourDto request) {
@@ -37,13 +37,14 @@ public class BusinessHourController {
         return new ResponseEntity<BusinessHourDto>(response, HttpStatus.OK);
     }
 
-    // tested
+    // get a business hour by id (returns a business hour dto)
     @GetMapping("/businessHour/{id}")
     public ResponseEntity<BusinessHourDto> getBusinessHourByBusinessHourID(@PathVariable int id) {
         BusinessHour businessHour = businessHourService.getBusinessHourById(id);
         return new ResponseEntity<BusinessHourDto>(new BusinessHourDto(businessHour), HttpStatus.OK);
     }
 
+    //get all business hours (returns a list of business hour dtos)
     @GetMapping("/businessHour/all")
     public ResponseEntity<List<BusinessHourDto>> getAllBusinessHours() {
         List<BusinessHour> businessHours = businessHourService.getAllBusinessHours();

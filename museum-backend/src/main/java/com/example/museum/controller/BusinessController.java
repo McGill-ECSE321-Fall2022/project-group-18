@@ -15,6 +15,7 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
+    //create a business based on a business dto
     @PostMapping("/business")
     public ResponseEntity<BusinessDto> createBusiness(@RequestBody BusinessDto request) {
         Business businessToCreate = request.toModel();
@@ -23,13 +24,14 @@ public class BusinessController {
         return new ResponseEntity<BusinessDto>(response, HttpStatus.CREATED);
     }
 
+    //get a business dto by inputting the id of the business
     @GetMapping("/business/{id}")
     public ResponseEntity<BusinessDto> getBusinessByBusinessID(@PathVariable int id) {
         Business business = businessService.getBusinessByID(id);
         return new ResponseEntity<BusinessDto>(new BusinessDto(business), HttpStatus.OK);
     }
 
-    // TODO: TEST
+    // update a business by inputting the id of the business and a new business dto
     @PostMapping("/business/update/{id}")
     public ResponseEntity<BusinessDto> updateBusiness(@PathVariable int id, @RequestBody BusinessDto request) {
         Business updatedBusiness = businessService.modifyBusinessById(id, request.getTicketFee(),

@@ -21,6 +21,7 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    //create an employee by passing an employee dto
     @PostMapping("/employee")
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto request) {
         Employee employeeToCreate = request.toModel();
@@ -29,6 +30,7 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.CREATED);
     }
 
+    //log in an employee by passing in the employee dto (this will check their credentials)
     @PostMapping("/employee/login")
     public ResponseEntity<Integer> loginEmployee(@RequestBody EmployeeDto request) {
         Employee employeeToLogin = request.toModel();
@@ -36,12 +38,14 @@ public class EmployeeController {
         return new ResponseEntity<Integer>(id, HttpStatus.OK);
     }
 
+    //get the employee dto by inputting an id
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeByAccountID(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeByID(id);
         return new ResponseEntity<EmployeeDto>(new EmployeeDto(employee), HttpStatus.OK);
     }
 
+    //get employee hours for any given id by inputting the id of the desired employee
     @GetMapping("/employee/{id}/employeeHours")
     public ResponseEntity<List<EmployeeHourDto>> getEmployeeEmployeeHours(@PathVariable int id) {
         Employee employee = employeeService.getEmployeeByID(id);
@@ -52,6 +56,7 @@ public class EmployeeController {
         return new ResponseEntity<List<EmployeeHourDto>>(employeeHourDtos, HttpStatus.OK);
     }
 
+    //update an employee by inputting the id of the employee to update and the new fields inside a new employee dto
     @PostMapping("/employee/update/{id}")
     public ResponseEntity<EmployeeDto> updatedEmployee(@PathVariable int id, @RequestBody EmployeeDto request) {
         Employee updatedEmployee = employeeService.modifyEmployeeByID(id, request.getUsername(), request.getPassword(),
@@ -60,6 +65,7 @@ public class EmployeeController {
         return new ResponseEntity<EmployeeDto>(response, HttpStatus.OK);
     }
 
+    //delete an employee by their id
     // not best practice to make it a POST, but allows the integration tests to work
     // seemlessly
     @PostMapping("/employee/delete/{id}")
@@ -68,6 +74,7 @@ public class EmployeeController {
         return new ResponseEntity<String>("Employee deleted successfully.", HttpStatus.OK);
     }
 
+    //get a list of all employees (returns a list of employee dtos)
     @GetMapping("/employee/all")
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();

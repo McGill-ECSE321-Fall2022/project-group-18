@@ -18,6 +18,7 @@ public class TicketController {
     @Autowired
     TicketService TicketService;
 
+    //creates a ticket and returns a dto of this ticket upon completion
     @PostMapping("/ticket")
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticket) {
         Ticket createdTicket = TicketService.createTicket(ticket.getDay(), ticket.getPrice());
@@ -25,7 +26,8 @@ public class TicketController {
         return new ResponseEntity<TicketDto>(response, HttpStatus.CREATED);
     }
 
-    // tested
+    // updates a ticket by passing the id of the ticket to update, a ticket dto to override the old ticket
+    // returns this ticket dto upon completion
     @PostMapping("/ticket/update/{id}")
     public ResponseEntity<TicketDto> updateTicket(@PathVariable(name = "id") int id, @RequestBody TicketDto request) {
         Ticket updatedTicket = TicketService.modifyTicketById(id, request.getDay(), request.getPrice());
@@ -33,12 +35,15 @@ public class TicketController {
         return new ResponseEntity<TicketDto>(response, HttpStatus.OK);
     }
 
+    //get a ticket by id
     @GetMapping("/ticket/{id}")
     public ResponseEntity<TicketDto> getTicketByTicketID(@PathVariable int id) {
         Ticket Ticket = TicketService.getTicketById(id);
         return new ResponseEntity<TicketDto>(new TicketDto(Ticket), HttpStatus.OK);
     }
 
+    //get all tickets that are not in a customer's possession
+    //returns a list of ticket dtos
     @GetMapping("/ticket/all")
     public ResponseEntity<List<TicketDto>> getAllAvailableTickets() {
         List<Ticket> tickets = TicketService.getAllAvailableTickets();

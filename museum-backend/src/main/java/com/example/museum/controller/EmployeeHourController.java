@@ -20,7 +20,7 @@ public class EmployeeHourController {
     @Autowired
     EmployeeHourService employeeHourService;
 
-    // tested
+    // create an employee hour by passing an employee hour dto
     @PostMapping("/employeeHour")
     public ResponseEntity<EmployeeHourDto> createEmployeeHour(@RequestBody EmployeeHourDto request) {
         EmployeeHour employeeHourToCreate = request.toModel();
@@ -29,7 +29,7 @@ public class EmployeeHourController {
         return new ResponseEntity<EmployeeHourDto>(response, HttpStatus.CREATED);
     }
 
-    // tested
+    // update an employee hour by passing the id of the hour to update and a dto for the updated employee hour
     @PostMapping("/employeeHour/update/{id}")
     public ResponseEntity<EmployeeHourDto> updateEmployeeHour(@PathVariable int id,
             @RequestBody EmployeeHourDto request) {
@@ -39,12 +39,14 @@ public class EmployeeHourController {
         return new ResponseEntity<EmployeeHourDto>(response, HttpStatus.OK);
     }
 
+    //get an employee hour dto by id
     @GetMapping("/employeeHour/{id}")
     public ResponseEntity<EmployeeHourDto> getEventByName(@PathVariable int id) {
         EmployeeHour employeeHour = employeeHourService.getEmployeeHourById(id);
         return new ResponseEntity<EmployeeHourDto>(new EmployeeHourDto(employeeHour), HttpStatus.OK);
     }
 
+    //get a list of all employee hours (as a list of dtos)
     @GetMapping("/employeeHour/all")
     public ResponseEntity<List<EmployeeHourDto>> getAllEmployeeHours() {
         List<EmployeeHour> employeeHours = employeeHourService.getAllEmployeeHours();
