@@ -17,6 +17,12 @@ import Loan from '@/components/Loan'
 
 Vue.use(Router)
 
+const hasPermissions = (to, from, next, utype, expectedTypes) => {
+  if (!expectedTypes.includes(utype) || localStorage.getItem("utype") === undefined) {
+    next('/');
+  } else next()
+}
+
 export default new Router({
   routes: [
     {
@@ -37,60 +43,98 @@ export default new Router({
     {
       path: '/profile/:id',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["owner", 'customer', 'employee'])
+      }
     },
     {
       path: '/business',
       name: 'Business',
-      component: Business
+      component: Business,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["owner"])
+      }
     },
 
     {
       path: '/donate',
       name: 'Donation',
-      component: Donation
+      component: Donation,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["customer"])
+      }
     },
     {
       path: '/buyTicket',
       name: 'BuyTicket',
-      component: BuyTicket
+      component: BuyTicket,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["customer"])
+      }
     },
     {
       path: '/yourTickets',
       name: 'Tickets',
-      component: ViewTickets
+      component: ViewTickets,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["customer"])
+      }
     },
     {
       path: '/createTicket',
       name: 'CreateTicket',
-      component: CreateTicket
+      component: CreateTicket,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["owner"])
+      }
     },
     {
       path: '/managing',
       name: 'Managing',
-      component: Managing
+      component: Managing,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["owner"])
+      }
     },
     {
 
       path: '/scheduling',
       name: 'Scheduling',
-      component: Scheduling
+      component: Scheduling,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["owner"])
+      }
     },
     {
       path: '/employeeHours',
       name: 'EmployeeHours',
-      component: EmployeeHours
+      component: EmployeeHours,
+      beforeEnter(to, from, next) {
+          hasPermissions(to, from, next, localStorage.getItem('utype'), ["employee", "owner"])
+      }
     },
     {
       path: '/ticket',
       name: 'Ticket',
-      component: Ticket
+      component: Ticket,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ['customer'])
+      }
     },
     {
       path: '/loans',
       name: 'Loan',
-      component: Loan
-
-    }
+      component: Loan,
+      beforeEnter(to, from, next) {
+        hasPermissions(to, from, next, localStorage.getItem('utype'), ["employee", "owner"])
+      }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      beforeEnter(to, from, next) {
+        next('/')
+      }
+    },
   ]
 })
