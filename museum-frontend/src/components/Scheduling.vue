@@ -3,7 +3,7 @@
     <div id ='scheduling'>
         <h1>Hours</h1>
     <div>
-        //drop down to select employee
+        <!-- drop down to select employee -->
         <b-dropdown id="dropdown-left" text="Employees" variant="primary" class="m-2">
             <b-dropdown-item v-for="employee in employees" @click="handleSelectEmployee(employee)">
               {{(employee.firstName +''+employee.lastName +''+employee.accountID)}}
