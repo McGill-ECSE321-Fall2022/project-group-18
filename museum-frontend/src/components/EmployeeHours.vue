@@ -10,6 +10,7 @@
           <b-button size="lg" class="my-2 my-sm-0" type="submit">Search</b-button>
       </b-nav-form> -->
         <b-list-group >
+        //hours card dislaying employee hours sorted by date
           <b-list-item v-for="hours in employee.employeeHours.sort((a, b) => new Date(a.day) - new Date(b.day))">
             <div class="card">
               <h5> Date: {{ hours.day }}</h5>
@@ -29,6 +30,7 @@
 import axios from 'axios';
 
 export default {
+//retrieving employee by id from backend 
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
       ? `http://localhost:8080/employee/${localStorage.getItem('uid')}` : 'production_link')
