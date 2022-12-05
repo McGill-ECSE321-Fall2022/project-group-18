@@ -32,6 +32,15 @@ No payments will be handled by the museum website.
 * Test Controller methods (using SpringBootTest)
 * Report on test coverage 
 
+### Deliverable 3
+
+* Draw mocks of the museum frontend
+* Implement the mocks with Vue.js
+* Add in functionality with asynchronous calls to our backend
+* Update any erroneous backend functionality
+* Manually test and inspect the system as a whole
+
+
 # Team Members
 
 | Team Member | GitHub | Major | Member Role | 
