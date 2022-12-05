@@ -13,7 +13,7 @@
     <div>
         <b-container class="bv-example-row">
         <b-row>
-            //select date on calendar and Input hours for selecte employee
+            <!-- select date on calendar and Input hours for selecte employee -->
             <b-col>Select Schedule Date
             <div>
                 <b-calendar v-model="date" @context="onContext" locale="en-US"></b-calendar>
@@ -69,7 +69,7 @@
         Create Employee Hour
       </b-button>
     </div>
-    //view all hours of employees
+    <!-- view all hours of employees -->
     <div id="view-employee-hours">
       <b-table striped hover :items="employeeHours"> Employee Hours </b-table>
     </div>
