@@ -76,7 +76,7 @@ For deliverable 3, members agreed to log their hours in a shared Google sheet. M
 
 | Team Member | Deliverable 3 hours | Deliverable 3 Individual Efforts | 
 | --- | --- | ---------- |
-| Andrei Sandor |  |  |
+| Andrei Sandor | 14  | Implemented the donation and hiring/firing employees tabs, worked on the wiki. |
 | Feihong Chu |  |  |
 | Matthew Litwiller |  | Implemented the business tab for the owner view, managed the project on github, designed the architecture model, wrote the speech and made slides for the live presentation |
 | Aymen Ouali |  |  |
