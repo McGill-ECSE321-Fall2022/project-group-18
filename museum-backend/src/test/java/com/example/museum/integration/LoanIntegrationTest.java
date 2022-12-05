@@ -401,7 +401,7 @@ public class LoanIntegrationTest {
         ResponseEntity<Map> response = client.getForEntity(loanGetAllParam, Map.class);
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        Map<String, String> allCustomersLoansMap = response.getBody();
-        assertEquals(Integer.toString(customer.getAccountID()), allCustomersLoansMap.get(Integer.toString(loanID)));
+        Map<String, Integer> allCustomersLoansMap = response.getBody();
+        assertEquals(customer.getAccountID(), allCustomersLoansMap.get(Integer.toString(loanID)));
     }
 }
