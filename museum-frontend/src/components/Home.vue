@@ -38,7 +38,8 @@
       <div class="grid-container">
         <div v-for="art in filteredArtifacts">
           <div class="card">
-            <input :disabled="selectedArtifacts.length >= 5 && !selectedArtifacts.includes(art.artID)"
+            <input
+              :disabled="((selectedArtifacts.length >= 5 && !selectedArtifacts.includes(art.artID)) || (art.loaned || !art.loanable))"
               v-if="utype === 'customer'" :value="art.artID" id="art.artID" v-model="selectedArtifacts"
               @change="handleSelect($event)" class="mr-auto" type="checkbox">
             <div class="image-container">
@@ -77,10 +78,10 @@
           <BIconCartFill class="h3 mb-2" v-if="selectedArtifacts.length < 5" />
           <BIconCartCheckFill color="green" class="h3 mb-2" v-else />
         </div>
-        <button @click="handleLoan"
-          class="text-uppercase font-weight-bold bg-success rounded-lg bg-white px-4 py-2 justify-content-center">
+        <b-button v-b-modal.modal-1
+          class="text-uppercase font-weight-bold bg-success rounded-lg px-4 py-2 justify-content-center">
           Loan
-        </button>
+        </b-button>
         <div class="art-container">
           <div v-for="art in selectedArtifacts">
             <div class="card">
@@ -90,12 +91,29 @@
         </div>
       </div>
     </div>
+    <b-modal id="modal-1" title="Checkout">
+      <h3 class="my-4">Checking out</h3>
+      <div>
+        <p>Selected artifacts: </p>
+        <div class="card" v-for="art in selectedArtifacts">
+          <p><b>Name:</b> {{ artifacts.find(a => a.artID === art).name }}</p>
+          <p><b>Fee:</b> {{ artifacts.find(a => a.artID === art).loanFee }}</p>
+        </div>
+        <div class="card">
+          <h5><b>Total: </b>{{ totalLoanFee }}</h5>
+        </div>
+      </div>
+      <b-button @click="handleLoan" class="bg-success">
+        <BIconCartCheckFill color="white" class=""/>
+        Checkout
+      </b-button>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import {BForm, BIconCartCheckFill, BIconCartFill, BIconSearch} from 'bootstrap-vue';
+import { BForm, BIconCartCheckFill, BIconCartFill, BIconSearch } from 'bootstrap-vue';
 
 export default {
   components: {
@@ -172,6 +190,7 @@ export default {
       updateArtifactError: false,
       initArtifactToRoom: {},
       artifactToRoom: {},
+      totalLoanFee: 0,
     }
   },
   methods: {
@@ -248,6 +267,15 @@ export default {
     toPrice: function (val) {
       if (val <= this.fromPrice) this.toPrice = this.fromPrice
       this.filteredArtifacts = this.artifacts.filter(a => a.loanFee <= val)
+    },
+    selectedArtifacts: function (selectedArtifacts) {
+      let sum = 0;
+      const selectedArtifactsObjects = this.artifacts.filter(art => selectedArtifacts.includes(art.artID))
+      console.log(selectedArtifactsObjects)
+      for (let i = 0; i < selectedArtifactsObjects.length; i++) {
+        sum += selectedArtifactsObjects[i].loanFee;
+      }
+      this.totalLoanFee = sum
     }
   }
 }
