@@ -1,4 +1,5 @@
 <template>
+  <!-- UI for home page -->
   <div class="home">
     <h1 class="text-uppercase font-weight-bold">Welcome to the museum app!</h1>
     <h2>Artifacts</h2>

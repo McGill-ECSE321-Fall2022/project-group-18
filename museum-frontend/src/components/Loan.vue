@@ -1,4 +1,5 @@
 <template>
+  <!-- UI for loan view -->
   <div v-if="utype === 'employee' || utype === 'owner'">
     <h1>Loan Approval List</h1>
     <b-card class="mt-3 mx-auto text-center" style="width: 40rem;" v-if="checkLoanExist">

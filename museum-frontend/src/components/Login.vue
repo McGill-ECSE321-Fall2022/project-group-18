@@ -31,7 +31,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios'
 
@@ -58,6 +58,8 @@ export default {
                 .then(res => {
                     this.logged = true
                     console.log(res)
+                    //local storage used to store the user fields to ensure that the logged in user has access to the correct pages
+                    //and only the correct pages
                     localStorage.setItem('uid', res.data)
                     localStorage.setItem('utype', this.type)
                     this.$router.go(0)
@@ -67,7 +69,7 @@ export default {
     }
 }
 </script>
-  
+
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
@@ -114,4 +116,3 @@ select {
     color: rgb(178, 24, 24);
 }
 </style>
-  

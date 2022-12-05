@@ -1,4 +1,5 @@
 <template>
+  <!-- UI for employee hours -->
   <div class="home">
       <h1>{{ employee.firstName }} {{ employee.lastName }}</h1>
       <h1><i>{{ employee.username }}</i></h1>
@@ -16,9 +17,9 @@
               <h6> End: {{ hours.endTime }}</h6>
             </div>
           </b-list-item>
-        </b-list-group> 
-      </div> 
-               
+        </b-list-group>
+      </div>
+
   </div>
 
 
@@ -31,7 +32,7 @@ export default {
   mounted() {
     axios.get(process.env.NODE_ENV === "development"
       ? `http://localhost:8080/employee/${localStorage.getItem('uid')}` : 'production_link')
-      .then(res => 
+      .then(res =>
         this.employee = res.data)
       .catch(e => console.log(e))
 

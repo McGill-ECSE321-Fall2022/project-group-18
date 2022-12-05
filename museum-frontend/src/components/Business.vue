@@ -1,4 +1,6 @@
 <template>
+  <!-- Page to add new business hours to the museum -->
+
   <div id ='business'>
     <h1> Add new business hour </h1>
     <div id ='business-hour-input'>
@@ -77,12 +79,14 @@
     </b-container>
     </div>
     <div id="create-business-hour-btn">
+      <!-- ensure that all fields are entered before allowing the owner to create a business hour -->
       <b-button :disabled="!year || !month || !day || !openHour || !openMin || !closeHour || !closeMin" type="submit"
       @click="createBusinessHour(year, month, day, openHour, openMin, closeHour, closeMin)">
         Create Business Hour
       </b-button>
     </div>
     <div id="view-business-hours">
+      <!-- List business hours in a table -->
       <b-table striped hover :items="businessHours"> Business Hours </b-table>
     </div>
   </div>

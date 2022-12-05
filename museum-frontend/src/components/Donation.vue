@@ -13,6 +13,7 @@
       <label for="painting">Painting</label>
     </form>
 
+    <!-- Only allow the button to be pressed when all fields are entered -->
     <button :disabled="!nameDonatedArtifact || (!typePaintingDonated && !typeSculptureDonated)"
     @click="createDonation(nameDonatedArtifact,typeSculptureDonated,typePaintingDonated)">Donate</button>
 

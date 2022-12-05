@@ -1,4 +1,5 @@
 <template>
+  <!-- UI to create tickets -->
   <b-container class="bv-example-row">
     <b-row>
       <h1>Create a Ticket</h1>

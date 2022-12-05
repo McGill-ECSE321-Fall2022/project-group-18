@@ -1,4 +1,5 @@
 <template>
+  <!-- Registration page -->
     <div class="hello">
         <div v-if="!registered">
 
@@ -23,6 +24,7 @@
                             <input type="text" placeholder="Last Name" v-model="lastName" />
                         </div>
                     </div>
+                    <!-- Only allow the button to be pressed if the required fields are entered -->
                     <button :disabled="!username || !password || !firstName || !lastName" type="submit">Register</button>
                 </form>
             </div>
@@ -33,7 +35,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios'
 
@@ -66,7 +68,7 @@ export default {
     }
 }
 </script>
-  
+
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
@@ -99,4 +101,3 @@ button {
     padding: 5px;
 }
 </style>
-  

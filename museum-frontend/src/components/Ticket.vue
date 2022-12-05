@@ -1,9 +1,10 @@
 <template onload="this.getAllowedDates()">
+    <!-- Ticket page -->
     <b-container class="bv-example-row">
       <b-row>
         <h1>Buy a Ticket</h1>
       </b-row>
-  
+
       <b-row>
         <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
           <b-col md="auto">
@@ -28,12 +29,12 @@
                   <b-input-group prepend="Name" class="p-2 mb-2 mr-sm-2 mb-sm-0">
                     <b-form-input id="inline-form-input-username" placeholder="Name on card"></b-form-input>
                   </b-input-group>
-  
+
                   <label class="sr-only" for="inline-form-input-username">Username</label>
                   <b-input-group prepend="Credit Card" class="p-2 mb-2 mr-sm-2 mb-sm-0">
                     <b-form-input id="inline-form-input-username" placeholder="Credit Card Number"></b-form-input>
                   </b-input-group>
-  
+
                   <b-input-group prepend="CVV" class="p-1 mb-2 mr-sm-2 mb-sm-0" style="width: 130px;">
                     <b-form-input id="inline-form-input-username" placeholder="xxx"></b-form-input>
                   </b-input-group>
@@ -57,13 +58,13 @@
         <b-row>
           <p3 style="font-weight: bold; font-size: 40px">{{tickets}}</p3>
         </b-row>
-  
+
       </b-row>
       <b-row>
         <b-button style="font-size: 40px" variant="primary" class="p-1" @click="getAllowedDates">REF</b-button>
       </b-row>
     </b-container>
-  
+
   </template>
   <script>
   import axios from 'axios'

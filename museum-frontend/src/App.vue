@@ -24,6 +24,7 @@
 </template>
 
 <script>
+//Nav bar which displays the available tabs based on which type of user is logged in
 import NavBar from '@/components/UI/NavBar'
 export default {
   name: 'app',

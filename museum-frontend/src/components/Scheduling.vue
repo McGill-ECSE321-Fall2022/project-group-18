@@ -1,4 +1,5 @@
 <template>
+    <!-- Scheduling page -->
     <div id ='scheduling'>
         <h1>Hours</h1>
     <div>
@@ -60,6 +61,7 @@
     </b-container>
     </div>
     <div id="create-employee-hour-btn">
+      <!-- Disable the button until all required inputs are filled -->
       <b-button :disabled="!date|| !startHour || !startMin || !endHour || !endMin" type="submit"
       @click="createEmployeeHour(date, startHour, startMin, endHour, endMin)">
         Create Employee Hour
@@ -132,7 +134,7 @@ export default {
 
          }
     }*/
-    
+
     createEmployeeHour(date, startHour, startMin, endHour, endMin) {
       console.log("CREATING EMPLOYEE HOUR", date, startHour, startMin, endHour, endMin)
       if (startHour <= 23 && startHour >= 0 && endHour <= 23 && endHour >= 0 && startMin <= 59 && startMin >= 0 && endMin <= 59 && endMin >= 0 && (startHour < endHour || (startHour == endHour && startMin < endMin))) {

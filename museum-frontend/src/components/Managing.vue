@@ -1,4 +1,5 @@
 <template>
+  <!-- Employee management page -->
   <div id ='employee'>
     <h1> Add new employee </h1>
     <div id ='employee-input'>

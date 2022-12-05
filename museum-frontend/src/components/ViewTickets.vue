@@ -1,4 +1,5 @@
 <template>
+  <!-- Ticket viewing page -->
   <b-container class="bv-example-row">
     <b-row>
       <h1>Your Tickets</h1>

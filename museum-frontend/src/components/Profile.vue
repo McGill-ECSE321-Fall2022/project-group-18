@@ -1,4 +1,5 @@
 <template>
+  <!-- Profile page -->
     <div class="home">
         <h1>{{ user.firstName }} {{ user.lastName }}</h1>
         <h1><i>{{ user.username }}</i></h1>
@@ -19,7 +20,7 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 import axios from 'axios';
 import router from '../router';
@@ -48,7 +49,7 @@ export default {
     }
 }
 </script>
-  
+
   <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1,
@@ -88,4 +89,3 @@ a {
     margin: 20px;
 }
 </style>
-  

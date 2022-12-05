@@ -1,4 +1,5 @@
 <template>
+  <!-- UI to buy tickets -->
   <b-container class="bv-example-row">
     <b-row>
       <h1>Buy a Ticket</h1>
