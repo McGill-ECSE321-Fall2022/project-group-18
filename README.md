@@ -78,8 +78,8 @@ For deliverable 3, members agreed to log their hours in a shared Google sheet. M
 | --- | --- | ---------- |
 | Andrei Sandor |  |  |
 | Feihong Chu |  |  |
-| Matthew Litwiller | |  |
-| Aymen Ouali |  | |
+| Matthew Litwiller |  | Implemented the business tab for the owner view, managed the project on github, designed the architecture model, wrote the speech and made slides for the live presentation |
+| Aymen Ouali |  |  |
 | Zachary Godden |  |  |
 | Mohammad Shaheer Bilal |  |  |
 
