@@ -2,6 +2,7 @@
   <!-- Ticket viewing page -->
   <b-container class="bv-example-row">
     <b-row>
+    <!--Title for page-->
       <h1>Your Tickets</h1>
     </b-row>
     <b-row>
@@ -9,6 +10,7 @@
         <b-row class="shadow p-3 my-3 mx-1 bg-white rounded">
           <b-col>
             <b-row>
+            <!--date for currently viewed ticket-->
               <h1>{{ user.customerTickets[currTicketNumber].day }}</h1>
             </b-row>
             <b-row>
@@ -20,12 +22,14 @@
     </b-row>
     <b-row>
       <b-col>
+      <!--button to click for prev ticket in list-->
         <b-button @click="prev">
           Previous
         </b-button>
       </b-col>
       <b-col>
         <b-button @click="next">
+              <!--button to click for nextticket in list-->
           Next
         </b-button>
       </b-col>
