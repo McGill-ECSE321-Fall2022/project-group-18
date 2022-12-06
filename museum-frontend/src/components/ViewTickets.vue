@@ -14,7 +14,6 @@
               <h1>{{ user.customerTickets[currTicketNumber].day }}</h1>
             </b-row>
             <b-row>
-              <p2 style="font-size: 25px;text-align-all: center">{{ open }} to {{ close }}</p2>
             </b-row>
           </b-col>
         </b-row>
