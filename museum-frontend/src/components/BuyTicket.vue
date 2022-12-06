@@ -2,22 +2,26 @@
   <!-- UI to buy tickets -->
   <b-container class="bv-example-row">
     <b-row>
+    <!--Title For Page-->
       <h1>Buy a Ticket</h1>
     </b-row>
 
     <b-row>
       <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
         <b-col md="auto">
+        <!--Interactive Bootstrap Calendar-->
           <b-calendar v-model="value" locale="en-US" @context="context"></b-calendar>
         </b-col>
       </b-col>
       <b-col>
         <b-overlay :show="checkoutShow" spinner-variant="primary" spinner-type="grow" spinner-small rounded="sm">
+        <!--overlay for animation at checkout-->
           <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
             <p v-show="!dateShow" style="color: #42b983">Thanks for your purchase!</p>
             <h1 v-show="dateShow">{{ value }}</h1>
             <div class="box1">
               <b-row>
+              <!--prompt if date is unavailable-->
                 <p1 style="font-size: 25px;text-align-all: center" v-show="promptShow">{{ noDatePrompt }}</p1>
               </b-row>
               <b-row>
@@ -27,6 +31,7 @@
             </div>
             <b-row>
               <div class="box2">
+              <!--checkout information-->
                 <b-form inline>
                   <label class="sr-only" for="inline-form-input-name" v-show="!show">Name</label>
                   <b-input-group prepend="Name" class="p-2 mb-2 mr-sm-2 mb-sm-0" v-show="!show">
