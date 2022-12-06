@@ -2,12 +2,14 @@
   <!-- UI to create tickets -->
   <b-container class="bv-example-row">
     <b-row>
+    <!--Title for page-->
       <h1>Create a Ticket</h1>
     </b-row>
 
     <b-row>
       <b-col class="shadow p-3 my-3 mx-1 bg-white rounded">
         <b-col md="auto">
+        <!--Interactive Calendar-->
           <b-calendar v-model="value" @context="onContext" locale="en-US"></b-calendar>
         </b-col>
       </b-col>
@@ -21,6 +23,7 @@
             <p1 style="font-size: 25px;text-align-all: center" v-show="promptShow">{{ noDatePrompt }}</p1>
           </b-row>
           <b-row>
+          <!--Ticket information in order to create ticket-->
             <b-col>
               <div class="col">
                 <div class="row-xs-0 my-auto">
@@ -36,6 +39,7 @@
           </b-row>
           <b-row>
             <b-col>
+            <!--create ticket button-->
               <b-button v-show="!show" style="font-size: 40px" variant="primary" class="p-1" @click="createTicket">Create</b-button>
             </b-col>
           </b-row>
