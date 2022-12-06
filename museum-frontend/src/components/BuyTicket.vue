@@ -87,6 +87,7 @@ export default {
   },
   data() {
     return {
+    //variables
       value: "No Date Selected",
       noDatePrompt: "",
       price: '',
@@ -104,6 +105,7 @@ export default {
     }
   },
   methods: {
+  //verifies if date selected has a valid ticket option
     checkDate() {
       this.ticketNotFound = true
       for (let i = 0; i < this.allowedDates.length; i++) {
@@ -126,6 +128,7 @@ export default {
         this.noDatePrompt = "No Tickets For Selected Date"
       }
     },
+    //gets all tickets
     getTickets() {
       axios.get('http://localhost:8080/ticket/all').then(response => {
         this.tickets = response.data
@@ -133,12 +136,14 @@ export default {
         this.errorTicket = e
       })
     },
+    //determines all dates that have a ticket available
     getAllowedDates() {
       this.getTickets()
       for (let i = 0; i < this.tickets.length; i++) {
         this.allowedDates[i] = String(this.tickets[i].day)
       }
     },
+    //refreshes everytime the calendar is interacted with
     context() {
       console.log(this.user.customerTickets)
       this.dateShow = true
@@ -146,6 +151,7 @@ export default {
       this.getAllowedDates()
       this.checkDate()
     },
+    //performs when customer checks out, saves ticket into user
     checkout() {
       this.checkoutShow = true
       this.customerBuyTicket()
@@ -156,6 +162,7 @@ export default {
         this.promptShow = false
       }, 1000);
     },
+    //adds ticket to customer
     customerBuyTicket() {
       let url = "http://localhost:8080/customer/" + localStorage.getItem('uid') + "/update";
       console.log('ticcket when buy~~', this.currentTicket)
