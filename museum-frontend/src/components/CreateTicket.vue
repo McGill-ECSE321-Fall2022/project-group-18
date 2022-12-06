@@ -91,6 +91,7 @@ export default {
     }
   },
   methods: {
+  //verifies if date already has ticket created
     checkDate() {
       for (let i = 0; i < this.allowedDates.length; i++) {
         if (String(this.value) === String(this.allowedDates[i])) {
@@ -110,6 +111,7 @@ export default {
         this.allowedDates[i] = String(this.tickets[i].day)
       }
     },
+    //creates ticket for selected day and price
     createTicket() {
       this.date = String(this.value);
       axios.post(process.env.NODE_ENV === "development"
@@ -121,6 +123,7 @@ export default {
         .then()
         .catch(e => console.log(e))
     },
+    //gets all tickets
     getTickets() {
       axios.get(process.env.NODE_ENV === "development"
         ? 'http://localhost:8080/ticket/all' : 'production_link')
@@ -129,6 +132,7 @@ export default {
         })
         .catch(e => console.log(e))
     },
+    //refreshes on calendar input
     onContext() {
       if(this.varD){
         this.getAllowedDates()
