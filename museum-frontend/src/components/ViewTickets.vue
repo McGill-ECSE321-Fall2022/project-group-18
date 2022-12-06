@@ -85,6 +85,7 @@ export default {
     }
   },
   methods: {
+  //finds the business hour for selected ticket
     findBusinessHour(day){
       for(let i=0; i<this.businessHours.length; i++){
         if(day === this.businessHours[i]){
@@ -94,6 +95,7 @@ export default {
         }
       }
     },
+    //loads previous ticket in customerTickets list
     prev() {
       if (this.currTicketNumber != 0) {
         this.currTicketNumber--
@@ -101,6 +103,7 @@ export default {
         this.findBusinessHour()
       }
     },
+    //loads next ticket in customerTickets list
     next() {
       if (this.currTicketNumber != (this.user.customerTickets.length - 1)) {
         this.currTicketNumber++
