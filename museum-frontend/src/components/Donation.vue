@@ -2,10 +2,11 @@
   <div id ='donation'>
   <h1> Add new donation </h1>
   <div>
+<!--    Input field for the name of the artifact-->
     <label>Name</label>
     <input type="text" placeholder="Name Donated Artifact" v-model="nameDonatedArtifact"/>
   </div>
-
+<!--Radio buttons for the type of the artifact-->
     <form>
       <input type="radio" id="sculpture" name="type" value="Sculpture" v-model="typeSculptureDonated">
       <label for="sculpture">Sculpture</label><br>
@@ -27,12 +28,14 @@ import axios from 'axios'
 export default {
   data(){
     return {
+      //Create the parameters
       nameDonatedArtifact: '',
       typeSculptureDonated: '',
       typePaintingDonated: '',
       donatedArtifacts : []
     }
   },
+  //Create the donation with the parameters passed with a JSON format by calling the good backend POST method
   methods: {
     createDonation(nameDonatedArtifact, typeSculptureDonated, typePaintingDonated){
       if(typeSculptureDonated != ''){
