@@ -90,7 +90,7 @@ For deliverable 3, members agreed to log their hours in a shared Google sheet. M
 | Matthew Litwiller | 19 | Implemented the business tab for the owner view, managed the project on github, designed the architecture model, wrote the speech and made slides for the live presentation |
 | Aymen Ouali | 21  | Initialized the front-end Vue project. Implemented the Navbar, Login, Register and the Homepage (with the views for guests, customers and employees/owner). |
 | Zachary Godden |  |  |
-| Mohammad Shaheer Bilal |  |  |
+| Mohammad Shaheer Bilal | 16 | Implemented the employee hours tab and the scheduling page. |
 
 # Documentation 
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2022/project-group-18/wiki/Deliverable-1) <br/>
